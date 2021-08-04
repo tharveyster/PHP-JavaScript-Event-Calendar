@@ -41,7 +41,7 @@ The sign up page:
 The sign in page:
 ![The PHP and JavaScript Event Calendar allows registered user to create and view events.](./images/calendar-signin.png)
 
-The calendar with events:
+The calendar when logged in, and with events:
 ![The PHP and JavaScript Event Calendar allows registered user to create and view events.](./images/calendar-with-events.png)
 
 The calendar with a background picture:
