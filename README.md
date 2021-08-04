@@ -22,9 +22,6 @@ There's a 20 minute session timer that will log out users after 20 minutes of in
 
 This is currently configured to show all future days with a green background, unless they have events. Days with 1 event are yellow, 2 events are orange, 3 events are red, 4 events are purple, and 5 or more events are blue. The current day is outlined. Past days have no background, but if there's un-deleted events left on them they flash yellow. This only applies when logged in. If you're logged out or unregistered, only days with public events have any color.
 
-## Screenshot
-![The PHP and JavaScript Event Calendar allows registered user to create and view events.](./images/calendar-screenshot.png)
-
 ## Requirements
 Since this calendar is PHP based, it will need to be hosted on a web server with PHP installed in order to function properly. It works on PHP version 7.4, and has not been tested with any other versions.
 
@@ -33,6 +30,46 @@ This calendar requires a database to function. The calendar.sql file contains th
 Once the database is created, the dbConfig.php file will need to have the hostname, username, and password updated.
 
 There's a link to the sign up page on the sign in page.
+
+## Screenshots
+The index page when first loaded:
+![The PHP and JavaScript Event Calendar allows registered user to create and view events.](./images/calendar-index.png)
+
+The sign up page:
+![The PHP and JavaScript Event Calendar allows registered user to create and view events.](./images/calendar-signup.png)
+
+The sign in page:
+![The PHP and JavaScript Event Calendar allows registered user to create and view events.](./images/calendar-signin.png)
+
+The calendar with events:
+![The PHP and JavaScript Event Calendar allows registered user to create and view events.](./images/calendar-with-events.png)
+
+The calendar with a background picture:
+![The PHP and JavaScript Event Calendar allows registered user to create and view events.](./images/calendar-with-picture.png)
+
+The event popup:
+![The PHP and JavaScript Event Calendar allows registered user to create and view events.](./images/calendar-showing-popup.png)
+
+The adding an event:
+![The PHP and JavaScript Event Calendar allows registered user to create and view events.](./images/calendar-add-event.png)
+
+An event has been added:
+![The PHP and JavaScript Event Calendar allows registered user to create and view events.](./images/calendar-event-added.png)
+
+Showing events:
+![The PHP and JavaScript Event Calendar allows registered user to create and view events.](./images/calendar-showing-events.png)
+
+An event has been deleted:
+![The PHP and JavaScript Event Calendar allows registered user to create and view events.](./images/calendar-event-deleted.png)
+
+The settings page:
+![The PHP and JavaScript Event Calendar allows registered user to create and view events.](./images/calendar-settings.png)
+
+Logged off:
+![The PHP and JavaScript Event Calendar allows registered user to create and view events.](./images/calendar-logged-off.png)
+
+Timed out:
+![The PHP and JavaScript Event Calendar allows registered user to create and view events.](./images/calendar-timed-out.png)
 
 ## Credits
 The basic calendar code came from <https://www.codexworld.com/build-event-calendar-using-jquery-ajax-php/php-event-calendar-jquery-ajax-mysql-codexworld/>. That code consisted of displaying the calendar, and adding and viewing events. The functionality has been improved here to allow cancellation of new events in the "Add event" section before submitting them, setting event privacy to public or private, sharing private events with other users via their usernames, deletion of events by original submitter (and approved users) only, and visible holidays. There's also a new settings section where users can change their name, email address, and password, and add background images to each month.
