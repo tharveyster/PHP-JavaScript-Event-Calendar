@@ -1,5 +1,6 @@
 # PHP and JavaScript Event Calendar
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/github/license/tharveyster/PHP-JavaScript-Event-Calendar?style=plastic)
+](https://opensource.org/licenses/MIT)
 
 ## Description
 This code is for an event calendar. It was created using HTML, CSS, JavaScript, jQuery, Bootstrap, PHP, and MySQL.
