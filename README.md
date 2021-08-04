@@ -32,7 +32,7 @@ Once the database is created, the dbConfig.php file will need to have the hostna
 There's a link to the sign up page on the sign in page.
 
 ## Screenshots
-The index page when first loaded:
+This is what the calendar looks like when not logged in, and when there's no public events:
 ![The PHP and JavaScript Event Calendar allows registered user to create and view events.](./images/calendar-index.png)
 
 The sign up page:
