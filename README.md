@@ -29,7 +29,7 @@ This calendar requires a database to function. The calendar.sql file contains th
 
 Once the database is created, the dbConfig.php file will need to have the hostname, username, and password updated.
 
-There's a link to the sign up page on the sign in page.
+There's a link to the sign up page on the sign in page, although it can be removed after you create your account if you don't want the general public creating accounts.
 
 ## Screenshots
 This is what the calendar looks like when not logged in, and when there's no public events:
