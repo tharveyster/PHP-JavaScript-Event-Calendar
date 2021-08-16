@@ -50,7 +50,7 @@ The calendar with a background picture:
 The event popup:
 ![The PHP and JavaScript Event Calendar allows registered user to create and view events.](./images/calendar-showing-popup.png)
 
-The adding an event:
+Adding an event:
 ![The PHP and JavaScript Event Calendar allows registered user to create and view events.](./images/calendar-add-event.png)
 
 An event has been added:
