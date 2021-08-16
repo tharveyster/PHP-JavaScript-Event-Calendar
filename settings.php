@@ -305,7 +305,7 @@ if(isset($_FILES["image"]["name"])) {
 								<div class="modal-content">
 									<div class="modal-body">
 										<div class="centered">
-											<img src="/images/icons/loading-spinner.gif" alt="Please wait" />
+											<img src="./images/icons/loading-spinner.gif" alt="Please wait" />
 											<br />
 											Please wait.
 										</div>
