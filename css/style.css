@@ -18,6 +18,7 @@ body {
 	font-size: 16px;
 	line-height: 1.24;
 	padding-bottom: 0;
+	padding-right: 0 !important;
 }
 
 .title {
@@ -397,6 +398,23 @@ body {
 	border-left:1px solid #ffff00;
 }
 
+.calendar-dates ul li.expanded {
+	padding: 3px 3px calc(8.012% - 3px) 3px;
+}
+
+.calendar-dates ul li.this_day.expanded,
+.calendar-dates ul li.today_event.expanded,
+.calendar-dates ul li.today_2_multi.expanded,
+.calendar-dates ul li.today_3_multi.expanded,
+.calendar-dates ul li.today_4_multi.expanded,
+.calendar-dates ul li.today_multi.expanded {
+	padding: 0 0 calc(8.012% - 6px) 0;
+}
+
+.calendar-dates ul li.expanded:nth-child(n+29) {
+    border-bottom: 1px solid #444444;
+}
+
 @keyframes blinker {  
   50% { opacity: 0.4; }
 }
@@ -405,10 +423,10 @@ body {
 .date_popup_wrap {
 	position: absolute;
 	width: 60%;
-	height: 84%;
+	height: 70%;
 	z-index: 9999;
-	top: -10px;
-	left:-10px;
+	top: 1px;
+	left: 1px;
 	background-color: #ffffff;
 	border-radius:5px !important;
 	box-shadow: 3px 3px 2px #000000;
@@ -516,6 +534,7 @@ body {
 
 .signInContainer .column .header {
 	padding-bottom: 10px;
+	margin-bottom: 10px;
 }
 
 .signInContainer .column .header h3 {
@@ -533,13 +552,14 @@ body {
 .signInContainer .column form {
 	display: flex;
 	flex-direction: column;
+	margin-top: 10px;
 }
 
 .signInContainer .column form input[type="text"],
 .signInContainer .column form input[type="email"],
 .signInContainer .column form input[type="password"] {
 	font-size: 14px;
-	margin: 5px 0;
+	margin: 10px 0;
 	border: 1px solid #ccc;
 	border-radius: 3px;
 	padding: 10px;
@@ -551,6 +571,7 @@ body {
 
 .signInContainer .column form input[type="file"] {
 	margin: 5px 0;
+	width: 100%;
 }
 
 .signInContainer .column form select {
@@ -561,12 +582,12 @@ body {
 .signInContainer .column form input[type="submit"] {
 	background: #4285f4;
 	color: #fff;
-	height: 30px;
+	height: 39px;
 	width: 88px;
 	border: none;
 	border-radius: 3px;
 	font-weight: 500;
-	margin-top: 5px;
+	margin-top: 10px;
 	margin-bottom: 10px;
 }
 
@@ -577,7 +598,7 @@ body {
 
 .signInContainer .alert {
 	padding:10px !important;
-	margin-bottom:5px !important;
+	margin-bottom:10px !important;
 	border:none;
 }
 
@@ -655,6 +676,10 @@ body {
 	color: #888888;
 }
 
+.settingsContainer {
+	margin-top: 20px;
+}
+
 .settingsContainer form {
 	width: 80%;
 	margin-left: auto;
@@ -683,6 +708,34 @@ body {
 	border-bottom: 1px solid #dedede;
 }
 
+.signInContainer .column .settingsContainer form input[type="text"], 
+.signInContainer .column .settingsContainer form input[type="email"], 
+.signInContainer .column .settingsContainer form input[type="password"] {
+    font-size: 14px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    padding: 10px;
+}
+
+.signInContainer .column .settingsContainer form input[type="submit"] {
+    background: #4285f4;
+    color: #fff;
+    height: 30px;
+    width: 88px;
+    border: none;
+    border-radius: 3px;
+    font-weight: 500;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.signInContainer .settingsContainer .alert {
+    padding: 10px !important;
+    margin-bottom: 5px !important;
+    border: none;
+}
+
 .holiday {
 	height: 0;
 	width: 100%;
@@ -692,10 +745,27 @@ body {
 	left: 0;
 }
 
+.modal {
+	padding-right: 0 !important;
+}
+
 @media (max-width:1500px) {
 	.holiday {
 		font-size: 11px;
 		bottom: 17px;
+	}
+
+	.calendar-dates ul li.expanded {
+		padding: 3px 3px calc(8.147% - 3px) 3px;
+	}
+	
+	.calendar-dates ul li.this_day.expanded,
+	.calendar-dates ul li.today_event.expanded,
+	.calendar-dates ul li.today_2_multi.expanded,
+	.calendar-dates ul li.today_3_multi.expanded,
+	.calendar-dates ul li.today_4_multi.expanded,
+	.calendar-dates ul li.today_multi.expanded {
+		padding: 0 0 calc(8.147% - 6px) 0;
 	}
 }
 
@@ -704,24 +774,54 @@ body {
 		font-size: 10px;
 		bottom: 16px;
 	}
+
+	.calendar-dates ul li.expanded {
+		padding: 3px 3px calc(8.194% - 3px) 3px;
+	}
+	
+	.calendar-dates ul li.this_day.expanded,
+	.calendar-dates ul li.today_event.expanded,
+	.calendar-dates ul li.today_2_multi.expanded,
+	.calendar-dates ul li.today_3_multi.expanded,
+	.calendar-dates ul li.today_4_multi.expanded,
+	.calendar-dates ul li.today_multi.expanded {
+		padding: 0 0 calc(8.194% - 6px) 0;
+	}
 }
 
 @media (max-width:1250px) {
 	.date_popup_wrap {
 		width: 80%;
-		height: 100%;
+		height: 85%;
 	}
 
 	.holiday {
 		font-size: 9px;
 		bottom: 15px;
 	}
+
+	.popup_event {
+		font-size: 15px;
+	}
+
+	.calendar-dates ul li.expanded {
+		padding: 3px 3px calc(8.277% - 3px) 3px;
+	}
+	
+	.calendar-dates ul li.this_day.expanded,
+	.calendar-dates ul li.today_event.expanded,
+	.calendar-dates ul li.today_2_multi.expanded,
+	.calendar-dates ul li.today_3_multi.expanded,
+	.calendar-dates ul li.today_4_multi.expanded,
+	.calendar-dates ul li.today_multi.expanded {
+		padding: 0 0 calc(8.277% - 6px) 0;
+	}
 }
 
 @media (max-width:940px) {
 	.date_popup_wrap {
 		width: 80%;
-		height: 100%;
+		height: 80%;
 	}
 
 	.date_window {
@@ -732,12 +832,25 @@ body {
 	}
 
 	.popup_event {
-		font-size: 15px;
+		font-size: 14px;
 	}
 
 	.holiday {
 		font-size: 8px;
 		bottom: 14px;
+	}
+
+	.calendar-dates ul li.expanded {
+		padding: 3px 3px calc(8.525% - 3px) 3px;
+	}
+	
+	.calendar-dates ul li.this_day.expanded,
+	.calendar-dates ul li.today_event.expanded,
+	.calendar-dates ul li.today_2_multi.expanded,
+	.calendar-dates ul li.today_3_multi.expanded,
+	.calendar-dates ul li.today_4_multi.expanded,
+	.calendar-dates ul li.today_multi.expanded {
+		padding: 0 0 calc(8.525% - 6px) 0;
 	}
 }
 
@@ -795,7 +908,7 @@ body {
 	}
 
 	.popup_event {
-		font-size: 14px;
+		font-size: 13px;
 	}
 
 	.logoutMessage {
@@ -809,6 +922,19 @@ body {
 	.holiday {
 		font-size: 7px;
 		bottom: 13px;
+	}
+
+	.calendar-dates ul li.expanded {
+		padding: 3px 3px calc(8.529% - 3px) 3px;
+	}
+	
+	.calendar-dates ul li.this_day.expanded,
+	.calendar-dates ul li.today_event.expanded,
+	.calendar-dates ul li.today_2_multi.expanded,
+	.calendar-dates ul li.today_3_multi.expanded,
+	.calendar-dates ul li.today_4_multi.expanded,
+	.calendar-dates ul li.today_multi.expanded {
+		padding: 0 0 calc(8.529% - 6px) 0;
 	}
 }
 
@@ -846,7 +972,7 @@ body {
 	}
 
 	.popup_event {
-		font-size: 14px;
+		font-size: 12px;
 	}
 
 	.loginMessage {
@@ -860,6 +986,19 @@ body {
 	.holiday {
 		font-size: 6px;
 		bottom: 12px;
+	}
+
+	.calendar-dates ul li.expanded {
+		padding: 3px 3px calc(8.71% - 3px) 3px;
+	}
+	
+	.calendar-dates ul li.this_day.expanded,
+	.calendar-dates ul li.today_event.expanded,
+	.calendar-dates ul li.today_2_multi.expanded,
+	.calendar-dates ul li.today_3_multi.expanded,
+	.calendar-dates ul li.today_4_multi.expanded,
+	.calendar-dates ul li.today_multi.expanded {
+		padding: 0 0 calc(8.71% - 6px) 0;
 	}
 }
 
@@ -927,6 +1066,19 @@ body {
 	.holiday {
 		font-size: 5px;
 		bottom: 11px;
+	}
+
+	.calendar-dates ul li.expanded {
+		padding: 3px 3px calc(8.77% - 3px) 3px;
+	}
+	
+	.calendar-dates ul li.this_day.expanded,
+	.calendar-dates ul li.today_event.expanded,
+	.calendar-dates ul li.today_2_multi.expanded,
+	.calendar-dates ul li.today_3_multi.expanded,
+	.calendar-dates ul li.today_4_multi.expanded,
+	.calendar-dates ul li.today_multi.expanded {
+		padding: 0 0 calc(8.77% - 6px) 0;
 	}
 }
 
@@ -1026,9 +1178,26 @@ body {
 		font-size:8px;
 	}
 
+	.popup_event {
+		font-size: 8px;
+	}
+
 	.holiday {
 		font-size: 3px;
 		bottom: 9px;
+	}
+
+	.calendar-dates ul li.expanded {
+		padding: 3px 3px calc(9.21% - 3px) 3px;
+	}
+	
+	.calendar-dates ul li.this_day.expanded,
+	.calendar-dates ul li.today_event.expanded,
+	.calendar-dates ul li.today_2_multi.expanded,
+	.calendar-dates ul li.today_3_multi.expanded,
+	.calendar-dates ul li.today_4_multi.expanded,
+	.calendar-dates ul li.today_multi.expanded {
+		padding: 0 0 calc(9.21% - 6px) 0;
 	}
 }
 
