@@ -31,43 +31,14 @@ body {
 
 .title-text {
 	font-size:33px;
-	color:#444444;
-	text-shadow: 1px 1px #aaaaaa, 1px -1px #aaaaaa, -1px -1px #aaaaaa, -1px 1px #aaaaaa;
-	margin-top:0;
-	margin-bottom:0;
-}
-
-.return-text {
-	margin-top:-75px;
-}
-
-.return-text p {
-	position:relative;
-	/* top:-75px; */
-	text-align:center;
-	color:#444444;
-	text-shadow: 1px 1px #aaaaaa, 1px -1px #aaaaaa, -1px -1px #aaaaaa, -1px 1px #aaaaaa;
-}
-
-.return-text a {
-	color:#444444;
-	text-decoration:none;
-}
-
-.return-text a:hover {
-	color:#999999;
-	text-decoration:none;
+	color:#fff;
+	mix-blend-mode: difference;
+	margin: 0 auto;
+	width: 75%;
 }
 
 .none {
 	display:none;
-	text-shadow: 1px 1px #aaaaaa, 1px -1px #aaaaaa, -1px -1px #aaaaaa, -1px 1px #aaaaaa;
-}
-
-#framer {
-	width:95%;
-	margin:0 auto;
-	clear:both;
 }
 
 #container {
@@ -101,10 +72,11 @@ body {
 }
 
 .calendar-wrap .cal-nav a {
-	color:#444444;
+	color:#fff;
+	mix-blend-mode: difference;
 	text-decoration: none;
 	font-size: 30px;
-	text-shadow: 1px 1px #aaaaaa, 1px -1px #aaaaaa, -1px -1px #aaaaaa, -1px 1px #aaaaaa;
+	text-shadow: 1px 1px #999, 1px -1px #999, -1px -1px #999, -1px 1px #999;
 }
 
 .calendar-wrap .cal-nav a:hover {
@@ -212,13 +184,17 @@ body {
 	border-left:1px solid #444444;
 	text-align:center;
 	font-size:16px;
-	text-shadow: 1px 1px #aaaaaa, 1px -1px #aaaaaa, -1px -1px #aaaaaa, -1px 1px #aaaaaa;
 	min-height:0;
 	padding:2px;
 }
 
 .calendar-days ul li:nth-child(7) {
 	border-right: 1px solid #444444;
+}
+
+.calendar-days ul li span {
+	color: #fff;
+	mix-blend-mode: difference;
 }
 
 .calendar-dates {
@@ -239,7 +215,6 @@ body {
 	width:14.28%;
 	text-align:center;
 	font-size:20px;
-	text-shadow: 1px 1px #aaaaaa, 1px -1px #aaaaaa, -1px -1px #aaaaaa, -1px 1px #aaaaaa;
 	border-top:1px solid #444444;
 	border-left:1px solid #444444;
 	background:none;
@@ -272,7 +247,8 @@ body {
 }
 
 .calendar-dates ul li.has_event {
-	background-color: rgba(255,255,0,0.8);
+	background-color: rgba(255,255,0,0.75);
+	color: #000;
 }
 
 .calendar-dates ul li.has_event:hover {
@@ -280,7 +256,8 @@ body {
 }
 
 .calendar-dates ul li.has_2_multi {
-	background-color: rgba(255,165,0,0.85);
+	background-color: rgba(255,165,0,0.8);
+	color: #000;
 }
 
 .calendar-dates ul li.has_2_multi:hover {
@@ -288,7 +265,8 @@ body {
 }
 
 .calendar-dates ul li.has_3_multi {
-	background-color: rgba(255,0,0,0.9);
+	background-color: rgba(255,0,0,0.85);
+	color: #fff;
 }
 
 .calendar-dates ul li.has_3_multi:hover {
@@ -296,7 +274,8 @@ body {
 }
 
 .calendar-dates ul li.has_4_multi {
-	background-color: rgba(128,0,128,0.95);
+	background-color: rgba(128,0,128,0.9);
+	color: #fff;
 }
 
 .calendar-dates ul li.has_4_multi:hover {
@@ -304,7 +283,8 @@ body {
 }
 
 .calendar-dates ul li.has_multi {
-	background-color: rgba(0,0,255,1);
+	background-color: rgba(0,0,255,0.95);
+	color: #fff;
 }
 
 .calendar-dates ul li.has_multi:hover {
@@ -326,8 +306,8 @@ body {
 }
 
 .calendar-dates ul li.pending_day {
-	background-color: rgba(0,255,0,0.75);
-	text-shadow:none;
+	background-color: rgba(0,195,0,0.7);
+	color: #000;
 }
 
 .calendar-dates ul li.pending_day:hover {
@@ -370,32 +350,13 @@ body {
 	cursor: auto;
 }
 
+.calendar-dates ul li.past_day span {
+	color: #fff;
+	mix-blend-mode: difference;
+}
+
 .calendar-dates ul li.past_day:hover {
 	background-color: rgba(128,128,128,0.5);
-}
-
-.calendar-dates ul li.past_event {
-	animation: blinker .5s linear infinite;
-	background-color:#ffff00;
-	opacity:0.9;
-	text-shadow:none;
-}
-
-.calendar-dates ul li.past_event:hover {
-	border-top:1px solid #ff0000;
-	border-left:1px solid #ff0000;
-}
-
-.calendar-dates ul li.past_multi {
-	animation: blinker .5s linear infinite;
-	background-color:#ff0000;
-	opacity:0.9;
-	text-shadow:none;
-}
-
-.calendar-dates ul li.past_multi:hover {
-	border-top:1px solid #ffff00;
-	border-left:1px solid #ffff00;
 }
 
 .calendar-dates ul li.expanded {
@@ -415,10 +376,6 @@ body {
     border-bottom: 1px solid #444444;
 }
 
-@keyframes blinker {  
-  50% { opacity: 0.4; }
-}
-
 /*========== Hover Popup ===============*/
 .date_popup_wrap {
 	position: absolute;
@@ -431,7 +388,6 @@ body {
 	border-radius:5px !important;
 	box-shadow: 3px 3px 2px #000000;
 	color: #666 !important;
-	text-shadow: 1px 1px #ffffff, 1px -1px #ffffff, -1px -1px #ffffff, -1px 1px #ffffff;
 	opacity:0.9;
 }
 
@@ -442,38 +398,30 @@ body {
 	height: 115px;
 	margin-top: 28px;
 	margin-left: 25px;
-	text-shadow: 1px 1px #ffffff, 1px -1px #ffffff, -1px -1px #ffffff, -1px 1px #ffffff;
 }
 
 .event_wrap {
 	margin-bottom: 10px; padding-bottom: 10px;
 	border-bottom: solid 1px #E4E4E7;
 	font-size: 12px;
-	text-shadow: 1px 1px #ffffff, 1px -1px #ffffff, -1px -1px #ffffff, -1px 1px #ffffff;
 	padding: 3px;
 }
 
 .date_window {
-	margin-top:5px;
-	margin-bottom: 2px;
-	padding: 5px;
+	margin:3px;
+	padding: 3px;
 	font-size: 12px;
-	text-shadow: 1px 1px #ffffff, 1px -1px #ffffff, -1px -1px #ffffff, -1px 1px #ffffff;
-	margin-left:5px;
-	margin-right:5px;
 }
 
 .popup_event {
 	margin-bottom: 2px;
 	padding: 1px;
 	font-size: 14px;
-	text-shadow: 1px 1px #ffffff, 1px -1px #ffffff, -1px -1px #ffffff, -1px 1px #ffffff;
 	width:100%;
 }
 
 .popup_event a {
 	color: #000000 !important;
-	text-shadow: 1px 1px #ffffff, 1px -1px #ffffff, -1px -1px #ffffff, -1px 1px #ffffff;
 }
 
 .popup_event a:hover {
@@ -482,12 +430,18 @@ body {
 }
 
 .eventList {
-	background: rgba(255, 255, 255, 0.5);
 	padding: 10px 0;
+	width: 100%;
+}
+
+#event_list {
+	background: rgba(255, 255, 255, 0.7);
+	color: #000;
+	margin-bottom: 5px;
 }
 
 .eventItem {
-	padding: 0 10px;
+	padding: 3px 10px;
 }
 
 .eventList th {
@@ -648,8 +602,8 @@ body {
 
 .loginMessageLink {
 	text-decoration: none;
-	color:#444444;
-	text-shadow: 1px 1px #aaaaaa, 1px -1px #aaaaaa, -1px -1px #aaaaaa, -1px 1px #aaaaaa;
+	color: #fff;
+	mix-blend-mode: difference;
 }
 
 .loginMessageLink:hover {
@@ -668,8 +622,8 @@ body {
 
 .settingsLink {
 	text-decoration: none;
-	color:#444444;
-	text-shadow: 1px 1px #aaaaaa, 1px -1px #aaaaaa, -1px -1px #aaaaaa, -1px 1px #aaaaaa;
+	color:#fff;
+	mix-blend-mode: difference;
 }
 
 .settingsLink:hover {
@@ -825,9 +779,6 @@ body {
 	}
 
 	.date_window {
-		margin-top:3px;
-		margin-bottom: 2px;
-		padding: 3px;
 		font-size: 10px;
 	}
 
@@ -899,16 +850,15 @@ body {
 	}
 
 	.date_window {
-		margin-top:3px;
-		margin-bottom: 2px;
 		padding: 2px;
 		font-size: 9px;
+		margin-bottom: 2px;
 		margin-left: 2px;
 		margin-right: 2px;
 	}
 
 	.popup_event {
-		font-size: 13px;
+		font-size: 12px;
 	}
 
 	.logoutMessage {
@@ -963,16 +913,15 @@ body {
 	}
 
 	.date_window {
-		margin-top:3px;
-		margin-bottom: 2px;
 		padding: 0;
 		font-size: 8px;
+		margin-bottom: 2px;
 		margin-left:0;
 		margin-right:0;
 	}
 
 	.popup_event {
-		font-size: 12px;
+		font-size: 11px;
 	}
 
 	.loginMessage {
@@ -1039,16 +988,15 @@ body {
 	}
 
 	.date_window {
-		margin-top:3px;
-		margin-bottom: 2px;
 		padding: 1px;
 		font-size: 7px;
+		margin-bottom: 2px;
 		margin-left:0;
 		margin-right:0;
 	}
 
 	.popup_event {
-		font-size: 12px;
+		font-size: 11px;
 	}
 
 	.loginMessage {
@@ -1120,16 +1068,15 @@ body {
 	}
 
 	.date_window {
-		margin-top:3px;
-		margin-bottom: 2px;
 		padding: 0;
 		font-size: 6px;
+		margin-bottom: 2px;
 		margin-left:0;
 		margin-right:0;
 	}
 
 	.popup_event {
-		font-size: 10px;
+		font-size: 9px;
 	}
 
 	.loginMessage {
