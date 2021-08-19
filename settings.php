@@ -10,14 +10,14 @@
 session_start();
 date_default_timezone_set('America/New_York');
 
-$username = "";
+$userId = "";
 
 $_SESSION['rdrurl'] = $_SERVER['REQUEST_URI'];
 
 $timerResets = "";
 
-if(isset($_SESSION['username'])) {
-	$username = htmlspecialchars(strip_tags($_SESSION['username']), ENT_QUOTES);
+if(isset($_SESSION['userId'])) {
+	$userId = htmlspecialchars(strip_tags($_SESSION['userId']), ENT_QUOTES);
 
 	$timerResets = ' onload="start();" onmousemove="start();" onclick="start();" onkeydown="start();"';
 	echo '
@@ -44,13 +44,13 @@ else{
 
 include('includes/dbConfig.php');
 
-$query = $con->prepare("SELECT * FROM users WHERE username = :un");
-$query->bindParam(":un", $username);
+$query = $con->prepare("SELECT * FROM users WHERE id = :id");
+$query->bindParam(":id", $userId);
 $query->execute();
 
 $row_count = $query->rowCount();
 if($row_count === 0) {
-	$username = "";
+	$userId = "";
 } else {
 	$row = $query->fetch(PDO::FETCH_ASSOC);
 }
@@ -93,11 +93,11 @@ if(isset($_POST["saveDetailsButton"])) {
 	if (strlen($firstName) <= 25 && strlen($firstName) >= 2) {
 		if (strlen($lastName) <= 25 && strlen($lastName) >= 2) {
 			if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-				$query = $con->prepare("UPDATE users SET firstName=:fn, lastName=:ln, email=:em WHERE username=:un");
+				$query = $con->prepare("UPDATE users SET firstName=:fn, lastName=:ln, email=:em WHERE id=:id");
 				$query->bindParam(":fn", $firstName);
 				$query->bindParam(":ln", $lastName);
 				$query->bindParam(":em", $email);
-				$query->bindParam(":un", $username);
+				$query->bindParam(":id", $userId);
 	
 				$query->execute();
 				$detailsMessage = '        <div class="alert alert-success"><strong>SUCCESS!</strong> Details updated sucessfully!</div>';
@@ -120,8 +120,8 @@ if(isset($_POST["savePasswordButton"])) {
 	if (preg_match("/^[A-Za-z0-9.,?!@#$%*~_]+$/", $oldPassword) && preg_match("/^[A-Za-z0-9.,?!@#$%*~_]+$/", $newPassword) && preg_match("/^[A-Za-z0-9.,?!@#$%*~_]+$/", $newPassword2)) {
 		if (strlen($newPassword) <= 30 && strlen($newPassword) >= 8) {
 			if ($newPassword === $newPassword2) {
-				$query = $con->prepare("SELECT * FROM users WHERE username=:un");
-				$query->bindParam(":un", $username);
+				$query = $con->prepare("SELECT * FROM users WHERE id=:id");
+				$query->bindParam(":id", $userId);
 
 				$query->execute();
 
@@ -129,9 +129,9 @@ if(isset($_POST["savePasswordButton"])) {
 					while($row = $query->fetch(PDO::FETCH_ASSOC)) {
 						if (password_verify($oldPassword, $row["password"])) {
 							$newpassword = password_hash($newPassword, PASSWORD_DEFAULT);
-							$query = $con->prepare("UPDATE users SET password=:pw WHERE username=:un");
+							$query = $con->prepare("UPDATE users SET password=:pw WHERE id=:id");
 							$query->bindParam(":pw", $newpassword);
-							$query->bindParam(":un", $username);
+							$query->bindParam(":id", $userId);
 				
 							$query->execute();
 							$passwordMessage = '<div class="alert alert-success">Your password has been changed</div>';
@@ -166,8 +166,8 @@ if(isset($_FILES["image"]["name"])) {
 	$maxFileSize = 1024*1024*4;
 	$calMonth = $_POST['calMonth'];
 	$temporaryPath = "../../images/" . uniqid() . ".png";
-    $finalPath = "images/$username-$calMonth.png";
-	$finalLink = "$username-$calMonth.png";
+    $finalPath = "images/$userId-$calMonth.png";
+	$finalLink = "$userId-$calMonth.png";
 	$imageErrors = array();
 
 	if ($_FILES["image"]["error"]) {
@@ -218,9 +218,9 @@ if(isset($_FILES["image"]["name"])) {
         </div>' . chr(13) . chr(10);
         rename($temporaryPath, $finalPath);
 
-        $query = $con->prepare("UPDATE users SET $calMonth = :monthPic WHERE username=:un");
+        $query = $con->prepare("UPDATE users SET $calMonth = :monthPic WHERE id=:id");
         $query->bindParam(":monthPic", $finalLink);
-        $query->bindParam(":un", $username);
+        $query->bindParam(":id", $userId);
         $query->execute();
 	}else{
 		foreach($imageErrors as $imageError) {
@@ -305,7 +305,7 @@ if(isset($_FILES["image"]["name"])) {
 								<div class="modal-content">
 									<div class="modal-body">
 										<div class="centered">
-											<img src="./images/icons/loading-spinner.gif" alt="Please wait" />
+											<img src="/images/icons/loading-spinner.gif" alt="Please wait" />
 											<br />
 											Please wait.
 										</div>

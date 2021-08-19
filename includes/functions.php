@@ -4,10 +4,10 @@
 session_start();
 date_default_timezone_set('America/New_York');
 
-$username = "";
+$userId = "";
 
-if(isset($_SESSION['username'])) {
-	$username = htmlspecialchars(strip_tags($_SESSION['username']), ENT_QUOTES);
+if(isset($_SESSION['userId'])) {
+  $userId = htmlspecialchars(strip_tags($_SESSION['userId']), ENT_QUOTES);
 }
 
 if(isset($_POST['func']) && !empty($_POST['func'])){
@@ -16,7 +16,7 @@ if(isset($_POST['func']) && !empty($_POST['func'])){
       getCalender($_POST['year'],$_POST['month']);
       break;
     case 'getEvents':
-      getEvents($_POST['date']);
+      getEvents($_POST['date'],$userId);
       break;
     case 'addEvent':
       addEvent($_POST['date'],$_POST['title'],$_POST['privacy'],$_POST['sharedWith'],$_POST['deleteAuth']);
@@ -88,26 +88,26 @@ function getCalender($year = '', $month = ''){
         $dayCount = '0'.$dayCount;
       }
       $currentDate = $dateYear.'-'.$dateMonth.'-'.$dayCount;
-			if(isset($_SESSION['username'])) {
-				$username = htmlspecialchars(strip_tags($_SESSION['username']), ENT_QUOTES);
+			if(isset($_SESSION['userId'])) {
+				$userId = htmlspecialchars(strip_tags($_SESSION['userId']), ENT_QUOTES);
 			}else{
-				$username = "";
+        $userId = "";
 			}
 
       // Include the database config file
       include_once 'dbConfig.php';
 
       // Get number of events based on the current date
-      if(!isset($_SESSION['username'])) {
+      if(!isset($_SESSION['userId'])) {
         $result = $con->prepare("SELECT title FROM events WHERE date = :cd AND status = 1 AND privacy = 0");
         $result->bindParam(":cd", $currentDate);
         $result->execute();
         $eventNum = $result->rowCount();
       }else{
         $result = $con->prepare("SELECT title FROM events WHERE (date = :cd AND status = 1 AND user = :un) OR (date = :cd AND status = 1 AND privacy = 0) OR (date = :cd AND status = 1 AND sharedWith LIKE :sw)");
-        $sharedWith = "% ".$username." %";
+        $sharedWith = "% ".$userId." %";
         $result->bindParam(":cd", $currentDate);
-        $result->bindParam(":un", $username);
+        $result->bindParam(":un", $userId);
         $result->bindParam(":sw", $sharedWith);
         $result->execute();
         $eventNum = $result->rowCount();
@@ -137,13 +137,13 @@ function getCalender($year = '', $month = ''){
       }elseif($eventNum > 4){
         echo '            <li date="'.$currentDate.'" class="has_multi date_cell '.$expandBlocks.'">';
       }elseif(strtotime($currentDate) > strtotime(date("Y-m-d"))){
-        if(isset($_SESSION['username'])) {
+        if(isset($_SESSION['userId'])) {
           echo '            <li date="'.$currentDate.'" class="pending_day date_cell '.$expandBlocks.'">';
         }else{
           echo '            <li date="'.$currentDate.'" class="'.$expandBlocks.'">';
         }
       }elseif($eventNum === 0 && (strtotime($currentDate) < strtotime(date("Y-m-d")))){
-        if(isset($_SESSION['username'])) {
+        if(isset($_SESSION['userId'])) {
           echo '            <li date="'.$currentDate.'" class="date_cell past_day '.$expandBlocks.'">';
         }else{
           echo '            <li date="'.$currentDate.'" class="'.$expandBlocks.'">';
@@ -158,12 +158,12 @@ function getCalender($year = '', $month = ''){
       echo '</span>';
 
       // Hover event popup
-      if($eventNum > 0 || ((strtotime($currentDate) >= strtotime(date("Y-m-d"))) && isset($_SESSION['username']))){
+      if($eventNum > 0 || ((strtotime($currentDate) >= strtotime(date("Y-m-d"))) && isset($_SESSION['userId']))){
         echo '<div id="date_popup_'.$currentDate.'" class="date_popup_wrap none">';
         echo '<div class="date_window">';
         echo '<div class="popup_event">Events ('.$eventNum.')</div>';
         echo ($eventNum > 0)?'<a href="javascript:;" onclick="getEvents(\''.$currentDate.'\');">view events</a>':'';
-        if(isset($_SESSION['username'])) {
+        if(isset($_SESSION['userId'])) {
           echo '<a href="javascript:void(0);" onclick="addEvent(\''.$currentDate.'\');"><br />add event</a>';
         }
 			  echo '</div></div>';
@@ -187,14 +187,14 @@ function getCalender($year = '', $month = ''){
 	$month10 = 'blank.png';
 	$month11 = 'blank.png';
 	$month12 = 'blank.png';
-	if(isset($_SESSION['username'])) {
-	    $username = htmlspecialchars(strip_tags($_SESSION['username']), ENT_QUOTES);
+	if(isset($_SESSION['userId'])) {
+    $userid = htmlspecialchars(strip_tags($_SESSION['userId']), ENT_QUOTES);
 	}else{
-		$username = "";
+    $userId = "";
 	}
   include_once 'dbConfig.php';
-	$images = $con->prepare("SELECT * FROM users WHERE username = :user");
-	$images->bindParam(":user", $username);
+	$images = $con->prepare("SELECT * FROM users WHERE id = :user");
+	$images->bindParam(":user", $userId);
 	$images->execute();
   while($row = $images->fetch(PDO::FETCH_ASSOC)) {
 		$month01 = $row["january"];
@@ -650,28 +650,28 @@ function getYearList($selected = ''){
 /*
  * Generate events list in HTML format
  */
-function getEvents($date = ''){
+function getEvents($date = '', $userId){
   // Include the database config file
   include_once 'dbConfig.php';
 
   $eventListHTML = '';
   $date = $date?$date:date("Y-m-d");
-  if(isset($_SESSION['username'])) {
-    $username = htmlspecialchars(strip_tags($_SESSION['username']), ENT_QUOTES);
+  if(isset($_SESSION['userId'])) {
+    $userId = htmlspecialchars(strip_tags($_SESSION['userId']), ENT_QUOTES);
   }else{
-    $username = "";
+    $userId = "";
   }
 
   // Fetch events based on the specific date
-  if(!isset($_SESSION['username'])) {
+  if(!isset($_SESSION['userId'])) {
     $result = $con->prepare("SELECT * FROM events WHERE date = :date AND status = 1 AND privacy = 0");
     $result->bindParam(":date", $date);
     $result->execute();
   }else{
     $result = $con->prepare("SELECT * FROM events WHERE (date = :date AND status = 1 AND user = :un) OR (date = :date AND status = 1 AND privacy = 0) OR (date = :date AND status = 1 AND sharedWith LIKE :sw) ORDER BY title");
-    $sharedWith = "% ".$username." %";
+    $sharedWith = "% ".$userId." %";
     $result->bindParam(":date", $date);
-    $result->bindParam(":un", $username);
+    $result->bindParam(":un", $userId);
     $result->bindParam(":sw", $sharedWith);
     $result->execute();
   }
@@ -681,7 +681,7 @@ function getEvents($date = ''){
     $eventListHTML .= '<table class="eventList">';
     $eventListHTML .= '<tr>';
     $eventListHTML .= '<th class="eventItem">Title</th>';
-    if(isset($_SESSION['username'])) {
+    if(isset($_SESSION['userId'])) {
       $eventListHTML .= '<th class="eventItem">Creator</th><th class="eventItem">Privacy</th><th class="eventItem">Shared With</th><th class="eventItem"></th>';
     }
     while($row = $result->fetch(PDO::FETCH_ASSOC)) {
@@ -692,7 +692,21 @@ function getEvents($date = ''){
       $privacy = $row['privacy'];
       $eventShared = $row['sharedWith'];
       $deleteAuth = $row['deleteAuth'];
-      if ($user == $username) {
+      $eventSharedArray = explode(" , ", $eventShared);
+      $eventSharedUsernameArray = array();
+      foreach($eventSharedArray as $eventSharedUserId) {
+        $query = $con->prepare("SELECT username FROM users WHERE id = :id");
+        $query->bindParam(":id", $eventSharedUserId);
+        $query->execute();
+        if($query->rowCount() > 0){
+          while($row = $query->fetch(PDO::FETCH_ASSOC)) {
+            $userShare = $row['username'];
+            array_push($eventSharedUsernameArray, $userShare);
+          }
+        }
+      }
+      $newSharedGroup = implode(", ", $eventSharedUsernameArray);
+      if ($user == $userId) {
         $creatorName = "You";
       } else {
         $creatorName = $user;
@@ -702,18 +716,15 @@ function getEvents($date = ''){
       } else {
         $eventPrivacy = '<span style="color:green;">public</span>';
       }
-      if ($eventShared !== '') {
-        $eventShared = str_replace(' , ', ', ', $eventShared);
-      }
-      $authConfirm = ' '.$username.' ';
-      if(!isset($_SESSION['username'])) {
+      $authConfirm = ' '.$userId.' ';
+      if(!isset($_SESSION['userId'])) {
         $eventListHTML .= '<td class="eventItem">'.$eventTitle.'</td>';
-      } else if ($user != $username && strpos($deleteAuth, $authConfirm) === false) {
+      } else if ($user != $userId && strpos($deleteAuth, $authConfirm) === false) {
         $eventListHTML .= '<td class="eventItem">'.$eventTitle.'</td><td class="eventItem">'.$user.'</td><td  class="eventItem">'.$eventPrivacy.'</td>';
-      } else if ($user != $username && strpos($deleteAuth, $authConfirm) !== false) {
+      } else if ($user != $userId && strpos($deleteAuth, $authConfirm) !== false) {
         $eventListHTML .= '<td class="eventItem">'.$eventTitle.'</td><td class="eventItem">'.$user.'</td><td  class="eventItem">'.$eventPrivacy.'</td><td></td><td class="eventItem"><button class="delEventBtn" id="'.$id.'">Delete</button></td>';
       } else {
-        $eventListHTML .= '<td class="eventItem" id="'.$id.'">'.$eventTitle.'</td><td class="eventItem">'.$creatorName.'</td><td class="eventItem">'.$eventPrivacy.'</td><td class="eventItem">'.$eventShared.'</td><td class="eventItem"><button class="delEventBtn" id="'.$id.'">Delete</button></td>';
+        $eventListHTML .= '<td class="eventItem" id="'.$id.'">'.$eventTitle.'</td><td class="eventItem">'.$creatorName.'</td><td class="eventItem">'.$eventPrivacy.'</td><td class="eventItem">'.$newSharedGroup.'</td><td class="eventItem"><button class="delEventBtn" id="'.$id.'">Delete</button></td>';
       }
       $eventListHTML .= '</tr>';
     }
@@ -751,10 +762,38 @@ function addEvent($date,$title,$privacy,$sharedWith,$deleteAuth){
   //Include db configuration file
   include 'dbConfig.php';
   $currentDate = date("Y-m-d H:i:s");
-  if(isset($_SESSION['username'])) {
-    $username = htmlspecialchars(strip_tags($_SESSION['username']), ENT_QUOTES);
+  $sharedUsernameArray = explode(",", $sharedWith);
+  $sharedIdArray = array();
+  foreach($sharedUsernameArray as $sharedUsername) {
+    $query = $con->prepare("SELECT id FROM users WHERE username = :sw");
+    $query->bindParam(":sw", $sharedUsername);
+    $query->execute();
+    if($query->rowCount() > 0){
+      while($row = $query->fetch(PDO::FETCH_ASSOC)) {
+        $id = $row['id'];
+        array_push($sharedIdArray,$id);
+      }
+    }
+  }
+  $sharedWith = implode(" , ", $sharedIdArray);
+  $deleteUsernameArray = explode(",", $deleteAuth);
+  $deleteIdArray = array();
+  foreach($deleteUsernameArray as $deleteUsername) {
+    $query = $con->prepare("SELECT id FROM users WHERE username = :du");
+    $query->bindParam(":du", $deleteUsername);
+    $query->execute();
+    if($query->rowCount() > 0){
+      while($row = $query->fetch(PDO::FETCH_ASSOC)) {
+        $id = $row['id'];
+        array_push($deleteIdArray,$id);
+      }
+    }
+  }
+  $deleteAuth = implode(" , ", $deleteIdArray);
+  if(isset($_SESSION['userId'])) {
+    $userId = htmlspecialchars(strip_tags($_SESSION['userId']), ENT_QUOTES);
   }else{
-    $username = "";
+    $userId = "";
   }
   if(isset($_POST['addEventBtn'])) {
     $privacy = intval($_POST['eventPrivacy']);
@@ -766,12 +805,10 @@ function addEvent($date,$title,$privacy,$sharedWith,$deleteAuth){
   $insert->bindParam(":title", $title);
   $insert->bindParam(":date", $date);
   $insert->bindParam(":currentDate", $currentDate);
-  $insert->bindParam(":un", $username);
+  $insert->bindParam(":un", $userId);
   $insert->bindParam(":ep", $privacy);
-  $sharedWith = str_replace(',', ' , ', $sharedWith);
   $sharedWith = ' '. $sharedWith .' ';
   $insert->bindParam(":sw", $sharedWith);
-  $deleteAuth = str_replace(',', ' , ', $deleteAuth);
   $deleteAuth = ' '. $deleteAuth .' ';
   $insert->bindParam(":da", $deleteAuth);
   $insert->execute();

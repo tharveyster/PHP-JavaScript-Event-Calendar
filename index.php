@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <?php
 include_once 'includes/functions.php';
+$username = "";
 $logoutMessage = "";
 $timerResets = "";
 $settingsLink = "";

@@ -5,6 +5,7 @@ require_once("includes/dbConfig.php");
 
 $errorMessage = "";
 $username = "";
+$username = "";
 
 if(isset($_POST["submitButton"])) {
 	$username = htmlspecialchars(strip_tags($_POST["username"]), ENT_QUOTES);
@@ -17,8 +18,10 @@ if(isset($_POST["submitButton"])) {
 
 	if($query->rowCount() === 1) {
 		while($row = $query->fetch(PDO::FETCH_ASSOC)) {
+			$userId = $row['id'];
 			if (password_verify($password, $row["password"])) {
 				$_SESSION["username"] = $username;
+				$_SESSION["userId"] = $userId;
 				header("Location: index.php");
 				exit();
 			}
@@ -56,7 +59,7 @@ if(isset($_POST["submitButton"])) {
 					<input type="submit" name="submitButton" value="SUBMIT">
 				</form>
 			</div>
-			<a class="signInMessage" href="signUp.php">Need an account? Sign up here!</a>
+			<!--<a class="signInMessage" href="signUp.php">Need an account? Sign up here!</a>-->
 		</div>
 	</div>
 
