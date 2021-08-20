@@ -280,6 +280,9 @@ function getCalender($year = '', $month = ''){
                     $('#modalText').empty();
                     $('#modalText').append('Event created successfully!');
                     getCalendar('calendar_div',dateSplit[0],dateSplit[1]);
+                    setTimeout(function(){
+                      $("#createdModal").modal("hide")
+                    }, 2000);
                   }else{
                     $('#createdModal').modal('show');
                     $('#modalText').empty();
@@ -755,11 +758,14 @@ function getEvents($date = '', $userId){
           $("#modalText").empty();
           $("#modalText").append("Event deleted successfully!");
           getCalendar("calendar_div",curYear,curMonth);
+          setTimeout(function(){
+            $("#createdModal").modal("hide")
+          }, 2000);
         }
       });
     });
   });
-  </script>';
+</script>';
 }
 
 /*
