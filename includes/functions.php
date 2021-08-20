@@ -709,7 +709,14 @@ function getEvents($date = '', $userId){
       if ($user == $userId) {
         $creatorName = "You";
       } else {
-        $creatorName = $user;
+        $creator = $con->prepare("SELECT username FROM users WHERE id = :id");
+        $creator->bindParam(":id", $user);
+        $creator->execute();
+        if($creator->rowCount() > 0) {
+          while($row = $creator->fetch(PDO::FETCH_ASSOC)) {
+            $creatorName = $row['username'];
+          }
+        }
       }
       if ($privacy == '1') {
         $eventPrivacy = '<span style="color:red;">private</span>';
@@ -720,9 +727,9 @@ function getEvents($date = '', $userId){
       if(!isset($_SESSION['userId'])) {
         $eventListHTML .= '<td class="eventItem">'.$eventTitle.'</td>';
       } else if ($user != $userId && strpos($deleteAuth, $authConfirm) === false) {
-        $eventListHTML .= '<td class="eventItem">'.$eventTitle.'</td><td class="eventItem">'.$user.'</td><td  class="eventItem">'.$eventPrivacy.'</td>';
+        $eventListHTML .= '<td class="eventItem">'.$eventTitle.'</td><td class="eventItem">'.$creatorName.'</td><td  class="eventItem">'.$eventPrivacy.'</td>';
       } else if ($user != $userId && strpos($deleteAuth, $authConfirm) !== false) {
-        $eventListHTML .= '<td class="eventItem">'.$eventTitle.'</td><td class="eventItem">'.$user.'</td><td  class="eventItem">'.$eventPrivacy.'</td><td></td><td class="eventItem"><button class="delEventBtn" id="'.$id.'">Delete</button></td>';
+        $eventListHTML .= '<td class="eventItem">'.$eventTitle.'</td><td class="eventItem">'.$creatorName.'</td><td  class="eventItem">'.$eventPrivacy.'</td><td></td><td class="eventItem"><button class="delEventBtn" id="'.$id.'">Delete</button></td>';
       } else {
         $eventListHTML .= '<td class="eventItem" id="'.$id.'">'.$eventTitle.'</td><td class="eventItem">'.$creatorName.'</td><td class="eventItem">'.$eventPrivacy.'</td><td class="eventItem">'.$newSharedGroup.'</td><td class="eventItem"><button class="delEventBtn" id="'.$id.'">Delete</button></td>';
       }
