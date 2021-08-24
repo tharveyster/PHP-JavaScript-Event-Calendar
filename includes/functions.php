@@ -50,20 +50,34 @@ function getCalender($year = '', $month = ''){
         <div id="event_list" class="none">
         </div>
         <div id="event_add" class="none">
-          <p>Add Event on <span id="eventDateView"></span></p>
-          <p><b>Event Title: </b><input type="text" id="eventTitle" value="" required /></p>
+          <h2>Add Event on <span id="eventDateView"></span></h2>
+          <div class="form-group">
+            <label for="eventTitle" class="form-label">Event Title:</label>
+            <input class="form-field" type="text" id="eventTitle" value="" required />
+          </div>
           <input type="hidden" id="eventDate" value=""/>
-          <p>
-            <b>Privacy Setting: </b>
-            <label for="private">Private</label>
-            <input type="radio" class="eventPrivacy" id="privateCheck" name="eventPrivacy" value=1 checked>
-            <label for="public">Public</label>
-            <input type="radio" class="eventPrivacy" id="publicCheck" name="eventPrivacy" value=0>
-          </p>
-          <p><b>Share With Username(s): </b><input type="text" id="sharedWith" value="" placeholder="Ex: name1,name2,name3" /></p>
-          <p><b>Authorized Deleter(s): </b><input type="text" id="deleteAuth" value="" placeholder="Ex: name1,name2,name3" /></p>
-          <input type="button" id="addEventBtn" value="Add"/>
-          <input type="button" id="cancelAddEventBtn" value="Cancel"/>
+          <div class="form-group">
+            <label class="form-label">Privacy Setting:</label>
+            <div class="form-radio-block" id="privacy">
+              <input type="radio" class="eventPrivacy" id="privateCheck" name="eventPrivacy" value=1 checked>
+              <label for="privateCheck">Private</label>
+              <br />
+              <input type="radio" class="eventPrivacy" id="publicCheck" name="eventPrivacy" value=0>
+              <label for="publicCheck">Public</label>
+            </div>
+          </div>
+          <div class="form-group">
+          <label for="sharedWith" class="form-label">Share With Username(s):</label>
+          <input class="form-field" type="text" id="sharedWith" value="" placeholder="Ex: name1,name2,name3" />
+          </div>
+          <div class="form-group">
+          <label for="deleteAuth" class="form-label">Authorized Deleter(s): </label>
+          <input class="form-field" type="text" id="deleteAuth" value="" placeholder="Ex: name1,name2,name3" />
+          </div>
+          <button class="btn btn-secondary add_btn" id="addEventBtn" value="Add">Add</button>
+          <!--<input type="button" id="addEventBtn" value="Add"/>-->
+          <button class="btn btn-secondary cancel_btn" id="cancelAddEventBtn" value="Cancel">Cancel</button>
+          <!--<input type="button" id="cancelAddEventBtn" value="Cancel"/>-->
         </div>
         <div class="calendar-days">
           <ul>
@@ -115,41 +129,39 @@ function getCalender($year = '', $month = ''){
 
       // Define date cell color
       if($eventNum === 1 && strtotime($currentDate) === strtotime(date("Y-m-d"))){
-        echo '            <li date="'.$currentDate.'" class="today_event has_event date_cell '.$expandBlocks.'">';
+        echo '            <li data-date="'.$currentDate.'" class="today_event has_event date_cell '.$expandBlocks.'">';
       }elseif($eventNum === 2 && strtotime($currentDate) === strtotime(date("Y-m-d"))){
-        echo '            <li date="'.$currentDate.'" class="today_2_multi has_2_multi date_cell '.$expandBlocks.'">';
+        echo '            <li data-date="'.$currentDate.'" class="today_2_multi has_2_multi date_cell '.$expandBlocks.'">';
       }elseif($eventNum === 3 && strtotime($currentDate) === strtotime(date("Y-m-d"))){
-        echo '            <li date="'.$currentDate.'" class="today_3_multi has_3_multi date_cell '.$expandBlocks.'">';
+        echo '            <li data-date="'.$currentDate.'" class="today_3_multi has_3_multi date_cell '.$expandBlocks.'">';
       }elseif($eventNum === 4 && strtotime($currentDate) === strtotime(date("Y-m-d"))){
-        echo '            <li date="'.$currentDate.'" class="today_4_multi has_4_multi date_cell '.$expandBlocks.'">';
-      }elseif($eventNum > 4 && strtotime($currentDate) === strtotime(date("Y-m-d"))){
-        echo '            <li date="'.$currentDate.'" class="today_multi has_multi date_cell '.$expandBlocks.'">';
+        echo '            <li data-date="'.$currentDate.'" class="today_4_multi has_4_multi date_cell '.$expandBlocks.'">';
+      }elseif($eventNum === 5 && strtotime($currentDate) === strtotime(date("Y-m-d"))){
+        echo '            <li data-date="'.$currentDate.'" class="today_5_multi has_5_multi date_cell '.$expandBlocks.'">';
+      }elseif($eventNum > 5 && strtotime($currentDate) === strtotime(date("Y-m-d"))){
+        echo '            <li data-date="'.$currentDate.'" class="today_multi has_multi date_cell '.$expandBlocks.'">';
       }elseif($eventNum === 0 && strtotime($currentDate) === strtotime(date("Y-m-d"))){
-        echo '            <li date="'.$currentDate.'" class="this_day date_cell '.$expandBlocks.'">';
+        echo '            <li data-date="'.$currentDate.'" class="this_day date_cell '.$expandBlocks.'">';
       }elseif($eventNum === 1){
-        echo '            <li date="'.$currentDate.'" class="has_event date_cell '.$expandBlocks.'">';
+        echo '            <li data-date="'.$currentDate.'" class="has_event date_cell '.$expandBlocks.'">';
       }elseif($eventNum === 2){
-        echo '            <li date="'.$currentDate.'" class="has_2_multi date_cell '.$expandBlocks.'">';
+        echo '            <li data-date="'.$currentDate.'" class="has_2_multi date_cell '.$expandBlocks.'">';
       }elseif($eventNum === 3){
-        echo '            <li date="'.$currentDate.'" class="has_3_multi date_cell '.$expandBlocks.'">';
+        echo '            <li data-date="'.$currentDate.'" class="has_3_multi date_cell '.$expandBlocks.'">';
       }elseif($eventNum === 4){
-        echo '            <li date="'.$currentDate.'" class="has_4_multi date_cell '.$expandBlocks.'">';
-      }elseif($eventNum > 4){
-        echo '            <li date="'.$currentDate.'" class="has_multi date_cell '.$expandBlocks.'">';
-      }elseif(strtotime($currentDate) > strtotime(date("Y-m-d"))){
-        if(isset($_SESSION['userId'])) {
-          echo '            <li date="'.$currentDate.'" class="pending_day date_cell '.$expandBlocks.'">';
-        }else{
-          echo '            <li date="'.$currentDate.'" class="'.$expandBlocks.'">';
-        }
+        echo '            <li data-date="'.$currentDate.'" class="has_4_multi date_cell '.$expandBlocks.'">';
+      }elseif($eventNum === 5){
+        echo '            <li data-date="'.$currentDate.'" class="has_5_multi date_cell '.$expandBlocks.'">';
+      }elseif($eventNum > 5){
+        echo '            <li data-date="'.$currentDate.'" class="has_multi date_cell '.$expandBlocks.'">';
       }elseif($eventNum === 0 && (strtotime($currentDate) < strtotime(date("Y-m-d")))){
         if(isset($_SESSION['userId'])) {
-          echo '            <li date="'.$currentDate.'" class="date_cell past_day '.$expandBlocks.'">';
+          echo '            <li data-date="'.$currentDate.'" class="date_cell past_day '.$expandBlocks.'">';
         }else{
-          echo '            <li date="'.$currentDate.'" class="'.$expandBlocks.'">';
+          echo '            <li data-date="'.$currentDate.'" class="'.$expandBlocks.'">';
         }
       }else{
-        echo '            <li date="'.$currentDate.'" class="date_cell '.$expandBlocks.'">';
+        echo '            <li data-date="'.$currentDate.'" class="date_cell '.$expandBlocks.'">';
       }
                 
       // Date cell
@@ -172,7 +184,7 @@ function getCalender($year = '', $month = ''){
       echo '</li>'."\r\n";
       $dayCount++;
     }else{
-      echo '            <li class="'.$expandBlocks.'"><span>&nbsp;</span></li>'."\r\n";
+      echo '            <li class="'.$expandBlocks.'">&nbsp;</li>'."\r\n";
     }
   }
 	$month01 = 'blank.png';
@@ -296,7 +308,7 @@ function getCalender($year = '', $month = ''){
 
         $(document).ready(function(){
           $('.date_cell').mouseenter(function(){
-            date = $(this).attr('date');
+            date = $(this).attr('data-date');
             $(".date_popup_wrap").fadeOut();
             $("#date_popup_"+date).fadeIn();
           });
@@ -732,9 +744,9 @@ function getEvents($date = '', $userId){
       } else if ($user != $userId && strpos($deleteAuth, $authConfirm) === false) {
         $eventListHTML .= '<td class="eventItem">'.$eventTitle.'</td><td class="eventItem">'.$creatorName.'</td><td  class="eventItem">'.$eventPrivacy.'</td>';
       } else if ($user != $userId && strpos($deleteAuth, $authConfirm) !== false) {
-        $eventListHTML .= '<td class="eventItem">'.$eventTitle.'</td><td class="eventItem">'.$creatorName.'</td><td  class="eventItem">'.$eventPrivacy.'</td><td></td><td class="eventItem"><button class="delEventBtn" id="'.$id.'">Delete</button></td>';
+        $eventListHTML .= '<td class="eventItem">'.$eventTitle.'</td><td class="eventItem">'.$creatorName.'</td><td  class="eventItem">'.$eventPrivacy.'</td><td class="eventItem"></td><td class="eventItem"><button class="btn btn-secondary delEventBtn" id="'.$id.'">Delete</button></td>';
       } else {
-        $eventListHTML .= '<td class="eventItem" id="'.$id.'">'.$eventTitle.'</td><td class="eventItem">'.$creatorName.'</td><td class="eventItem">'.$eventPrivacy.'</td><td class="eventItem">'.$newSharedGroup.'</td><td class="eventItem"><button class="delEventBtn" id="'.$id.'">Delete</button></td>';
+        $eventListHTML .= '<td class="eventItem" id="'.$id.'">'.$eventTitle.'</td><td class="eventItem">'.$creatorName.'</td><td class="eventItem">'.$eventPrivacy.'</td><td class="eventItem">'.$newSharedGroup.'</td><td class="eventItem"><button class="btn btn-secondary delEventBtn" id="'.$id.'">Delete</button></td>';
       }
       $eventListHTML .= '</tr>';
     }
