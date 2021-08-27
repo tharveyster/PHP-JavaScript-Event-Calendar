@@ -20,7 +20,7 @@ When signed in, there's a sign out link in the upper left corner. This will sign
 
 There's a 20 minute session timer that will log out users after 20 minutes of inactivity.
 
-This is currently configured to show all future days with a green background, unless they have events. Days with 1 event are yellow, 2 events are orange, 3 events are red, 4 events are purple, and 5 or more events are blue. The current day is outlined. Past days have no background, but if there's un-deleted events left on them they flash yellow. This only applies when logged in. If you're logged out or unregistered, only days with public events have any color.
+The days with events have a different background color. Days with 1 event are yellow, 2 events are orange, 3 events are red, 4 events are purple, and 5 events are blue, and 6 or more events are dark gray. The current day is outlined. This only applies when logged in. If you're logged out or unregistered, only days with public events have any color.
 
 ## Requirements
 Since this calendar is PHP based, it will need to be hosted on a web server with PHP installed in order to function properly. It works on PHP version 7.4, and has not been tested with any other versions.
