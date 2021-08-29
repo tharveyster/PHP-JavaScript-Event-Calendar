@@ -51,7 +51,7 @@ body {
 	width:90%;
 	height:98%;
 	clear:both;
-	margin: 0 auto;
+	margin: 12px auto;
 	position: relative;
 }
 
@@ -77,11 +77,13 @@ body {
 .calendar-wrap .cal-nav a {
 	color:#222;
 	text-decoration: none;
-	font-size: 30px;
+	font-size: 32px;
 	font-weight: bold;
     background-color: rgba(255,255,255,0.4);
     padding: 0 3px;
-    border-radius: 5px;	
+    border-radius: 5px;
+	position: relative;
+	bottom: 4px;
 }
 
 .calendar-wrap .cal-nav a:hover {
@@ -113,6 +115,11 @@ body {
     padding: 5px;
     border-radius: 5px;
 	margin-bottom: 10px;
+	background-color: rgba(255, 255, 255, 0.5);
+}
+
+.form-field:focus {
+	outline: none;
 }
 
 .form-radio-block {
@@ -185,20 +192,20 @@ body {
   
 .add_btn {
 	width: 60px;
-    background-color: rgba(0,150,0,0.8);
+    background-color: rgba(0,150,0,0.5);
     color: #fff;
 }
 
 .cancel_btn {
 	width: 60px;
-	background-color: rgba(220,0,0,0.8);
+	background-color: rgba(220,0,0,0.5);
 	color: #fff;
 	float: right;
 }
 
 .delEventBtn {
 	width: 60px;
-	background-color: rgba(30,30,220,0.8);
+	background-color: rgba(30,30,220,0.5);
 	color: #fff;
 }
 
@@ -460,6 +467,24 @@ body {
     border-bottom: 1px solid #444444;
 }
 
+.calendar-dates ul li.this_day.expanded:nth-child(n+29),
+.calendar-dates ul li.today_event.expanded:nth-child(n+29),
+.calendar-dates ul li.today_2_multi.expanded:nth-child(n+29),
+.calendar-dates ul li.today_3_multi.expanded:nth-child(n+29),
+.calendar-dates ul li.today_4_multi.expanded:nth-child(n+29),
+.calendar-dates ul li.today_multi.expanded:nth-child(n+29) {
+    border-bottom: 4px ridge #888888;
+}
+
+.calendar-dates ul li.this_day:nth-child(n+36),
+.calendar-dates ul li.today_event:nth-child(n+36),
+.calendar-dates ul li.today_2_multi:nth-child(n+36),
+.calendar-dates ul li.today_3_multi:nth-child(n+36),
+.calendar-dates ul li.today_4_multi:nth-child(n+36),
+.calendar-dates ul li.today_multi:nth-child(n+36) {
+    border-bottom: 4px ridge #888888;
+}
+
 /*========== Hover Popup ===============*/
 .date_popup_wrap {
 	position: absolute;
@@ -667,7 +692,7 @@ td.eventItem:first-child {
 
 .logoutMessage {
 	position: absolute;
-	top: 11px;
+	top: 6px;
 	right: 0;
 	height: 0;
 	font-size: 18px;
@@ -689,19 +714,19 @@ td.eventItem:first-child {
 
 .loginMessage,
 .settingsEl {
-	top: 5px;
+	top: 6px;
 	height: 0;
 	font-size:16px;
 }
 
 .loginMessage {
 	position:relative;
-	left: 3px;
+	left: 0;
 }
 
 .settingsEl {
 	position:absolute;
-	right: 3px;
+	right: 0;
 }
 
 .loginMessageLink,
@@ -710,7 +735,7 @@ td.eventItem:first-child {
 	color:#222;
 	font-weight: bold;
     background-color: rgba(255,255,255,0.4);
-    padding: 0 3px;
+    padding: 6px 3px;
     border-radius: 3px;
 }
 
@@ -983,6 +1008,14 @@ button.close {
 	.calendar-dates ul li.today_multi.expanded {
 		padding: 0 0 calc(8.277% - 6px) 0;
 	}
+
+	.none h2 {
+		font-size: 1.25em;
+	}
+
+	.eventList {
+		font-size: 15px;
+	}
 }
 
 @media (max-width:940px) {
@@ -1016,6 +1049,14 @@ button.close {
 	.calendar-dates ul li.today_multi.expanded {
 		padding: 0 0 calc(8.525% - 6px) 0;
 	}
+
+	.none h2 {
+		font-size: 1.2em;
+	}
+
+	.eventList {
+		font-size: 14px;
+	}
 }
 
 @media (max-width:850px) {
@@ -1029,7 +1070,10 @@ button.close {
 
 	.month_dropdown,
 	.year_dropdown,
-	.today_btn {
+	.today_btn,
+	.add_btn,
+	.cancel_btn,
+	.delEventBtn {
 		height: 29px;
 	}
 
@@ -1112,8 +1156,11 @@ button.close {
 
 	.month_dropdown,
 	.year_dropdown,
-	.today_btn {
-		height: 29px;
+	.today_btn,
+	.add_btn,
+	.cancel_btn,
+	.delEventBtn {
+		height: 27px;
 	}
 
 	.calendar-wrap .cal-nav a {
@@ -1162,6 +1209,14 @@ button.close {
 	.calendar-dates ul li.today_multi.expanded {
 		padding: 0 0 calc(8.71% - 6px) 0;
 	}
+
+	.none h2 {
+		font-size: 1.1em;
+	}
+
+	.eventList {
+		font-size: 13px;
+	}
 }
 
 @media (max-width:660px) {
@@ -1175,7 +1230,10 @@ button.close {
 
 	.month_dropdown,
 	.year_dropdown,
-	.today_btn {
+	.today_btn,
+	.add_btn,
+	.cancel_btn,
+	.delEventBtn {
 		height: 26px;
 	}
 

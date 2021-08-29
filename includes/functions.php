@@ -255,6 +255,7 @@ function getCalender($year = '', $month = ''){
           $('#eventDateView').html(date);
           $('#event_list').slideUp('slow');
           $('#event_add').slideDown('slow');
+          $('#eventTitle').select();
         }
 
         function delEvent(id){
