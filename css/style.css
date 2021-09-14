@@ -192,20 +192,20 @@ body {
   
 .add_btn {
 	width: 60px;
-    background-color: rgba(0,150,0,0.8);
+    background-color: rgba(0,150,0,0.5);
     color: #fff;
 }
 
 .cancel_btn {
 	width: 60px;
-	background-color: rgba(220,0,0,0.8);
+	background-color: rgba(220,0,0,0.5);
 	color: #fff;
 	float: right;
 }
 
 .delEventBtn {
 	width: 60px;
-	background-color: rgba(30,30,220,0.8);
+	background-color: rgba(30,30,220,0.5);
 	color: #fff;
 }
 
@@ -734,7 +734,11 @@ td.eventItem:first-child {
 	text-decoration: none;
 	color:#222;
 	font-weight: bold;
+<<<<<<< HEAD
     background-color: rgba(255,255,255,0.5);
+=======
+    background-color: rgba(255,255,255,0.4);
+>>>>>>> ce659f565b9cc5663a714c78cf20085da85faf0a
     padding: 6px 3px;
     border-radius: 3px;
 }
