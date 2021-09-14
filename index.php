@@ -58,7 +58,7 @@ if(isset($_SESSION['username'])) {
   <title>Event Calendar</title>
   <link rel="stylesheet" href="css/style.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <!--<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />-->
+  <link rel="shortcut icon" type="image/x-icon" href="images/icons/favicon.ico" />
 </head>
 <body<?php echo $timerResets; ?>>
   <div id="container">
