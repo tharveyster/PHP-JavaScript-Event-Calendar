@@ -29,6 +29,8 @@ This calendar requires a database to function. The calendar.sql file contains th
 
 Once the database is created, the dbConfig.php file will need to have the hostname, username, and password updated.
 
+In order for the background images to function properly, you will need to create a folder named ```images``` outside of, but at the same level as, your root folder. This folder is used to hold the uploaded images while they're sanitized, converted to .png, renamed, and copied into the images folder inside the root, and then the images are deleted from this folder.
+
 There's a link to the sign up page on the sign in page, although it can be removed after you create your account if you don't want the general public creating accounts.
 
 ## Screenshots
