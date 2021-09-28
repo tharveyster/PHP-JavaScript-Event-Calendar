@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <?php
 include_once 'includes/functions.php';
 $username = "";
@@ -37,7 +36,6 @@ if(isset($_SESSION['username'])) {
 		  // 20 minutes
 		  var reloadpage = "signOut.php?sessionExpired=true";
 		  var timeout = null;
-
 		  function start() {
 			if (timeout)
 			  clearTimeout(timeout);
@@ -51,6 +49,7 @@ if(isset($_SESSION['username'])) {
 	'      </div>';
 }
 ?>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
