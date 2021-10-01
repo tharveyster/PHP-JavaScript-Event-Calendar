@@ -102,11 +102,11 @@ function getCalender($year = '', $month = ''){
         $dayCount = '0'.$dayCount;
       }
       $currentDate = $dateYear.'-'.$dateMonth.'-'.$dayCount;
-			if(isset($_SESSION['userId'])) {
-				$userId = htmlspecialchars(strip_tags($_SESSION['userId']), ENT_QUOTES);
-			}else{
+      if(isset($_SESSION['userId'])) {
+        $userId = htmlspecialchars(strip_tags($_SESSION['userId']), ENT_QUOTES);
+      }else{
         $userId = "";
-			}
+      }
 
       // Include the database config file
       include_once 'dbConfig.php';
@@ -182,7 +182,7 @@ function getCalender($year = '', $month = ''){
         if(isset($_SESSION['userId'])) {
           echo '<a href="javascript:void(0);" onclick="addEvent(\''.$currentDate.'\');"><br />add event</a>';
         }
-			  echo '</div></div>';
+        echo '</div></div>';
       }
 
       echo '</li>'."\r\n";
@@ -191,45 +191,44 @@ function getCalender($year = '', $month = ''){
       echo '            <li class="'.$expandBlocks.'">&nbsp;</li>'."\r\n";
     }
   }
-	$month01 = 'blank.png';
-	$month02 = 'blank.png';
-	$month03 = 'blank.png';
-	$month04 = 'blank.png';
-	$month05 = 'blank.png';
-	$month06 = 'blank.png';
-	$month07 = 'blank.png';
-	$month08 = 'blank.png';
-	$month09 = 'blank.png';
-	$month10 = 'blank.png';
-	$month11 = 'blank.png';
-	$month12 = 'blank.png';
-	if(isset($_SESSION['userId'])) {
+  $month01 = 'blank.png';
+  $month02 = 'blank.png';
+  $month03 = 'blank.png';
+  $month04 = 'blank.png';
+  $month05 = 'blank.png';
+  $month06 = 'blank.png';
+  $month07 = 'blank.png';
+  $month08 = 'blank.png';
+  $month09 = 'blank.png';
+  $month10 = 'blank.png';
+  $month11 = 'blank.png';
+  $month12 = 'blank.png';
+  if(isset($_SESSION['userId'])) {
     $userid = htmlspecialchars(strip_tags($_SESSION['userId']), ENT_QUOTES);
-	}else{
+  }else{
     $userId = "";
-	}
+  }
   include_once 'dbConfig.php';
-	$images = $con->prepare("SELECT * FROM users WHERE id = :user");
-	$images->bindParam(":user", $userId);
-	$images->execute();
+  $images = $con->prepare("SELECT * FROM users WHERE id = :user");
+  $images->bindParam(":user", $userId);
+  $images->execute();
   while($row = $images->fetch(PDO::FETCH_ASSOC)) {
-		$month01 = $row["january"];
-		$month02 = $row["february"];
-		$month03 = $row["march"];
-		$month04 = $row["april"];
-		$month05 = $row["may"];
-		$month06 = $row["june"];
-		$month07 = $row["july"];
-		$month08 = $row["august"];
-		$month09 = $row["september"];
-		$month10 = $row["october"];
-		$month11 = $row["november"];
-		$month12 = $row["december"];
-	}
+    $month01 = $row["january"];
+    $month02 = $row["february"];
+    $month03 = $row["march"];
+    $month04 = $row["april"];
+    $month05 = $row["may"];
+    $month06 = $row["june"];
+    $month07 = $row["july"];
+    $month08 = $row["august"];
+    $month09 = $row["september"];
+    $month10 = $row["october"];
+    $month11 = $row["november"];
+    $month12 = $row["december"];
+  }
 ?>
           </ul>
         </div>
-      </div>
       <script>
         function getCalendar(target_div, year, month){
           $.ajax({
@@ -633,7 +632,7 @@ function getCalender($year = '', $month = ''){
             }
           }
         }
-        document.getElementsByTagName("body")[0].style.backgroundImage = "url('images/" + imageAddress + "')";
+        document.getElementsByClassName("content-wrap")[0].style.backgroundImage = "url('images/" + imageAddress + "')";
         /*document.getElementsByTagName("body")[0].style.backgroundRepeat = "no-repeat";
         document.getElementsByTagName("body")[0].style.backgroundSize = "100% 100%";*/
       </script>

@@ -60,6 +60,7 @@ if(isset($_SESSION['username'])) {
   <link rel="shortcut icon" type="image/x-icon" href="images/icons/favicon.ico" />
 </head>
 <body<?php echo $timerResets; ?>>
+  <div class="content-wrap">
   <div id="container">
     <?php
       echo $loginMessage. "\r\n";
@@ -72,6 +73,7 @@ if(isset($_SESSION['username'])) {
     <div id="calendar_div">
 <?php echo getCalender(); ?>
     </div>
+  </div>
   </div>
   <div style="clear:both;line-height:2px;">&nbsp;</div>
   <div id="createdModal" class="modal" tabindex="-1" role="dialog">
