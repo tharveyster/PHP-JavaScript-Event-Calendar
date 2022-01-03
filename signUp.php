@@ -1,11 +1,18 @@
 <?php
+session_start();
 require_once("includes/dbConfig.php");
+
+if(isset($_SESSION['userId'])) {
+	header("Location: index");
+}
+
 $username = "";
 $firstName = "";
 $lastName = "";
 $email = "";
 $emailError = "";
 $usernameError = "";
+
 if(isset($_POST["submitButton"])) {
 	$firstName = htmlspecialchars(strip_tags($_POST["firstName"]), ENT_QUOTES);
 	$lastName = htmlspecialchars(strip_tags($_POST["lastName"]), ENT_QUOTES);
@@ -30,7 +37,8 @@ if(isset($_POST["submitButton"])) {
 
 	if($emailError === "" && $usernameError === "") {
 		$query = $con->prepare("INSERT INTO users (firstName, lastName, email, username, password) VALUES(:fn, :ln, :em, :un, :pw)");
-
+		$email = strtolower($email);
+		$username = strtolower($username);
 		$query->bindParam(":fn", $firstName);
 		$query->bindParam(":ln", $lastName);
 		$query->bindParam(":em", $email);

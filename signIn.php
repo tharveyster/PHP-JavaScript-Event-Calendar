@@ -3,9 +3,13 @@ session_start();
 
 require_once("includes/dbConfig.php");
 
+if(isset($_SESSION['userId'])) {
+	header("Location: index");
+}
+
 $errorMessage = "";
 $username = "";
-$username = "";
+$userId = "";
 
 if(isset($_POST["submitButton"])) {
 	$username = htmlspecialchars(strip_tags($_POST["username"]), ENT_QUOTES);
