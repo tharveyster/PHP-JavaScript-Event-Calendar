@@ -102,11 +102,11 @@ function getCalender($year = '', $month = ''){
         $dayCount = '0'.$dayCount;
       }
       $currentDate = $dateYear.'-'.$dateMonth.'-'.$dayCount;
-			if(isset($_SESSION['userId'])) {
-				$userId = htmlspecialchars(strip_tags($_SESSION['userId']), ENT_QUOTES);
-			}else{
+      if(isset($_SESSION['userId'])) {
+        $userId = htmlspecialchars(strip_tags($_SESSION['userId']), ENT_QUOTES);
+      }else{
         $userId = "";
-			}
+      }
 
       // Include the database config file
       include_once 'dbConfig.php';
@@ -161,7 +161,11 @@ function getCalender($year = '', $month = ''){
           echo '            <li data-date="'.$currentDate.'" class="'.$expandBlocks.'">';
         }
       }else{
-        echo '            <li data-date="'.$currentDate.'" class="date_cell '.$expandBlocks.'">';
+        if(isset($_SESSION['userId'])) {
+          echo '            <li data-date="'.$currentDate.'" class="date_cell '.$expandBlocks.'">';
+        }else{
+          echo '            <li data-date="'.$currentDate.'" class="'.$expandBlocks.'">';
+        }
       }
                 
       // Date cell
@@ -178,7 +182,7 @@ function getCalender($year = '', $month = ''){
         if(isset($_SESSION['userId'])) {
           echo '<a href="javascript:void(0);" onclick="addEvent(\''.$currentDate.'\');"><br />add event</a>';
         }
-			  echo '</div></div>';
+        echo '</div></div>';
       }
 
       echo '</li>'."\r\n";
@@ -187,45 +191,44 @@ function getCalender($year = '', $month = ''){
       echo '            <li class="'.$expandBlocks.'">&nbsp;</li>'."\r\n";
     }
   }
-	$month01 = 'blank.png';
-	$month02 = 'blank.png';
-	$month03 = 'blank.png';
-	$month04 = 'blank.png';
-	$month05 = 'blank.png';
-	$month06 = 'blank.png';
-	$month07 = 'blank.png';
-	$month08 = 'blank.png';
-	$month09 = 'blank.png';
-	$month10 = 'blank.png';
-	$month11 = 'blank.png';
-	$month12 = 'blank.png';
-	if(isset($_SESSION['userId'])) {
+  $month01 = 'blank.png';
+  $month02 = 'blank.png';
+  $month03 = 'blank.png';
+  $month04 = 'blank.png';
+  $month05 = 'blank.png';
+  $month06 = 'blank.png';
+  $month07 = 'blank.png';
+  $month08 = 'blank.png';
+  $month09 = 'blank.png';
+  $month10 = 'blank.png';
+  $month11 = 'blank.png';
+  $month12 = 'blank.png';
+  if(isset($_SESSION['userId'])) {
     $userid = htmlspecialchars(strip_tags($_SESSION['userId']), ENT_QUOTES);
-	}else{
+  }else{
     $userId = "";
-	}
+  }
   include_once 'dbConfig.php';
-	$images = $con->prepare("SELECT * FROM users WHERE id = :user");
-	$images->bindParam(":user", $userId);
-	$images->execute();
+  $images = $con->prepare("SELECT * FROM users WHERE id = :user");
+  $images->bindParam(":user", $userId);
+  $images->execute();
   while($row = $images->fetch(PDO::FETCH_ASSOC)) {
-		$month01 = $row["january"];
-		$month02 = $row["february"];
-		$month03 = $row["march"];
-		$month04 = $row["april"];
-		$month05 = $row["may"];
-		$month06 = $row["june"];
-		$month07 = $row["july"];
-		$month08 = $row["august"];
-		$month09 = $row["september"];
-		$month10 = $row["october"];
-		$month11 = $row["november"];
-		$month12 = $row["december"];
-	}
+    $month01 = $row["january"];
+    $month02 = $row["february"];
+    $month03 = $row["march"];
+    $month04 = $row["april"];
+    $month05 = $row["may"];
+    $month06 = $row["june"];
+    $month07 = $row["july"];
+    $month08 = $row["august"];
+    $month09 = $row["september"];
+    $month10 = $row["october"];
+    $month11 = $row["november"];
+    $month12 = $row["december"];
+  }
 ?>
           </ul>
         </div>
-      </div>
       <script>
         function getCalendar(target_div, year, month){
           $.ajax({
@@ -335,7 +338,7 @@ function getCalender($year = '', $month = ''){
           imageAddress = "<?php echo $month01; ?>";
           for (let i = 0; i < showDates.length; i++) {
             checkDates = showDates[i].attributes;
-            if ('date' in checkDates) {
+            if ('data-date' in checkDates) {
               if (showDates[i].attributes[0].textContent.includes('-01-01')) {
                 const newyeDay = document.createElement('span');
                 newyeDay.classList.add("holiday");
@@ -345,7 +348,7 @@ function getCalender($year = '', $month = ''){
             }
           }
           let thirdMon;
-          if ('date' in showDates[1].attributes) {
+          if ('data-date' in showDates[1].attributes) {
             reference = 15;
             thirdMon = showDates[reference].attributes[0].textContent;
           } else {
@@ -364,7 +367,7 @@ function getCalender($year = '', $month = ''){
         else if (parseInt($('.month_dropdown').val()) === 2) {
           imageAddress = "<?php echo $month02; ?>";
           let thirdMon;
-          if ('date' in showDates[1].attributes) {
+          if ('data-date' in showDates[1].attributes) {
             reference = 15;
             thirdMon = showDates[reference].attributes[0].textContent;
           } else {
@@ -381,7 +384,7 @@ function getCalender($year = '', $month = ''){
           }
           for (let i = 0; i < showDates.length; i++) {
             checkDates = showDates[i].attributes;
-            if ('date' in checkDates) {
+            if ('data-date' in checkDates) {
               if (showDates[i].attributes[0].textContent.includes('-02-02')) {
                 const grounDay = document.createElement('span');
                 grounDay.classList.add("holiday");
@@ -401,7 +404,7 @@ function getCalender($year = '', $month = ''){
           imageAddress = "<?php echo $month03; ?>";
           for (let i = 0; i < showDates.length; i++) {
             checkDates = showDates[i].attributes;
-            if ('date' in checkDates) {
+            if ('data-date' in checkDates) {
               if (showDates[i].attributes[0].textContent.includes('-03-17')) {
                 const stpatDay = document.createElement('span');
                 stpatDay.classList.add("holiday");
@@ -415,7 +418,7 @@ function getCalender($year = '', $month = ''){
           imageAddress = "<?php echo $month04; ?>";
           for (let i = 0; i < showDates.length; i++) {
             checkDates = showDates[i].attributes;
-            if ('date' in checkDates) {
+            if ('data-date' in checkDates) {
               if (showDates[i].attributes[0].textContent.includes('-04-01')) {
                 const aprilDay = document.createElement('span');
                 aprilDay.classList.add("holiday");
@@ -435,7 +438,7 @@ function getCalender($year = '', $month = ''){
           imageAddress = "<?php echo $month05; ?>";
           let lastMon;
           if (showDates[36]) {
-            if ('date' in showDates[36].attributes) {
+            if ('data-date' in showDates[36].attributes) {
               reference = 36;
               lastMon = showDates[reference].attributes[0].textContent;
             } else {
@@ -443,7 +446,7 @@ function getCalender($year = '', $month = ''){
               lastMon = showDates[reference].attributes[0].textContent;
             }
           } else {
-            if ('date' in showDates[29].attributes) {
+            if ('data-date' in showDates[29].attributes) {
               reference = 29;
               lastMon = showDates[reference].attributes[0].textContent;
             } else {
@@ -461,7 +464,7 @@ function getCalender($year = '', $month = ''){
           }
           let reference2;
           let secondSun;
-          if ('date' in showDates[0].attributes) {
+          if ('data-date' in showDates[0].attributes) {
             reference2 = 7;
             secondSun = showDates[reference2].attributes[0].textContent;
           } else {
@@ -478,7 +481,7 @@ function getCalender($year = '', $month = ''){
           }
           for (let i = 0; i < showDates.length; i++) {
             checkDates = showDates[i].attributes;
-            if ('date' in checkDates) {
+            if ('data-date' in checkDates) {
               if (showDates[i].attributes[0].textContent.includes('-05-05')) {
                 const cincoDay = document.createElement('span');
                 cincoDay.classList.add("holiday");
@@ -491,7 +494,7 @@ function getCalender($year = '', $month = ''){
         else if (parseInt($('.month_dropdown').val()) === 6) {
           imageAddress = "<?php echo $month06; ?>";
           let thirdSun;
-          if ('date' in showDates[0].attributes) {
+          if ('data-date' in showDates[0].attributes) {
             reference = 14;
             thirdSun = showDates[reference].attributes[0].textContent;
           } else {
@@ -511,7 +514,7 @@ function getCalender($year = '', $month = ''){
           imageAddress = "<?php echo $month07; ?>";
           for (let i = 0; i < showDates.length; i++) {
             checkDates = showDates[i].attributes;
-            if ('date' in checkDates) {
+            if ('data-date' in checkDates) {
               if (showDates[i].attributes[0].textContent.includes('-07-04')) {
                 const indepDay = document.createElement('span');
                 indepDay.classList.add("holiday");
@@ -527,7 +530,7 @@ function getCalender($year = '', $month = ''){
         else if (parseInt($('.month_dropdown').val()) === 9) {
           imageAddress = "<?php echo $month09; ?>";
           let firstMon;
-          if ('date' in showDates[1].attributes) {
+          if ('data-date' in showDates[1].attributes) {
             reference = 1;
             firstMon = showDates[reference].attributes[0].textContent;
           } else {
@@ -546,7 +549,7 @@ function getCalender($year = '', $month = ''){
         else if (parseInt($('.month_dropdown').val()) === 10) {
           imageAddress = "<?php echo $month10; ?>";
           let secondMon;
-          if ('date' in showDates[1].attributes) {
+          if ('data-date' in showDates[1].attributes) {
             reference = 8;
             secondMon = showDates[reference].attributes[0].textContent;
           } else {
@@ -563,7 +566,7 @@ function getCalender($year = '', $month = ''){
           }
           for (let i = 0; i < showDates.length; i++) {
             checkDates = showDates[i].attributes;
-            if ('date' in checkDates) {
+            if ('data-date' in checkDates) {
               if (showDates[i].attributes[0].textContent.includes('-10-31')) {
                 const hallowee = document.createElement('span');
                 hallowee.classList.add("holiday");
@@ -577,7 +580,7 @@ function getCalender($year = '', $month = ''){
           imageAddress = "<?php echo $month11; ?>";
           for (let i = 0; i < showDates.length; i++) {
             checkDates = showDates[i].attributes;
-            if ('date' in checkDates) {
+            if ('data-date' in checkDates) {
               if (showDates[i].attributes[0].textContent.includes('-11-11')) {
                 const veterDay = document.createElement('span');
                 veterDay.classList.add("holiday");
@@ -587,7 +590,7 @@ function getCalender($year = '', $month = ''){
             }
           }
           let fourthThu;
-          if ('date' in showDates[4].attributes) {
+          if ('data-date' in showDates[4].attributes) {
             reference = 25;
             fourthThu = showDates[reference].attributes[0].textContent;
           } else {
@@ -607,7 +610,7 @@ function getCalender($year = '', $month = ''){
           imageAddress = "<?php echo $month12; ?>";
           for (let i = 0; i < showDates.length; i++) {
             checkDates = showDates[i].attributes;
-            if ('date' in checkDates) {
+            if ('data-date' in checkDates) {
               if (showDates[i].attributes[0].textContent.includes('-12-24')) {
                 const chrisEve = document.createElement('span');
                 chrisEve.classList.add("holiday");
@@ -629,7 +632,7 @@ function getCalender($year = '', $month = ''){
             }
           }
         }
-        document.getElementsByTagName("body")[0].style.backgroundImage = "url('images/" + imageAddress + "')";
+        document.getElementsByClassName("content-wrap")[0].style.backgroundImage = "url('images/" + imageAddress + "')";
         /*document.getElementsByTagName("body")[0].style.backgroundRepeat = "no-repeat";
         document.getElementsByTagName("body")[0].style.backgroundSize = "100% 100%";*/
       </script>

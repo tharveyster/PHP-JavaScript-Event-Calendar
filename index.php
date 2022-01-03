@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <?php
 include_once 'includes/functions.php';
 $username = "";
@@ -37,7 +36,6 @@ if(isset($_SESSION['username'])) {
 		  // 20 minutes
 		  var reloadpage = "signOut.php?sessionExpired=true";
 		  var timeout = null;
-
 		  function start() {
 			if (timeout)
 			  clearTimeout(timeout);
@@ -51,6 +49,7 @@ if(isset($_SESSION['username'])) {
 	'      </div>';
 }
 ?>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -58,9 +57,10 @@ if(isset($_SESSION['username'])) {
   <title>Event Calendar</title>
   <link rel="stylesheet" href="css/style.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <!--<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />-->
+  <link rel="shortcut icon" type="image/x-icon" href="images/icons/favicon.ico" />
 </head>
 <body<?php echo $timerResets; ?>>
+  <div class="content-wrap">
   <div id="container">
     <?php
       echo $loginMessage. "\r\n";
@@ -73,6 +73,7 @@ if(isset($_SESSION['username'])) {
     <div id="calendar_div">
 <?php echo getCalender(); ?>
     </div>
+  </div>
   </div>
   <div style="clear:both;line-height:2px;">&nbsp;</div>
   <div id="createdModal" class="modal" tabindex="-1" role="dialog">

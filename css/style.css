@@ -9,11 +9,7 @@ html {
 }
 
 body {
-	background-color:#000000;
-	background-repeat: no-repeat;
-	background-position: center;
-	background-size: 90% 98.5%;
-	margin: 5px 5px 8px 5px;
+	background-color: #000;
 	font-family: Tahoma, Geneva, Verdana, sans-serif;
 	font-size: 16px;
 	line-height: 1.24;
@@ -35,23 +31,27 @@ body {
 }
 
 .title-text span {
-	background-color: rgba(255,255,255,0.4);
-    padding: 0 5px;
-    border-radius: 5px;
+	background-color: rgba(255,255,255,0.5);
+  padding: 0 5px;
+  border-radius: 5px;
 }
 
 .none {
 	display:none;
 }
 
+.content-wrap {
+	width: 93%;
+	padding: 5px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 100%;
+	margin: 5px auto 0 auto;
+}
+
 #container {
-	background-repeat: no-repeat;
-	background-size: 100% 100%;
-	background-position: center;
-	width:90%;
-	height:98%;
+	width: 100%;
 	clear:both;
-	margin: 12px auto;
 	position: relative;
 }
 
@@ -79,16 +79,17 @@ body {
 	text-decoration: none;
 	font-size: 32px;
 	font-weight: bold;
-    background-color: rgba(255,255,255,0.4);
-    padding: 0 3px;
-    border-radius: 5px;
+  background-color: rgba(255,255,255,0.5);
+  padding: 0 3px;
+  border-radius: 5px;
+	border: 1px solid #888;
 	position: relative;
 	bottom: 4px;
 }
 
 .calendar-wrap .cal-nav a:hover {
 	color:#fff;
-	background-color: rgba(34,34,34,0.4);
+	background-color: rgba(34,34,34,0.5);
 }
 
 .calendar-wrap .cal-nav a:first-child {
@@ -134,11 +135,16 @@ body {
 .delEventBtn {
 	height: 35px;
 	padding: 1px 6px;
-	background: rgba(255, 255, 255, 0.4);
+	background: rgba(255, 255, 255, 0.5);
 	background-clip: padding-box;
-	border: 1px solid #444444;
 	border-radius: 5px;
-	transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+	border: 1px solid #888;
+}
+
+.month_dropdown:hover,
+.year_dropdown:hover {
+	background-color: rgba(34,34,34,0.5);
+	color: #fff;
 }
 
 .btn {
@@ -149,40 +155,35 @@ body {
 	vertical-align: bottom;
 	user-select: none;
 	background-color: transparent;
-	border: 1px solid transparent;
+	border: 1px solid #888;
 	transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
 .btn-secondary {
 	color: #222;
-	background: rgba(255, 255, 255, 0.4);
-    border-color: #444444;
+	background: rgba(255, 255, 255, 0.5);
 }
   
 .btn-secondary:hover {
 	color: #fff;
-	background-color: rgba(34,34,34,0.4);
-	border-color: #545b62;
+	background-color: rgba(34,34,34,0.5);
 }
   
 .btn-secondary:focus, .btn-secondary.focus {
 	color: #fff;
 	background-color: #5a6268;
-	border-color: #545b62;
 	box-shadow: 0 0 0 0.2rem rgba(130, 138, 145, 0.5);
 }
   
 .btn-secondary.disabled, .btn-secondary:disabled {
 	color: #fff;
 	background-color: #6c757d;
-	border-color: #666d77;
 }
   
 .btn-secondary:not(:disabled):not(.disabled):active, .btn-secondary:not(:disabled):not(.disabled).active,
 .show > .btn-secondary.dropdown-toggle {
 	color: #fff;
 	background-color: #545b62;
-	border-color: #4e555b;
 }
   
 .btn-secondary:not(:disabled):not(.disabled):active:focus, .btn-secondary:not(:disabled):not(.disabled).active:focus,
@@ -192,20 +193,20 @@ body {
   
 .add_btn {
 	width: 60px;
-    background-color: rgba(0,150,0,0.5);
+    background-color: rgba(0,150,0,0.8);
     color: #fff;
 }
 
 .cancel_btn {
 	width: 60px;
-	background-color: rgba(220,0,0,0.5);
+	background-color: rgba(220,0,0,0.8);
 	color: #fff;
 	float: right;
 }
 
 .delEventBtn {
 	width: 60px;
-	background-color: rgba(30,30,220,0.5);
+	background-color: rgba(30,30,220,0.8);
 	color: #fff;
 }
 
@@ -247,6 +248,9 @@ body {
 	width:100%;
 	margin:0;
 	float:left;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 100% 100%;
 }
 
 .calendar-dates ul {
@@ -547,10 +551,11 @@ body {
 #event_list,
 #event_add,
 #event_update {
-	background: rgba(255, 255, 255, 0.4);
+	background: rgba(255, 255, 255, 0.5);
 	color: #000;
 	margin-bottom: 5px;
 	padding: 5px;
+	clear: both;
 }
 
 .eventList th {
@@ -701,15 +706,17 @@ td.eventItem:first-child {
 .signoutMessage {
 	color: #155724;
 	background-color: #d4edda;
-	padding: 6px;
+	padding: 5px;
 	border-radius: 5px;
+	border: 1px solid #155724;
 }
 
 .endsessionMessage {
 	color: #721c24;
 	background-color: #f8d7da;
-	padding: 6px;
+	padding: 5px;
 	border-radius: 5px;
+	border: 1px solid #721c24;
 }
 
 .loginMessage,
@@ -734,15 +741,16 @@ td.eventItem:first-child {
 	text-decoration: none;
 	color:#222;
 	font-weight: bold;
-    background-color: rgba(255,255,255,0.4);
-    padding: 6px 3px;
-    border-radius: 3px;
+  background-color: rgba(255,255,255,0.5);
+  padding: 6px 3px;
+  border-radius: 3px;
+	border: 1px solid #888;
 }
 
 .loginMessageLink:hover, 
 .settingsLink:hover {
 	color: #fff;
-	background-color: rgba(34,34,34,0.4);
+	background-color: rgba(34,34,34,0.5);
 	text-decoration: none;
 }
 
@@ -1077,10 +1085,6 @@ button.close {
 		height: 29px;
 	}
 
-	.calendar-wrap .cal-nav a {
-		font-size: 21px;
-	}
-	
 	.calendar-wrap select,
 	.today_btn {
 		font-size:16px;
