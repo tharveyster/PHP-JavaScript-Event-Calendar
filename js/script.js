@@ -1,4 +1,4 @@
-var session_timeout = 1000 * 60 * 45;
+var session_timeout = 1000 * 60 * 20;
 // 1000 milliseconds in a second *
 // 60 seconds in a minute *
 // 20 minutes

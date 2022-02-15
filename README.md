@@ -10,17 +10,17 @@ It displays the current month, and has arrows to move to the previous or followi
 
 Hovering over a day block will present you with a popup that allows you to add a new event or view events for that day (if any exist).
 
-When adding an event, you can enter the event title, select whether it is public or private, give other users the ability to view it by entering their usernames, and even give them the rights to delete the event if you wish. Private events can only be seen by you or other users that were given access. Public events can be seen by anyone, including unregistered users.
+When adding an event, you can enter the event title, select whether it is public or private, give other users the ability to view it by entering their usernames, and even give them the rights to delete the event if you wish. Private events can only be seen by you or other users that were given access. Public events can be seen by any registered users.
 
 When viewing events, it shows you all of the above information, and also includes a "Delete" button if you are the event creator, or were granted delete rights for someone else's event. Unregistered users can only see the title of public events, and nothing more.
 
-When not signed in, there's a sign in link in the upper left corner.
+When not signed in, it defaults to the sign in page.
 
 When signed in, there's a sign out link in the upper left corner. This will sign you out and end your session. There's also a settings link in the upper right corner. This link takes you to a settings page where you can change your name, email address, and/or password. You can also add background images to each month.
 
 There's a 20 minute session timer that will log out users after 20 minutes of inactivity.
 
-The days with events have a different background color. Days with 1 event are yellow, 2 events are orange, 3 events are red, 4 events are purple, and 5 events are blue, and 6 or more events are dark gray. The current day is outlined. This only applies when logged in. If you're logged out or unregistered, only days with public events have any color.
+The days with events have a different background color. Days with 1 event are yellow, 2 events are orange, 3 events are red, 4 events are purple, and 5 events are blue, and 6 or more events are dark gray. The current day is outlined.
 
 ## Requirements
 Since this calendar is PHP based, it will need to be hosted on a web server with PHP installed in order to function properly. It works on PHP version 7.4, and has not been tested with any other versions.
@@ -34,14 +34,11 @@ In order for the background images to function properly, you will need to create
 There's a link to the sign up page on the sign in page, although it can be removed after you create your account if you don't want the general public creating accounts.
 
 ## Screenshots
-This is what the calendar looks like when not logged in, and when there's no public events:
-![The PHP and JavaScript Event Calendar allows registered user to create and view events.](./images/calendar-index.png)
+When initially launched, you're taken to the sign in page. Any attempts to access the calendar while not logged in are redirected to this page:
+![The PHP and JavaScript Event Calendar allows registered user to create and view events.](./images/calendar-signin.png)
 
 The sign up page:
 ![The PHP and JavaScript Event Calendar allows registered user to create and view events.](./images/calendar-signup.png)
-
-The sign in page:
-![The PHP and JavaScript Event Calendar allows registered user to create and view events.](./images/calendar-signin.png)
 
 The calendar when logged in, and with events:
 ![The PHP and JavaScript Event Calendar allows registered user to create and view events.](./images/calendar-with-events.png)
