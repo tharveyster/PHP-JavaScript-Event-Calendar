@@ -1,52 +1,19 @@
 <?php
 include_once 'includes/functions.php';
 $username = "";
-$logoutMessage = "";
+$displayName = "";
 $timerResets = "";
-$settingsLink = "";
-if(isset($_GET['userSignOut'])) {
-  if($_GET['userSignOut'] === "success") {
-    $logoutMessage = '<div class="logoutMessage">
-    <span class="signoutMessage">You have logged off</span>
-    </div>';
-  }
-}
-if(isset($_GET['endSession'])) {
-  if($_GET['endSession'] === "success") {
-    $logoutMessage = '      <div class="logoutMessage">'."\r\n".
-      '        <span class="endsessionMessage">Your session timed out</span>'."\r\n".
-    '      </div>'."\r\n";
-  }
-}
 if(isset($_SESSION['username'])) {
-	$loginMessage = '<div class="loginMessage">'."\r\n".
-	  '        <a href="signOut.php?signedOut=true" class="loginMessageLink">SIGN OUT</a>'."\r\n".
-	'      </div>';
-  $settingsLink = '<div class="settingsEl">'."\r\n".
-    '        <a href="settings.php" class="settingsLink">SETTINGS</a>'."\r\n".
-  '      </div>';
 	$username = htmlspecialchars(strip_tags($_SESSION['username']), ENT_QUOTES);
+  if (substr($username, -1) == 's') {
+    $displayName = $username.'\'';
+  } else {
+    $displayName = $username.'\'s';
+  }
 
 	$timerResets = ' onload="start();" onmousemove="start();" onclick="start();" onkeydown="start();"';
-	echo '
-		<script language="javascript" type="text/javascript">
-		  var session_timeout = 1000 * 60 * 20;
-		  // 1000 milliseconds in a second *
-		  // 60 seconds in a minute *
-		  // 20 minutes
-		  var reloadpage = "signOut.php?sessionExpired=true";
-		  var timeout = null;
-		  function start() {
-			if (timeout)
-			  clearTimeout(timeout);
-			timeout = setTimeout("alert(\'Your session has timed out!\');location.replace(\'" + reloadpage + "\');", session_timeout);
-		  }
-		</script>
-	';
 }else{
-	$loginMessage = '<div class="loginMessage">'."\r\n".
-	  '        <a href="signIn.php" class="loginMessageLink">SIGN IN</a>'."\r\n".
-	'      </div>';
+  header("Location: signIn.php");
 }
 ?>
 <!DOCTYPE html>
@@ -55,20 +22,22 @@ if(isset($_SESSION['username'])) {
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Event Calendar</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="./css/style.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <link rel="shortcut icon" type="image/x-icon" href="images/icons/favicon.ico" />
+  <script src="./js/script.js"></script>
 </head>
 <body<?php echo $timerResets; ?>>
   <div class="content-wrap">
   <div id="container">
-    <?php
-      echo $loginMessage. "\r\n";
-      echo $logoutMessage;
-      echo $settingsLink;
-    ?>
+  <div class="loginMessage">
+      <a href="signOut.php?signedOut=true" class="loginMessageLink">SIGN OUT</a>
+    </div>
+    <div class="settingsEl">
+      <a href="settings.php" class="settingsLink">SETTINGS</a>
+    </div>
     <div class="title">
-      <p class="title-text"><span><?php echo $username; ?> Event Calendar</span></p>
+    <p class="title-text"><span><?php echo $displayName; ?> Event Calendar</span></p>
     </div>
     <div id="calendar_div">
 <?php echo getCalender(); ?>

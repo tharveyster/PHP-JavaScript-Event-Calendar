@@ -10,6 +10,16 @@ if(isset($_SESSION['userId'])) {
 $errorMessage = "";
 $username = "";
 $userId = "";
+if(isset($_GET['userSignOut'])) {
+  if($_GET['userSignOut'] === "success") {
+    $errorMessage = '<span class="alert alert-success">You have logged off</span>';
+  }
+}
+if(isset($_GET['endSession'])) {
+  if($_GET['endSession'] === "success") {
+    $errorMessage = '<span class="alert alert-danger">Your session timed out</span>';
+  }
+}
 
 if(isset($_POST["submitButton"])) {
 	$username = htmlspecialchars(strip_tags($_POST["username"]), ENT_QUOTES);
@@ -46,6 +56,7 @@ if(isset($_POST["submitButton"])) {
 	<title>Sign In</title>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="css/style.css">
+  <link rel="shortcut icon" type="image/x-icon" href="images/icons/favicon.ico" />
 </head>
 <body>
 
@@ -71,43 +82,6 @@ if(isset($_POST["submitButton"])) {
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.1/dist/jquery.validate.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
-<script>
-jQuery.validator.addMethod("alphanumeric", function(value, element) {
-	return this.optional(element) || /^[a-zA-Z0-9_]+$/i.test(value);
-	}, 'Letters, numbers, and underscores only please');
-jQuery.validator.addMethod("alphanumchar", function(value, element) {
-	return this.optional(element) || /^[a-zA-Z0-9.,?!@#$%^*~_]+$/i.test(value);
-	}, 'Letters, numbers, and special characters only please');
-$(function() {
-	$("#signIn").validate({
-		errorClass: "alert alert-danger",
-		validClass: "alert alert-success",
-		rules: {
-			username: {
-				required: true,
-				minlength: 6,
-				alphanumeric: true
-			},
-			password: {
-				required: true,
-				minlength: 8,
-				alphanumchar: true
-			}
-		},
-		messages: {
-			username: {
-				required: "You must enter a username",
-				minlength: "Your username must be at least 6 characters",
-				alphanumeric: "Please use letters and numbers only"
-			},
-			password: {
-				required: "You must enter a password",
-				minlength: "Your password must be at least 8 characters",
-				alphanumchar: "Please use letters, numbers, and special characters only (& \' \" < > not allowed)"
-			}
-		}
-	});
-});
-</script>
+	<script src="./js/validation.js"></script>
 </body>
 </html>

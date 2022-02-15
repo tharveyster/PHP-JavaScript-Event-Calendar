@@ -12,24 +12,7 @@ if(isset($_SESSION['userId'])) {
 	$userId = htmlspecialchars(strip_tags($_SESSION['userId']), ENT_QUOTES);
 
 	$timerResets = ' onload="start();" onmousemove="start();" onclick="start();" onkeydown="start();"';
-	echo '
-		<script language="javascript" type="text/javascript">
-		  var session_timeout = 1000 * 60 * 20;
-		  // 1000 milliseconds in a second *
-		  // 60 seconds in a minute *
-		  // 40 minutes
-		  var reloadpage = "signOut.php?sessionExpired=true";
-		  var timeout = null;
-
-		  function start() {
-			if (timeout)
-			  clearTimeout(timeout);
-			timeout = setTimeout("alert(\'Your session has timed out!\');location.replace(\'" + reloadpage + "\');", session_timeout);
-		  }
-		</script>
-	';
-}
-else{
+}else{
 	header("Location:signIn.php");
 	die();
 }
@@ -233,7 +216,8 @@ if(isset($_FILES["image"]["name"])) {
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="css/style.css" />
-	<!--<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />-->
+  <link rel="shortcut icon" type="image/x-icon" href="images/icons/favicon.ico" />
+  <script src="./js/script.js"></script>
 </head>
 <body<?php echo $timerResets; ?>>
 
@@ -322,99 +306,7 @@ if(isset($_FILES["image"]["name"])) {
 
 	<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.1/dist/jquery.validate.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
-	<script>
-		jQuery.validator.addMethod("lettersonly", function(value, element) {
-			return this.optional(element) || /^[a-zA-Z]+$/i.test(value);
-			}, 'Letters only please');
-		jQuery.validator.addMethod("alphanumchar", function(value, element) {
-			return this.optional(element) || /^[a-zA-Z0-9.,?!@#$%^*~_]+$/i.test(value);
-			}, 'Letters, numbers, and special characters only please');
-		jQuery.validator.addMethod("emailaddress", function(value, element) {
-			return this.optional(element) || /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,6})+$/i.test(value);
-			}, 'Enter a valid email address please');
-			$(function() {
-			$("#changeSettings").validate({
-				errorClass: "alert alert-danger",
-				validClass: "alert alert-success",
-				rules: {
-					firstName: {
-						minlength: 2,
-						maxlength: 25,
-						lettersonly: true
-					},
-					lastName: {
-						minlength: 2,
-						maxlength: 25,
-						lettersonly: true
-					},
-					email: {
-						emailaddress: true
-					}
-				},
-				messages: {
-					firstName: {
-						minlength: "Your first name must be at least 2 characters",
-						maxlength: "Your first name must be 25 characters or less",
-						lettersonly: "Your first name can contain letters only"
-					},
-					lastName: {
-						minlength: "Your last name must be at least 2 characters",
-						maxlength: "Your last name must be 25 characters or less",
-						lettersonly: "Your last name can contain letters only"
-					},
-					email: {
-						email: "Please enter a valid email address"
-					}
-				}
-			});
-		});
-		$(function() {
-			$("#changePassword").validate({
-				errorClass: "alert alert-danger",
-				validClass: "alert alert-success",
-				rules: {
-					oldPassword: {
-						required: true,
-						minlength: 8,
-						alphanumchar: true
-					},
-					newPassword: {
-						required: true,
-						minlength: 8,
-						maxlength: 30,
-						alphanumchar: true
-					},
-					newPassword2: {
-						required: true,
-						minlength: 8,
-						maxlength: 30,
-						alphanumchar: true,
-						equalTo : "#newPassword"
-					}
-				},
-				messages: {
-					oldPassword: {
-						required: "You must enter your current password",
-						minlength: "Your old password must be at least 8 characters",
-						alphanumchar: "Please use letters, numbers, and special characters only (& \' \" < > not allowed)"
-					},
-					newPassword: {
-						required: "You must enter a new password",
-						minlength: "Your new password must be at least 8 characters",
-						maxlength: "Your new password must be 30 characters or less",
-						alphanumchar: "Please use letters, numbers, and special characters only (& \' \" < > not allowed)"
-					},
-					newPassword2: {
-						required: "You must re-enter a new password",
-						minlength: "Your new password must be at least 8 characters",
-						maxlength: "Your new password must be 30 characters or less",
-						alphanumchar: "Please use letters, numbers, and special characters only (& \' \" < > not allowed)",
-						equalTo: "Your new passwords do not match"
-					}
-				}
-			});
-		});
-	</script>
+	<script src="./js/validation.js"></script>
 </body>
 </html>
 

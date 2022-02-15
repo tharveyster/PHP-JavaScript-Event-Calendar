@@ -781,6 +781,10 @@ td.eventItem:first-child {
 	text-align: center;
 }
 
+.righted {
+	text-align: right;
+}
+
 .settingsContainer .formSection:not(:last-child) {
 	margin-bottom: 10px;
 	border-bottom: 1px solid #dedede;
