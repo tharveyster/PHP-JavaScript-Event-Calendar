@@ -10,7 +10,9 @@ It displays the current month, and has arrows to move to the previous or followi
 
 Hovering over a day block will present you with a popup that allows you to add a new event or view events for that day (if any exist).
 
-When adding an event, you can enter the event title, select whether it is public or private, give other users the ability to view it by entering their usernames, and even give them the rights to delete the event if you wish. Private events can only be seen by you or other users that were given access. Public events can be seen by any registered users.
+When adding an event, you can enter the event title and description, select whether it is public or private, give other users the ability to view it by entering their usernames, and even give them the rights to delete the event if you wish. Private events can only be seen by you or other users that were given access. Public events can be seen by any registered users.
+
+There is a 50 character limit for titles, and a 250 character limit for descriptions. Each one has a character counter to keep track of how many characters you've used.
 
 When viewing events, it shows you all of the above information, and also includes a "Delete" button if you are the event creator, or were granted delete rights for someone else's event. Unregistered users can only see the title of public events, and nothing more.
 
@@ -71,7 +73,7 @@ Timed out:
 ![The PHP and JavaScript Event Calendar allows registered user to create and view events.](./images/calendar-timed-out.png)
 
 ## Credits
-The basic calendar code came from <https://www.codexworld.com/build-event-calendar-using-jquery-ajax-php/php-event-calendar-jquery-ajax-mysql-codexworld/>. That code consisted of displaying the calendar, and adding and viewing events. The functionality has been improved here to allow cancellation of new events in the "Add event" section before submitting them, setting event privacy to public or private, sharing private events with other users via their usernames, deletion of events by original submitter (and approved users) only, and visible holidays. There's also a new settings section where users can change their name, email address, and password, and add background images to each month.
+The basic calendar code came from <https://www.codexworld.com/build-event-calendar-using-jquery-ajax-php/php-event-calendar-jquery-ajax-mysql-codexworld/>. That code consisted of displaying the calendar, and adding and viewing events. The functionality has been improved here to allow cancellation of new events in the "Add event" section before submitting them, adding a description of the event, setting event privacy to public or private, sharing private events with other users via their usernames, deletion of events by original submitter (and approved users) only, and visible holidays. There's also a new settings section where users can change their name, email address, and password, and add background images to each month.
 
 ## Disclaimer
 I know that this code is not written in the most efficient way, and that there's tons of room to improve it. It's a work in progress, and has been tweaked and adjusted numerous times over the past year to add new functionality. It's messy, but it works. I'll eventually streamline the code to bring it up to industry standards.
