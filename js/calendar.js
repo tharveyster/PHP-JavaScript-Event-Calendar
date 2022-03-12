@@ -27,6 +27,7 @@ function addEvent(date){
   $('#event_list').slideUp('slow');
   $('#event_add').slideDown('slow');
   $('#eventTitle').select();
+  $('#eventDescription').select();
 }
 
 function delEvent(id){
@@ -37,6 +38,7 @@ $(document).ready(function(){
   $('#cancelAddEventBtn').on('click',function(){
     $('#event_add').slideUp('slow');
     document.getElementById("eventTitle").value = "";
+    document.getElementById("eventDescription").value = "";
     document.getElementById("privateCheck").checked = true;
     document.getElementById("sharedWith").value = "";
     document.getElementById("deleteAuth").value = "";
@@ -48,6 +50,7 @@ $(document).ready(function(){
     e.preventDefault();
     const date = $('#eventDate').val();
     const title = $('#eventTitle').val();
+    const description = $('#eventDescription').val();
     const privacy = $('.eventPrivacy:checked').val();
     const sharedWith = $('#sharedWith').val();
     const deleteAuth = $('#deleteAuth').val();
@@ -55,11 +58,12 @@ $(document).ready(function(){
       $.ajax({
         type:'POST',
         url:'includes/functions.php',
-        data:'func=addEvent&date='+date+'&title='+title+'&privacy='+privacy+'&sharedWith='+sharedWith+'&deleteAuth='+deleteAuth,
+        data:'func=addEvent&date='+date+'&title='+title+'&description='+description+'&privacy='+privacy+'&sharedWith='+sharedWith+'&deleteAuth='+deleteAuth,
         success:function(msg){
           if(msg === 'ok'){
             const dateSplit = date.split("-");
             $('#eventTitle').val('');
+            $('#eventDescription').val('');
             $('#createdModal').modal('show');
             $('#modalText').empty();
             $('#modalText').append('Event created successfully!');
@@ -96,4 +100,50 @@ $(document).ready(function(){
   $(document).click(function(){
     $('#event_list').slideUp('slow');
   });
+});
+
+$('#eventTitle').on('keyup',function(){
+  var characterCount = $(this).val().length,
+    current = $('#current'),
+    maximum = $('#maximum');
+  current.text(characterCount);
+  if (characterCount < 50) {
+    current.css('color', '#006600', 'font-weight', 'normal');
+  }
+  if (characterCount > 44 && characterCount < 50) {
+    current.css('color', '#ffff00');
+    current.css('font-weight', 'normal');
+  }
+  if (characterCount >= 50) {
+    maximum.css('color', '#880000');
+    maximum.css('font-weight', 'bold');
+    current.css('color', '#880000');
+    current.css('font-weight', 'bold');
+  } else {
+    maximum.css('color', '#000');
+    maximum.css('font-weight', 'normal');
+  }
+});
+
+$('#eventDescription').on('keyup',function(){
+  var characterCount = $(this).val().length,
+    currentDesc = $('#currentDesc'),
+    maximumDesc = $('#maximumDesc');
+  currentDesc.text(characterCount);
+  if (characterCount < 200) {
+    currentDesc.css('color', '#006600', 'font-weight', 'normal');
+  }
+  if (characterCount > 174 && characterCount < 200) {
+    currentDesc.css('color', '#ffff00');
+    currentDesc.css('font-weight', 'normal');
+  }
+  if (characterCount >= 200) {
+    maximumDesc.css('color', '#880000');
+    maximumDesc.css('font-weight', 'bold');
+    currentDesc.css('color', '#880000');
+    currentDesc.css('font-weight', 'bold');
+  } else {
+    maximumDesc.css('color', '#000');
+    maximumDesc.css('font-weight', 'normal');
+  }
 });

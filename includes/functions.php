@@ -19,7 +19,7 @@ if(isset($_POST['func']) && !empty($_POST['func'])){
       getEvents($_POST['date'],$userId);
       break;
     case 'addEvent':
-      addEvent($_POST['date'],$_POST['title'],$_POST['privacy'],$_POST['sharedWith'],$_POST['deleteAuth']);
+      addEvent($_POST['date'],$_POST['title'],$_POST['description'],$_POST['privacy'],$_POST['sharedWith'],$_POST['deleteAuth']);
       break;
     case 'delEvent':
       delEvent($_POST['id']);
@@ -52,10 +52,14 @@ function getCalender($year = '', $month = ''){
         <div id="event_add" class="none">
           <h2>Add Event on <span id="eventDateView"></span></h2>
           <div class="form-group">
-            <label for="eventTitle" class="form-label">Event Title:</label>
-            <input class="form-field" type="text" id="eventTitle" value="" required />
+            <label for="eventTitle" class="form-label">Event Title (<span id="current">0</span><span id="maximum">/ 50</span>):</label>
+            <input class="form-field" type="text" id="eventTitle" value="" maxlength="50" required />
           </div>
           <input type="hidden" id="eventDate" value=""/>
+          <div class="form-group">
+          <label for="eventDescription" class="form-label">Event Description (<span id="currentDesc">0</span><span id="maximumDesc">/ 200</span>): </label>
+            <input class="form-field" type="text" id="eventDescription" value="" maxlength="200" />
+          </div>
           <div class="form-group">
             <label class="form-label">Privacy Setting:</label>
             <div class="form-radio-block" id="privacy">
@@ -337,13 +341,14 @@ function getEvents($date = '', $userId){
     $eventListHTML .= '<tr>';
     $eventListHTML .= '<th class="eventItem">Title</th>';
     if(isset($_SESSION['userId'])) {
-      $eventListHTML .= '<th class="eventItem">Creator</th><th class="eventItem">Privacy</th><th class="eventItem">Shared With</th><th class="eventItem"></th>';
+      $eventListHTML .= '<th class="eventItem">Description</th><th class="eventItem">Creator</th><th class="eventItem">Privacy</th><th class="eventItem">Shared With</th><th class="eventItem"></th>';
     }
     while($row = $result->fetch(PDO::FETCH_ASSOC)) {
       $eventListHTML .= '<tr>';
       $id = $row['id'];
       $user = $row['user'];
       $eventTitle = $row['title'];
+      $eventDescription = $row['description'];
       $privacy = $row['privacy'];
       $eventShared = $row['sharedWith'];
       $deleteAuth = $row['deleteAuth'];
@@ -382,11 +387,11 @@ function getEvents($date = '', $userId){
       if(!isset($_SESSION['userId'])) {
         $eventListHTML .= '<td class="eventItem">'.$eventTitle.'</td>';
       } else if ($user != $userId && strpos($deleteAuth, $authConfirm) === false) {
-        $eventListHTML .= '<td class="eventItem">'.$eventTitle.'</td><td class="eventItem centered">'.$creatorName.'</td><td  class="eventItem centered">'.$eventPrivacy.'</td>';
+        $eventListHTML .= '<td class="eventItem">'.$eventTitle.'</td><td class="eventItem">'.$eventDescription.'</td><td class="eventItem centered">'.$creatorName.'</td><td  class="eventItem centered">'.$eventPrivacy.'</td>';
       } else if ($user != $userId && strpos($deleteAuth, $authConfirm) !== false) {
-        $eventListHTML .= '<td class="eventItem">'.$eventTitle.'</td><td class="eventItem centered">'.$creatorName.'</td><td  class="eventItem centered">'.$eventPrivacy.'</td><td class="eventItem"></td><td class="eventItem righted"><button class="btn btn-secondary delEventBtn" id="'.$id.'">Delete</button></td>';
+        $eventListHTML .= '<td class="eventItem">'.$eventTitle.'</td><td class="eventItem">'.$eventDescription.'</td><td class="eventItem centered">'.$creatorName.'</td><td  class="eventItem centered">'.$eventPrivacy.'</td><td class="eventItem"></td><td class="eventItem righted"><button class="btn btn-secondary delEventBtn" id="'.$id.'">Delete</button></td>';
       } else {
-        $eventListHTML .= '<td class="eventItem" id="'.$id.'">'.$eventTitle.'</td><td class="eventItem centered">'.$creatorName.'</td><td class="eventItem centered">'.$eventPrivacy.'</td><td class="eventItem centered">'.$newSharedGroup.'</td><td class="eventItem righted"><button class="btn btn-secondary delEventBtn" id="'.$id.'">Delete</button></td>';
+        $eventListHTML .= '<td class="eventItem" id="'.$id.'">'.$eventTitle.'</td><td class="eventItem">'.$eventDescription.'</td><td class="eventItem centered">'.$creatorName.'</td><td class="eventItem centered">'.$eventPrivacy.'</td><td class="eventItem centered">'.$newSharedGroup.'</td><td class="eventItem righted"><button class="btn btn-secondary delEventBtn" id="'.$id.'">Delete</button></td>';
       }
       $eventListHTML .= '</tr>';
     }
@@ -423,7 +428,7 @@ function getEvents($date = '', $userId){
 /*
  * Add event to date
  */
-function addEvent($date,$title,$privacy,$sharedWith,$deleteAuth){
+function addEvent($date,$title,$description,$privacy,$sharedWith,$deleteAuth){
   //Include db configuration file
   include 'dbConfig.php';
   $currentDate = date("Y-m-d H:i:s");
@@ -461,16 +466,18 @@ function addEvent($date,$title,$privacy,$sharedWith,$deleteAuth){
     $userId = "";
   }
   if(isset($_POST['addEventBtn'])) {
+    $description = strip_tags($_POST['description']);
     $privacy = intval($_POST['eventPrivacy']);
     $sharedWith = strip_tags($_POST['sharedWith']);
     $deleteAuth = strip_tags($_POST['deleteAuth']);
   }
   //Insert the event data into database
-  $insert = $con->prepare("INSERT INTO events (title,date,created,modified,user,privacy,sharedWith,deleteAuth) VALUES (:title,:date,:currentDate,:currentDate,:un,:ep,:sw,:da)");
+  $insert = $con->prepare("INSERT INTO events (title,date,created,modified,user,description,privacy,sharedWith,deleteAuth) VALUES (:title,:date,:currentDate,:currentDate,:un,:description,:ep,:sw,:da)");
   $insert->bindParam(":title", $title);
   $insert->bindParam(":date", $date);
   $insert->bindParam(":currentDate", $currentDate);
   $insert->bindParam(":un", $userId);
+  $insert->bindParam(":description", $description);
   $insert->bindParam(":ep", $privacy);
   $sharedWith = ' '. $sharedWith .' ';
   $insert->bindParam(":sw", $sharedWith);

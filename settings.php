@@ -139,7 +139,33 @@ if(isset($_FILES["image"]["name"])) {
 	$validext = array("jpeg","jpg","gif","png");
 	$imageTypes = exif_imagetype($imageTmp);
 	$maxFileSize = 1024*1024*4;
-	$calMonth = $_POST['calMonth'];
+	$calMonthName = $_POST['calMonth'];
+	$calMonth = "";
+	if($calMonthName === "january") {
+		$calMonth = "01";
+	}elseif($calMonthName === "february") {
+		$calMonth = "02";
+	}elseif($calMonthName === "march") {
+		$calMonth = "03";
+	}elseif($calMonthName === "april") {
+		$calMonth = "04";
+	}elseif($calMonthName === "may") {
+		$calMonth = "05";
+	}elseif($calMonthName === "june") {
+		$calMonth = "06";
+	}elseif($calMonthName === "july") {
+		$calMonth = "07";
+	}elseif($calMonthName === "august") {
+		$calMonth = "08";
+	}elseif($calMonthName === "september") {
+		$calMonth = "09";
+	}elseif($calMonthName === "october") {
+		$calMonth = "10";
+	}elseif($calMonthName === "november") {
+		$calMonth = "11";
+	}elseif($calMonthName === "december") {
+		$calMonth = "12";
+	}
 	$temporaryPath = "../../images/" . uniqid() . ".png";
     $finalPath = "images/$userId-$calMonth.png";
 	$finalLink = "$userId-$calMonth.png";
@@ -189,11 +215,11 @@ if(isset($_FILES["image"]["name"])) {
 	if(empty($imageErrors)) {
 		move_uploaded_file($imageTmp, $temporaryPath);
 		$pictureMessage = '        <div class="alert alert-success">
-          <strong>SUCCESS!</strong> '.ucfirst($calMonth). ' image file uploaded!
+          <strong>SUCCESS!</strong> '.ucfirst($calMonthName). ' image file uploaded!
         </div>' . chr(13) . chr(10);
         rename($temporaryPath, $finalPath);
 
-        $query = $con->prepare("UPDATE users SET $calMonth = :monthPic WHERE id=:id");
+        $query = $con->prepare("UPDATE users SET $calMonthName = :monthPic WHERE id=:id");
         $query->bindParam(":monthPic", $finalLink);
         $query->bindParam(":id", $userId);
         $query->execute();
