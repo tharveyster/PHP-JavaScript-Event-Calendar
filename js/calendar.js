@@ -27,7 +27,6 @@ function addEvent(date){
   $('#event_list').slideUp('slow');
   $('#event_add').slideDown('slow');
   $('#eventTitle').select();
-  $('#eventDescription').select();
 }
 
 function delEvent(id){
