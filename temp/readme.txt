@@ -1,0 +1,1 @@
+Image files are temporarily stored here before conversion.

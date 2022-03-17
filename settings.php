@@ -166,7 +166,7 @@ if(isset($_FILES["image"]["name"])) {
 	}elseif($calMonthName === "december") {
 		$calMonth = "12";
 	}
-	$temporaryPath = "../../images/" . uniqid() . ".png";
+	$temporaryPath = "temp/" . uniqid() . ".png";
     $finalPath = "images/$userId-$calMonth.png";
 	$finalLink = "$userId-$calMonth.png";
 	$imageErrors = array();
