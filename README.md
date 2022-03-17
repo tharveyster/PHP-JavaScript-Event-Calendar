@@ -5,6 +5,9 @@
 ## Description
 This code is for an event calendar. It was created using HTML, CSS, JavaScript, jQuery, Bootstrap, PHP, and MySQL.
 
+## Demo Deployment
+A demo of this app has been deployed to Heroku. Any images uploaded as backgrounds for the months will not remain for long periods of time because the Heroku filesystem is ephemeral - that means that any changes to the filesystem whilst the dyno is running only last until that dyno is shut down or restarted. Each dyno boots with a clean copy of the filesystem from the most recent deploy. However, any background images you upload will be available during your testing session so that you can see how it works. I may eventually consider an S3 image hosting solution in the future so that the images are always available, but my priority at this time is to get a working demo up and running for short-term testing. The application can be found at https://php-javascript-event-calendar.herokuapp.com.
+
 ## Functionality
 It displays the current month, and has arrows to move to the previous or following months, along with dropdowns that let you select a month and year to display. It also has a "Today" button that returns you to the current month.
 
