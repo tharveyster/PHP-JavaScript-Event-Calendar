@@ -18,7 +18,8 @@ $(function() {
 			username: {
 				required: true,
 				minlength: 6,
-				alphanumeric: true
+				alphanumeric: true,
+				maxlength: 25
 			},
 			password: {
 				required: true,
@@ -30,7 +31,8 @@ $(function() {
 			username: {
 				required: "You must enter a username",
 				minlength: "Your username must be at least 6 characters",
-				alphanumeric: "Please use letters and numbers only"
+				alphanumeric: "Please use letters and numbers only",
+				maxlength: "Your username cannot be more than 25 characters"
 			},
 			password: {
 				required: "You must enter a password",
@@ -47,11 +49,15 @@ $(function() {
 		rules: {
 			firstName: {
 				required: true,
-				lettersonly: true
+				lettersonly: true,
+				minlength: 2,
+				maxlength: 25
 			},
 			lastName: {
 				required: true,
-				lettersonly: true
+				lettersonly: true,
+				minlength: 2,
+				maxlength: 25
 			},
 			email: {
 				required: true,
@@ -59,7 +65,8 @@ $(function() {
 			username: {
 				required: true,
 				minlength: 6,
-				alphanumeric: true
+				alphanumeric: true,
+				maxlength: 25
 			},
 			password: {
 				required: true,
@@ -70,11 +77,15 @@ $(function() {
 		messages: {
 			firstName: {
 				required: "You must enter your first name",
-				lettersonly: "Please use letters only"
+				lettersonly: "Please use letters only",
+				minlength: "Your first name must be at least 2 characters",
+				maxlength: "Your first name cannot be more than 25 characters"
 			},
 			lastName: {
 				required: "You must enter your last name",
-				lettersonly: "Please use letters only"
+				lettersonly: "Please use letters only",
+				minlength: "Your last name must be at least 2 characters",
+				maxlength: "Your last name cannot be more than 25 characters"
 			},
 			email: {
 				required: "You must enter your email address"
@@ -82,7 +93,8 @@ $(function() {
 			username: {
 				required: "You must enter a username",
 				minlength: "Your username must be at least 6 characters",
-				alphanumeric: "Please use letters and numbers only"
+				alphanumeric: "Please use letters and numbers only",
+				maxlength: "Your username cannot be more than 25 characters"
 			},
 			password: {
 				required: "You must enter a password",
