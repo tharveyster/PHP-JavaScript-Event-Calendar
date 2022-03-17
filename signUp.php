@@ -3,20 +3,48 @@ session_start();
 require_once("includes/dbConfig.php");
 
 if(isset($_SESSION['userId'])) {
-	header("Location: index");
+	header("Location: index.php");
 }
 
 $username = "";
 $firstName = "";
 $lastName = "";
 $email = "";
+$firstNameError = "";
+$lastNameError = "";
 $emailError = "";
 $usernameError = "";
+$passwordError = "";
 
 if(isset($_POST["submitButton"])) {
+
 	$firstName = htmlspecialchars(strip_tags($_POST["firstName"]), ENT_QUOTES);
+	if($firstName === "") {
+		$firstNameError = '<span class="alert alert-danger">Your first name is required</span>';
+	}
+	if (strlen($firstName) > 25 && strlen($firstName) < 2) {
+		$firstNameError = '<span class="alert alert-danger">Your first name must be between 2 and 25 characters</span>';
+	}
+	if(!ctype_alpha($firstName)) {
+		$firstNameError = '<span class="alert alert-danger">Please use letters only</span>';
+	}
+
 	$lastName = htmlspecialchars(strip_tags($_POST["lastName"]), ENT_QUOTES);
+	if($lastName === "") {
+		$lastNameError = '<span class="alert alert-danger">Your last name is required</span>';
+	}
+	if (strlen($lastName) > 25 && strlen($lastName) < 2) {
+		$lastNameError = '<span class="alert alert-danger">Your last name must be between 2 and 25 characters</span>';
+	}
+	if(!ctype_alpha($lastName)) {
+		$lastNameError = '<span class="alert alert-danger">Please use letters only</span>';
+	}
+
 	$email = htmlspecialchars(strip_tags($_POST["email"]), ENT_QUOTES);
+	if($email === "") {
+		$emailError = '<span class="alert alert-danger">Your email is required</span>';
+	}
+
 	$query = $con->prepare("SELECT email FROM users WHERE email=:em");
 	$query->bindParam(":em", $email);
 	$query->execute();
@@ -24,7 +52,18 @@ if(isset($_POST["submitButton"])) {
 	if($query->rowCount() != 0) {
 		$emailError = '<span class="alert alert-danger">That email address is associated with another account</span>';
 	}
+
 	$username = htmlspecialchars(strip_tags($_POST["username"]), ENT_QUOTES);
+	if($username === "") {
+		$usernameError = '<span class="alert alert-danger">A username is required</span>';
+	}
+	if (strlen($username) > 25 && strlen($username) < 6) {
+		$usernameError = '<span class="alert alert-danger">Your username must be between 6 and 25 characters</span>';
+	}
+	if (!preg_match('/^[a-zA-Z0-9]+$/', $username)) {
+    $usernameError = '<span class="alert alert-danger">Please use letters and numbers only</span>';
+	}
+
 	$query = $con->prepare("SELECT username FROM users WHERE username=:un");
 	$query->bindParam(":un", $username);
 	$query->execute();
@@ -32,10 +71,21 @@ if(isset($_POST["submitButton"])) {
 	if($query->rowCount() != 0) {
 		$usernameError = '<span class="alert alert-danger">That username is not available</span>';
 	}
+
 	$password = htmlspecialchars(strip_tags($_POST["password"]), ENT_QUOTES);
+	if($password === "") {
+		$passwordError = '<span class="alert alert-danger">A password is required</span>';
+	}
+	if (strlen($password) < 8) {
+		$passwordError = '<span class="alert alert-danger">Your password must be at least 8 characters</span>';
+	}
+	if (!preg_match('/^[a-zA-Z0-9.,?!@#$%^*~_]+$/', $password)) {
+    $passwordError = '<span class="alert alert-danger">Please use letters, numbers, and special characters only (& \' \" < > not allowed)</span>';
+	}
+
 	$password = password_hash($password, PASSWORD_DEFAULT);
 
-	if($emailError === "" && $usernameError === "") {
+	if($firstNameError === "" && $lastNameError === "" && $emailError === "" && $usernameError === "" && $passwordError === "") {
 		$query = $con->prepare("INSERT INTO users (firstName, lastName, email, username, password) VALUES(:fn, :ln, :em, :un, :pw)");
 		$email = strtolower($email);
 		$username = strtolower($username);
@@ -71,12 +121,15 @@ if(isset($_POST["submitButton"])) {
 			<div class="loginForm">
 				<form action="signUp.php" method="POST" name="signUp" id="signUp">
 					<input class="form-control" type="text" name="firstName" placeholder="First name" value="<?php echo $firstName; ?>" required autofocus>
+					<?php echo $firstNameError; ?>
 					<input class="form-control" type="text" name="lastName" placeholder="Last name" value="<?php echo $lastName; ?>" required>
+					<?php echo $lastNameError; ?>
 					<input class="form-control" type="email" name="email" placeholder="Email address" value="<?php echo $email; ?>" required>
 					<?php echo $emailError; ?>
 					<input class="form-control" type="text" name="username" placeholder="Username" value="<?php echo $username; ?>" autocomplete="off" required>
 					<?php echo $usernameError; ?>
 					<input class="form-control" type="password" name="password" placeholder="Password" autocomplete="off" required>
+					<?php echo $passwordError; ?>
 					<input class="btn btn-primary" type="submit" name="submitButton" value="SUBMIT">
 				</form>
 			</div>
