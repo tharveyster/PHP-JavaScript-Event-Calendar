@@ -166,7 +166,7 @@ if(isset($_FILES["image"]["name"])) {
 	}elseif($calMonthName === "december") {
 		$calMonth = "12";
 	}
-	$temporaryPath = "temp/" . uniqid() . ".png";
+	$temporaryPath = "temp/" . uniqid() . ".png"; // This was changed for deployment to Heroku. It should be ../../images/ for a server.
     $finalPath = "images/$userId-$calMonth.png";
 	$finalLink = "$userId-$calMonth.png";
 	$imageErrors = array();
