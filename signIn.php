@@ -4,12 +4,14 @@ session_start();
 require_once("includes/dbConfig.php");
 
 if(isset($_SESSION['userId'])) {
-	header("Location: index");
+	header("Location: index.php");
 }
 
 $errorMessage = "";
 $username = "";
 $userId = "";
+$usernameError = "";
+$passwordError = "";
 if(isset($_GET['userSignOut'])) {
   if($_GET['userSignOut'] === "success") {
     $errorMessage = '<span class="alert alert-success">You have logged off</span>';
@@ -22,30 +24,53 @@ if(isset($_GET['endSession'])) {
 }
 
 if(isset($_POST["submitButton"])) {
+
 	$username = htmlspecialchars(strip_tags($_POST["username"]), ENT_QUOTES);
+	if($username === "") {
+		$usernameError = '<span class="alert alert-danger">A username is required</span>';
+	}
+	if (strlen($username) > 25 && strlen($username) < 6) {
+		$usernameError = '<span class="alert alert-danger">Your username must be between 6 and 25 characters</span>';
+	}
+	if (!preg_match('/^[a-zA-Z0-9]+$/', $username)) {
+    $usernameError = '<span class="alert alert-danger">Please use letters and numbers only</span>';
+	}
+
 	$password = htmlspecialchars(strip_tags($_POST["password"]), ENT_QUOTES);
+	if($password === "") {
+		$passwordError = '<span class="alert alert-danger">A password is required</span>';
+	}
+	if (strlen($password) < 8) {
+		$passwordError = '<span class="alert alert-danger">Your password must be at least 8 characters</span>';
+	}
 
-	$query = $con->prepare("SELECT * FROM users WHERE username=:un");
-	$query->bindParam(":un", $username);
+	if (!preg_match('/^[a-zA-Z0-9.,?!@#$%^*~_]+$/', $password)) {
+    $passwordError = '<span class="alert alert-danger">Please use letters, numbers, and special characters only (& \' \" < > not allowed)</span>';
+	}
 
-	$query->execute();
+	if($usernameError === "" && $passwordError === "") {
+		$query = $con->prepare("SELECT * FROM users WHERE username=:un");
+		$query->bindParam(":un", $username);
 
-	if($query->rowCount() === 1) {
-		while($row = $query->fetch(PDO::FETCH_ASSOC)) {
-			$userId = $row['id'];
-			if (password_verify($password, $row["password"])) {
-				$_SESSION["username"] = $username;
-				$_SESSION["userId"] = $userId;
-				header("Location: index.php");
-				exit();
-			}
-			else {
-				$errorMessage = '<span class="alert alert-danger">Login failed</span>';
+		$query->execute();
+
+		if($query->rowCount() === 1) {
+			while($row = $query->fetch(PDO::FETCH_ASSOC)) {
+				$userId = $row['id'];
+				if (password_verify($password, $row["password"])) {
+					$_SESSION["username"] = $username;
+					$_SESSION["userId"] = $userId;
+					header("Location: index.php");
+					exit();
+				}
+				else {
+					$errorMessage = '<span class="alert alert-danger">Login failed</span>';
+				}
 			}
 		}
-	}
-	else {
-		$errorMessage = '<span class="alert alert-danger">Login failed</span>';
+		else {
+			$errorMessage = '<span class="alert alert-danger">Login failed</span>';
+		}
 	}
 }
 
@@ -68,13 +93,15 @@ if(isset($_POST["submitButton"])) {
 			</div>
 			<div class="loginForm">
 				<?php echo $errorMessage; ?>
-				<form action="signIn" method="POST" name="signIn" id="signIn">
+				<form action="signIn.php" method="POST" name="signIn" id="signIn">
 					<input type="text" name="username" placeholder="Username" value="<?php echo $username; ?>" required autocomplete="off" autofocus>
+					<?php echo $usernameError; ?>
 					<input type="password" name="password" placeholder="Password" required>
+					<?php echo $passwordError; ?>
 					<input type="submit" name="submitButton" value="SUBMIT">
 				</form>
 			</div>
-			<!--<a class="signInMessage" href="signUp.php">Need an account? Sign up here!</a>-->
+			<a class="signInMessage" href="signUp.php">Need an account? Sign up here!</a>
 		</div>
 	</div>
 
