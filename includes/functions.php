@@ -387,11 +387,11 @@ function getEvents($date = '', $userId){
       if(!isset($_SESSION['userId'])) {
         $eventListHTML .= '<td class="eventItem">'.$eventTitle.'</td>';
       } else if ($user != $userId && strpos($deleteAuth, $authConfirm) === false) {
-        $eventListHTML .= '<td class="eventItem">'.$eventTitle.'</td><td class="eventItem">'.$eventDescription.'</td><td class="eventItem centered">'.$creatorName.'</td><td  class="eventItem centered">'.$eventPrivacy.'</td>';
+        $eventListHTML .= '<td class="eventItem">'.$eventTitle.'</td><td class="eventItem centered">'.$eventDescription.'</td><td class="eventItem centered">'.$creatorName.'</td><td  class="eventItem centered">'.$eventPrivacy.'</td>';
       } else if ($user != $userId && strpos($deleteAuth, $authConfirm) !== false) {
-        $eventListHTML .= '<td class="eventItem">'.$eventTitle.'</td><td class="eventItem">'.$eventDescription.'</td><td class="eventItem centered">'.$creatorName.'</td><td  class="eventItem centered">'.$eventPrivacy.'</td><td class="eventItem"></td><td class="eventItem righted"><button class="btn btn-secondary delEventBtn" id="'.$id.'">Delete</button></td>';
+        $eventListHTML .= '<td class="eventItem">'.$eventTitle.'</td><td class="eventItem centered">'.$eventDescription.'</td><td class="eventItem centered">'.$creatorName.'</td><td  class="eventItem centered">'.$eventPrivacy.'</td><td class="eventItem"></td><td class="eventItem righted"><button class="btn btn-secondary delEventBtn" id="'.$id.'">Delete</button></td>';
       } else {
-        $eventListHTML .= '<td class="eventItem" id="'.$id.'">'.$eventTitle.'</td><td class="eventItem">'.$eventDescription.'</td><td class="eventItem centered">'.$creatorName.'</td><td class="eventItem centered">'.$eventPrivacy.'</td><td class="eventItem centered">'.$newSharedGroup.'</td><td class="eventItem righted"><button class="btn btn-secondary delEventBtn" id="'.$id.'">Delete</button></td>';
+        $eventListHTML .= '<td class="eventItem" id="'.$id.'">'.$eventTitle.'</td><td class="eventItem centered">'.$eventDescription.'</td><td class="eventItem centered">'.$creatorName.'</td><td class="eventItem centered">'.$eventPrivacy.'</td><td class="eventItem centered">'.$newSharedGroup.'</td><td class="eventItem righted"><button class="btn btn-secondary delEventBtn" id="'.$id.'">Delete</button></td>';
       }
       $eventListHTML .= '</tr>';
     }
