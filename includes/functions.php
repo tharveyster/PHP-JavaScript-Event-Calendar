@@ -12,8 +12,8 @@ if(isset($_SESSION['userId'])) {
 
 if(isset($_POST['func']) && !empty($_POST['func'])){
   switch($_POST['func']){
-    case 'getCalender':
-      getCalender($_POST['year'],$_POST['month']);
+    case 'getCalendar':
+      getCalendar($_POST['year'],$_POST['month']);
       break;
     case 'getEvents':
       getEvents($_POST['date'],$userId);
@@ -29,7 +29,7 @@ if(isset($_POST['func']) && !empty($_POST['func'])){
   }
 }
 
-function getCalender($year = '', $month = ''){
+function getCalendar($year = '', $month = ''){
   $dateYear = ($year != '')?$year:date("Y");
   $dateMonth = ($month != '')?$month:date("m");
   $date = $dateYear.'-'.$dateMonth.'-01';
@@ -398,31 +398,7 @@ function getEvents($date = '', $userId){
     $eventListHTML .= '</table>';
   }
   echo $eventListHTML;
-  echo '<script>
-	$(document).ready(function(){
-    $(".delEventBtn").on("click",function() {
-      const date2 = $("#eventDate").val();
-      const del_id = $(this).attr("id");
-      const info = "id=" + del_id;
-      $.ajax({
-        type : "POST",
-        url : "deleteEvent.php", //URL to the delete php script
-        data : info,
-        success : function() {
-          const curMonth = $(".month_dropdown").val();
-          const curYear = $(".year_dropdown").val();
-          $("#createdModal").modal("show");
-          $("#modalText").empty();
-          $("#modalText").append("Event deleted successfully!");
-          getCalendar("calendar_div",curYear,curMonth);
-          setTimeout(function(){
-            $("#createdModal").modal("hide")
-          }, 2000);
-        }
-      });
-    });
-  });
-</script>';
+  echo '<script src="../js/delete.js"></script>';
 }
 
 /*

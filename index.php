@@ -23,7 +23,7 @@ if(isset($_SESSION['username'])) {
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Event Calendar</title>
   <link rel="stylesheet" href="./css/style.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <link rel="shortcut icon" type="image/x-icon" href="images/icons/favicon.ico" />
   <script src="./js/script.js"></script>
 </head>
@@ -40,7 +40,7 @@ if(isset($_SESSION['username'])) {
     <p class="title-text"><span><?php echo $displayName; ?> Event Calendar</span></p>
     </div>
     <div id="calendar_div">
-<?php echo getCalender(); ?>
+<?php echo getCalendar(); ?>
     </div>
   </div>
   </div>

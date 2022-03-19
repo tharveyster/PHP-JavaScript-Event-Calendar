@@ -2,7 +2,7 @@ function getCalendar(target_div, year, month){
   $.ajax({
     type:'POST',
     url:'includes/functions.php',
-    data:'func=getCalender&year='+year+'&month='+month,
+    data:'func=getCalendar&year='+year+'&month='+month,
     success:function(html){
       $('#'+target_div).html(html);
     }
