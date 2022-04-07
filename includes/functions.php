@@ -4,11 +4,11 @@
 session_start();
 date_default_timezone_set('America/New_York');
 
-$userId = "";
-
-if(isset($_SESSION['userId'])) {
-  $userId = htmlspecialchars(strip_tags($_SESSION['userId']), ENT_QUOTES);
+if(!isset($_SESSION['userId'])) {
+  header('Location: signIn.php');
 }
+
+$userId = htmlspecialchars(strip_tags($_SESSION['userId']), ENT_QUOTES);
 
 if(isset($_POST['func']) && !empty($_POST['func'])){
   switch($_POST['func']){
@@ -19,7 +19,7 @@ if(isset($_POST['func']) && !empty($_POST['func'])){
       getEvents($_POST['date'],$userId);
       break;
     case 'addEvent':
-      addEvent($_POST['date'],$_POST['title'],$_POST['description'],$_POST['privacy'],$_POST['sharedWith'],$_POST['deleteAuth']);
+      addEvent($_POST['date'],$_POST['title'],$_POST['description'],$_POST['privacy'],$_POST['sharedWith'],$_POST['deleteAuth'],$userId);
       break;
     case 'delEvent':
       delEvent($_POST['id']);
@@ -41,11 +41,11 @@ function getCalendar($year = '', $month = ''){
 ?>
       <div class="calendar-wrap">
         <div class="cal-nav">
-          <a href="javascript:void(0);" onclick="getCalendar('calendar_div','<?php echo date("Y",strtotime($date.' - 1 Month')); ?>','<?php echo date("m",strtotime($date.' - 1 Month')); ?>');">&#10092;&#10092;&#10092;</a>
+          <a href="javascript:void(0);" onclick="getCalendar('calendar_div','<?php echo date("Y", strtotime($date.' - 1 Month')); ?>','<?php echo date("m",strtotime($date.' - 1 Month')); ?>');">&#10092;&#10092;&#10092;</a>
           <select class="month_dropdown"><?php echo getAllMonths($dateMonth); ?></select>
           <select class="year_dropdown"><?php echo getYearList($dateYear); ?></select>
           <button class="btn btn-secondary today_btn" onclick="window.location.reload(true);">Today</button>
-          <a href="javascript:void(0);" onclick="getCalendar('calendar_div','<?php echo date("Y",strtotime($date.' + 1 Month')); ?>','<?php echo date("m",strtotime($date.' + 1 Month')); ?>');">&#10093;&#10093;&#10093;</a>
+          <a href="javascript:void(0);" onclick="getCalendar('calendar_div','<?php echo date("Y", strtotime($date.' + 1 Month')); ?>','<?php echo date("m",strtotime($date.' + 1 Month')); ?>');">&#10093;&#10093;&#10093;</a>
         </div>
         <div id="event_list" class="none">
         </div>
@@ -106,44 +106,33 @@ function getCalendar($year = '', $month = ''){
         $dayCount = '0'.$dayCount;
       }
       $currentDate = $dateYear.'-'.$dateMonth.'-'.$dayCount;
-      if(isset($_SESSION['userId'])) {
-        $userId = htmlspecialchars(strip_tags($_SESSION['userId']), ENT_QUOTES);
-      }else{
-        $userId = "";
-      }
+      GLOBAL $userId;
 
       // Include the database config file
       include_once 'dbConfig.php';
 
       // Get number of events based on the current date
-      if(!isset($_SESSION['userId'])) {
-        $result = $con->prepare("SELECT title FROM events WHERE date = :cd AND status = 1 AND privacy = 0");
-        $result->bindParam(":cd", $currentDate);
-        $result->execute();
-        $eventNum = $result->rowCount();
-      }else{
-        $result = $con->prepare("SELECT title FROM events WHERE (date = :cd AND status = 1 AND user = :un) OR (date = :cd AND status = 1 AND privacy = 0) OR (date = :cd AND status = 1 AND sharedWith LIKE :sw)");
-        $sharedWith = "% ".$userId." %";
-        $result->bindParam(":cd", $currentDate);
-        $result->bindParam(":un", $userId);
-        $result->bindParam(":sw", $sharedWith);
-        $result->execute();
-        $eventNum = $result->rowCount();
-      }
+      $result = $con->prepare("SELECT title FROM events WHERE (date = :cd AND status = 1 AND user = :un) OR (date = :cd AND status = 1 AND privacy = 0) OR (date = :cd AND status = 1 AND sharedWith LIKE :sw)");
+      $sharedWith = "% ".$userId." %";
+      $result->bindParam(":cd", $currentDate);
+      $result->bindParam(":un", $userId);
+      $result->bindParam(":sw", $sharedWith);
+      $result->execute();
+      $eventNum = $result->rowCount();
 
       // Define date cell color
       if($eventNum === 1 && strtotime($currentDate) === strtotime(date("Y-m-d"))){
-        echo '            <li data-date="'.$currentDate.'" class="today_event has_event date_cell '.$expandBlocks.'">';
+        echo '            <li data-date="'.$currentDate.'" class="this_day has_event date_cell '.$expandBlocks.'">';
       }elseif($eventNum === 2 && strtotime($currentDate) === strtotime(date("Y-m-d"))){
-        echo '            <li data-date="'.$currentDate.'" class="today_2_multi has_2_multi date_cell '.$expandBlocks.'">';
+        echo '            <li data-date="'.$currentDate.'" class="this_day has_2_multi date_cell '.$expandBlocks.'">';
       }elseif($eventNum === 3 && strtotime($currentDate) === strtotime(date("Y-m-d"))){
-        echo '            <li data-date="'.$currentDate.'" class="today_3_multi has_3_multi date_cell '.$expandBlocks.'">';
+        echo '            <li data-date="'.$currentDate.'" class="this_day has_3_multi date_cell '.$expandBlocks.'">';
       }elseif($eventNum === 4 && strtotime($currentDate) === strtotime(date("Y-m-d"))){
-        echo '            <li data-date="'.$currentDate.'" class="today_4_multi has_4_multi date_cell '.$expandBlocks.'">';
+        echo '            <li data-date="'.$currentDate.'" class="this_day has_4_multi date_cell '.$expandBlocks.'">';
       }elseif($eventNum === 5 && strtotime($currentDate) === strtotime(date("Y-m-d"))){
-        echo '            <li data-date="'.$currentDate.'" class="today_5_multi has_5_multi date_cell '.$expandBlocks.'">';
+        echo '            <li data-date="'.$currentDate.'" class="this_day has_5_multi date_cell '.$expandBlocks.'">';
       }elseif($eventNum > 5 && strtotime($currentDate) === strtotime(date("Y-m-d"))){
-        echo '            <li data-date="'.$currentDate.'" class="today_multi has_multi date_cell '.$expandBlocks.'">';
+        echo '            <li data-date="'.$currentDate.'" class="this_day has_multi date_cell '.$expandBlocks.'">';
       }elseif($eventNum === 0 && strtotime($currentDate) === strtotime(date("Y-m-d"))){
         echo '            <li data-date="'.$currentDate.'" class="this_day date_cell '.$expandBlocks.'">';
       }elseif($eventNum === 1){
@@ -159,17 +148,9 @@ function getCalendar($year = '', $month = ''){
       }elseif($eventNum > 5){
         echo '            <li data-date="'.$currentDate.'" class="has_multi date_cell '.$expandBlocks.'">';
       }elseif($eventNum === 0 && (strtotime($currentDate) < strtotime(date("Y-m-d")))){
-        if(isset($_SESSION['userId'])) {
-          echo '            <li data-date="'.$currentDate.'" class="date_cell past_day '.$expandBlocks.'">';
-        }else{
-          echo '            <li data-date="'.$currentDate.'" class="'.$expandBlocks.'">';
-        }
+        echo '            <li data-date="'.$currentDate.'" class="date_cell past_day '.$expandBlocks.'">';
       }else{
-        if(isset($_SESSION['userId'])) {
-          echo '            <li data-date="'.$currentDate.'" class="date_cell '.$expandBlocks.'">';
-        }else{
-          echo '            <li data-date="'.$currentDate.'" class="'.$expandBlocks.'">';
-        }
+        echo '            <li data-date="'.$currentDate.'" class="date_cell '.$expandBlocks.'">';
       }
                 
       // Date cell
@@ -178,14 +159,12 @@ function getCalendar($year = '', $month = ''){
       echo '</span>';
 
       // Hover event popup
-      if($eventNum > 0 || ((strtotime($currentDate) >= strtotime(date("Y-m-d"))) && isset($_SESSION['userId']))){
+      if($eventNum > 0 || (strtotime($currentDate) >= strtotime(date("Y-m-d")))){
         echo '<div id="date_popup_'.$currentDate.'" class="date_popup_wrap none">';
         echo '<div class="date_window">';
         echo '<div class="popup_event">Events ('.$eventNum.')</div>';
         echo ($eventNum > 0)?'<a href="javascript:;" onclick="getEvents(\''.$currentDate.'\');">view events</a>':'';
-        if(isset($_SESSION['userId'])) {
-          echo '<a href="javascript:void(0);" onclick="addEvent(\''.$currentDate.'\');"><br />add event</a>';
-        }
+        echo '<a href="javascript:void(0);" onclick="addEvent(\''.$currentDate.'\');"><br />add event</a>';
         echo '</div></div>';
       }
 
@@ -207,11 +186,6 @@ function getCalendar($year = '', $month = ''){
   $month10 = 'blank.png';
   $month11 = 'blank.png';
   $month12 = 'blank.png';
-  if(isset($_SESSION['userId'])) {
-    $userid = htmlspecialchars(strip_tags($_SESSION['userId']), ENT_QUOTES);
-  }else{
-    $userId = "";
-  }
   include_once 'dbConfig.php';
   $images = $con->prepare("SELECT * FROM users WHERE id = :user");
   $images->bindParam(":user", $userId);
@@ -315,34 +289,20 @@ function getEvents($date = '', $userId){
 
   $eventListHTML = '';
   $date = $date?$date:date("Y-m-d");
-  if(isset($_SESSION['userId'])) {
-    $userId = htmlspecialchars(strip_tags($_SESSION['userId']), ENT_QUOTES);
-  }else{
-    $userId = "";
-  }
 
   // Fetch events based on the specific date
-  if(!isset($_SESSION['userId'])) {
-    $result = $con->prepare("SELECT * FROM events WHERE date = :date AND status = 1 AND privacy = 0");
-    $result->bindParam(":date", $date);
-    $result->execute();
-  }else{
-    $result = $con->prepare("SELECT * FROM events WHERE (date = :date AND status = 1 AND user = :un) OR (date = :date AND status = 1 AND privacy = 0) OR (date = :date AND status = 1 AND sharedWith LIKE :sw) ORDER BY title");
-    $sharedWith = "% ".$userId." %";
-    $result->bindParam(":date", $date);
-    $result->bindParam(":un", $userId);
-    $result->bindParam(":sw", $sharedWith);
-    $result->execute();
-  }
+  $result = $con->prepare("SELECT * FROM events WHERE (date = :date AND status = 1 AND user = :un) OR (date = :date AND status = 1 AND privacy = 0) OR (date = :date AND status = 1 AND sharedWith LIKE :sw) ORDER BY title");
+  $sharedWith = "% ".$userId." %";
+  $result->bindParam(":date", $date);
+  $result->bindParam(":un", $userId);
+  $result->bindParam(":sw", $sharedWith);
+  $result->execute();
   if($result->rowCount() > 0){
     $eventListHTML = '<h2>Events on '.date("l, M d, Y",strtotime($date)).'</h2>';
-    /*$eventListHTML .= '<ul class="eventList">';*/
     $eventListHTML .= '<table class="eventList">';
     $eventListHTML .= '<tr>';
     $eventListHTML .= '<th class="eventItem">Title</th>';
-    if(isset($_SESSION['userId'])) {
-      $eventListHTML .= '<th class="eventItem">Description</th><th class="eventItem">Creator</th><th class="eventItem">Privacy</th><th class="eventItem">Shared With</th><th class="eventItem"></th>';
-    }
+    $eventListHTML .= '<th class="eventItem">Description</th><th class="eventItem">Creator</th><th class="eventItem">Privacy</th><th class="eventItem">Shared With</th><th class="eventItem"></th>';
     while($row = $result->fetch(PDO::FETCH_ASSOC)) {
       $eventListHTML .= '<tr>';
       $id = $row['id'];
@@ -384,9 +344,7 @@ function getEvents($date = '', $userId){
         $eventPrivacy = '<span style="color:green;">public</span>';
       }
       $authConfirm = ' '.$userId.' ';
-      if(!isset($_SESSION['userId'])) {
-        $eventListHTML .= '<td class="eventItem">'.$eventTitle.'</td>';
-      } else if ($user != $userId && strpos($deleteAuth, $authConfirm) === false) {
+      if ($user != $userId && strpos($deleteAuth, $authConfirm) === false) {
         $eventListHTML .= '<td class="eventItem">'.$eventTitle.'</td><td class="eventItem centered">'.$eventDescription.'</td><td class="eventItem centered">'.$creatorName.'</td><td  class="eventItem centered">'.$eventPrivacy.'</td>';
       } else if ($user != $userId && strpos($deleteAuth, $authConfirm) !== false) {
         $eventListHTML .= '<td class="eventItem">'.$eventTitle.'</td><td class="eventItem centered">'.$eventDescription.'</td><td class="eventItem centered">'.$creatorName.'</td><td  class="eventItem centered">'.$eventPrivacy.'</td><td class="eventItem"></td><td class="eventItem righted"><button class="btn btn-secondary delEventBtn" id="'.$id.'">Delete</button></td>';
@@ -396,15 +354,15 @@ function getEvents($date = '', $userId){
       $eventListHTML .= '</tr>';
     }
     $eventListHTML .= '</table>';
+    $eventListHTML .= '<script src="../js/delete.js"></script>';
   }
   echo $eventListHTML;
-  echo '<script src="../js/delete.js"></script>';
 }
 
 /*
  * Add event to date
  */
-function addEvent($date,$title,$description,$privacy,$sharedWith,$deleteAuth){
+function addEvent($date,$title,$description,$privacy,$sharedWith,$deleteAuth,$userId){
   //Include db configuration file
   include 'dbConfig.php';
   $currentDate = date("Y-m-d H:i:s");
@@ -436,11 +394,6 @@ function addEvent($date,$title,$description,$privacy,$sharedWith,$deleteAuth){
     }
   }
   $deleteAuth = implode(" , ", $deleteIdArray);
-  if(isset($_SESSION['userId'])) {
-    $userId = htmlspecialchars(strip_tags($_SESSION['userId']), ENT_QUOTES);
-  }else{
-    $userId = "";
-  }
   if(isset($_POST['addEventBtn'])) {
     $description = strip_tags($_POST['description']);
     $privacy = intval($_POST['eventPrivacy']);
