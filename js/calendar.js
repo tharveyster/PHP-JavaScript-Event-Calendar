@@ -63,6 +63,8 @@ $(document).ready(function(){
             const dateSplit = date.split("-");
             $('#eventTitle').val('');
             $('#eventDescription').val('');
+            $('#sharedWith').val('');
+            $('#deleteAuth').val('');
             $('#createdModal').modal('show');
             $('#modalText').empty();
             $('#modalText').append('Event created successfully!');
