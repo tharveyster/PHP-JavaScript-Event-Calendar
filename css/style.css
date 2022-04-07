@@ -312,6 +312,15 @@ body {
 	mix-blend-mode: normal;
 }
 
+.calendar-dates ul li.this_day:hover {
+	background-color:rgba(128,128,128,0.75);
+}
+
+.calendar-dates ul li.this_day span {
+	color: #ccc;
+	mix-blend-mode: difference;
+}
+
 .calendar-dates ul li.has_event {
 	background-color: rgba(255,255,0,0.7);
 }
@@ -396,51 +405,6 @@ body {
 	border-bottom: 3px ridge #888888;
 	border-left: 4px ridge #888888;
 	padding: 0 0 calc(6.25% - 3px) 0;
-}
-
-.calendar-dates ul li.this_day:hover {
-	background-color:rgba(128,128,128,0.6);
-}
-
-.calendar-dates ul li.this_day span {
-	color: #ccc;
-	mix-blend-mode: difference;
-}
-
-.calendar-dates ul li.today_event,
-.calendar-dates ul li.today_2_multi,
-.calendar-dates ul li.today_3_multi,
-.calendar-dates ul li.today_4_multi,
-.calendar-dates ul li.today_multi {
-	border-top: 4px ridge #888888;
-	border-right: 3px ridge #888888;
-	border-bottom: 3px ridge #888888;
-	border-left: 4px ridge #888888;
-	padding: 0 0 calc(6.25% - 3px) 0;
-}
-
-.calendar-dates ul li.today_event:hover {
-	background-color: rgba(255,255,30,0.7);
-}
-
-.calendar-dates ul li.today_2_multi:hover {
-	background-color: rgba(255,195,30,0.75);
-}
-
-.calendar-dates ul li.today_3_multi:hover {
-	background-color: rgba(255,30,30,0.8);
-}
-
-.calendar-dates ul li.today_4_multi:hover {
-	background-color: rgba(158,30,158,0.85);
-}
-
-.calendar-dates ul li.today_5_multi:hover {
-	background-color: rgba(30,30,255,0.9);
-}
-
-.calendar-dates ul li.today_multi:hover {
-	background-color: rgba(0,0,0,0.95);
 }
 
 .calendar-dates ul li.past_day {
