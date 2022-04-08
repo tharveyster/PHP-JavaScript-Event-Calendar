@@ -95,7 +95,18 @@ if(isset($_POST["submitButton"])) {
 		$query->bindParam(":un", $username);
 		$query->bindParam(":pw", $password);
 		$query->execute();
-		header("Location:index.php");
+
+		$newQuery = $con->prepare("SELECT * FROM users WHERE username=:un");
+		$newQuery->bindParam(":un", $username);
+		$newQuery->execute();
+		if($newQuery->rowCount() === 1) {
+			while($row = $newQuery->fetch(PDO::FETCH_ASSOC)) {
+				$userId = $row['id'];
+				$_SESSION["username"] = $username;
+				$_SESSION["userId"] = $userId;
+				header("Location: index.php");
+			}
+		}
 	}
 }
 ?>

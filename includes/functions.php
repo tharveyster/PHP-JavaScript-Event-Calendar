@@ -1,14 +1,17 @@
 <?php
 /* The basic calendar code came from https://www.codexworld.com/build-event-calendar-using-jquery-ajax-php/php-event-calendar-jquery-ajax-mysql-codexworld/. That code consisted of displaying the calendar, and adding and viewing events. The functionality has been improved to allow cancellation of new events in the "Add event" section before submitting them, setting event privacy to public or private, sharing private events with other users via their usernames, deletion of events by original submitter (and approved users) only, and visible holidays. There's also a new settings section where users can change their name and email address, and add background images to each month. */
 
+$userId = "";
+
+ini_set('session.gc_maxlifetime', 1200);
 session_start();
 date_default_timezone_set('America/New_York');
 
-if(!isset($_SESSION['userId'])) {
+if(!isset($_SESSION['userId']) && !isset($_SESSION['username'])) {
   header('Location: signIn.php');
+}else{
+  $userId = htmlspecialchars(strip_tags($_SESSION['userId']), ENT_QUOTES);
 }
-
-$userId = htmlspecialchars(strip_tags($_SESSION['userId']), ENT_QUOTES);
 
 if(isset($_POST['func']) && !empty($_POST['func'])){
   switch($_POST['func']){
