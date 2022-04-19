@@ -94,7 +94,7 @@ if(isset($_POST["submitButton"])) {
 			<div class="loginForm">
 				<?php echo $errorMessage; ?>
 				<form action="signIn.php" method="POST" name="signIn" id="signIn">
-					<input type="text" name="username" placeholder="Username" value="<?php echo $username; ?>" required autocomplete="off" autofocus>
+					<input type="text" name="username" placeholder="Username" required autocomplete="off" autofocus>
 					<?php echo $usernameError; ?>
 					<input type="password" name="password" placeholder="Password" required>
 					<?php echo $passwordError; ?>

@@ -115,13 +115,16 @@ function getCalendar($year = '', $month = ''){
       include_once 'dbConfig.php';
 
       // Get number of events based on the current date
-      $result = $con->prepare("SELECT title FROM events WHERE (date = :cd AND status = 1 AND user = :un) OR (date = :cd AND status = 1 AND privacy = 0) OR (date = :cd AND status = 1 AND sharedWith LIKE :sw)");
+      $result = $con->prepare("SELECT title FROM events WHERE (date = :cd1 AND status = 1 AND user = :un) OR (date = :cd2 AND status = 1 AND privacy = 0) OR (date = :cd3 AND status = 1 AND sharedWith LIKE :sw)");
       $sharedWith = "% ".$userId." %";
-      $result->bindParam(":cd", $currentDate);
+      $result->bindParam(":cd1", $currentDate);
+      $result->bindParam(":cd2", $currentDate);
+      $result->bindParam(":cd3", $currentDate);
       $result->bindParam(":un", $userId);
       $result->bindParam(":sw", $sharedWith);
       $result->execute();
       $eventNum = $result->rowCount();
+      $result = null;
 
       // Define date cell color
       if($eventNum === 1 && strtotime($currentDate) === strtotime(date("Y-m-d"))){
@@ -210,7 +213,10 @@ function getCalendar($year = '', $month = ''){
 ?>
           </ul>
         </div>
-        <script src="./js/calendar.js"></script>
+      <script>
+        var url = "./js/calendar.js";
+        $.getScript(url);
+      </script>
       <script>
         // Background images
         var imageAddress;
@@ -252,7 +258,10 @@ function getCalendar($year = '', $month = ''){
         }
         document.getElementsByClassName("content-wrap")[0].style.backgroundImage = "url('images/" + imageAddress + "')";
       </script>
-      <script src="./js/holidays.js"></script>
+      <script>
+        var url = "./js/holidays.js";
+        $.getScript(url);
+      </script>
 <?php
 }
 
@@ -294,9 +303,11 @@ function getEvents($date = '', $userId){
   $date = $date?$date:date("Y-m-d");
 
   // Fetch events based on the specific date
-  $result = $con->prepare("SELECT * FROM events WHERE (date = :date AND status = 1 AND user = :un) OR (date = :date AND status = 1 AND privacy = 0) OR (date = :date AND status = 1 AND sharedWith LIKE :sw) ORDER BY title");
+  $result = $con->prepare("SELECT * FROM events WHERE (date = :date1 AND status = 1 AND user = :un) OR (date = :date2 AND status = 1 AND privacy = 0) OR (date = :date3 AND status = 1 AND sharedWith LIKE :sw) ORDER BY title");
   $sharedWith = "% ".$userId." %";
-  $result->bindParam(":date", $date);
+  $result->bindParam(":date1", $date);
+  $result->bindParam(":date2", $date);
+  $result->bindParam(":date3", $date);
   $result->bindParam(":un", $userId);
   $result->bindParam(":sw", $sharedWith);
   $result->execute();
@@ -327,6 +338,7 @@ function getEvents($date = '', $userId){
             array_push($eventSharedUsernameArray, $userShare);
           }
         }
+        $query = null;
       }
       $newSharedGroup = implode(", ", $eventSharedUsernameArray);
       if ($user == $userId) {
@@ -340,6 +352,7 @@ function getEvents($date = '', $userId){
             $creatorName = $row['username'];
           }
         }
+        $creator = null;
       }
       if ($privacy == '1') {
         $eventPrivacy = '<span style="color:red;">private</span>';
@@ -360,6 +373,7 @@ function getEvents($date = '', $userId){
     $eventListHTML .= '<script src="../js/delete.js"></script>';
   }
   echo $eventListHTML;
+  $result = null;
 }
 
 /*
@@ -381,6 +395,7 @@ function addEvent($date,$title,$description,$privacy,$sharedWith,$deleteAuth,$us
         array_push($sharedIdArray,$id);
       }
     }
+    $query = null;
   }
   $sharedWith = implode(" , ", $sharedIdArray);
   $deleteUsernameArray = explode(",", $deleteAuth);
@@ -404,10 +419,11 @@ function addEvent($date,$title,$description,$privacy,$sharedWith,$deleteAuth,$us
     $deleteAuth = strip_tags($_POST['deleteAuth']);
   }
   //Insert the event data into database
-  $insert = $con->prepare("INSERT INTO events (title,date,created,modified,user,description,privacy,sharedWith,deleteAuth) VALUES (:title,:date,:currentDate,:currentDate,:un,:description,:ep,:sw,:da)");
+  $insert = $con->prepare("INSERT INTO events (title,date,created,modified,user,description,privacy,sharedWith,deleteAuth) VALUES (:title,:date,:currentDate,:modifiedDate,:un,:description,:ep,:sw,:da)");
   $insert->bindParam(":title", $title);
   $insert->bindParam(":date", $date);
   $insert->bindParam(":currentDate", $currentDate);
+  $insert->bindParam(":modifiedDate", $currentDate);
   $insert->bindParam(":un", $userId);
   $insert->bindParam(":description", $description);
   $insert->bindParam(":ep", $privacy);
@@ -421,5 +437,6 @@ function addEvent($date,$title,$description,$privacy,$sharedWith,$deleteAuth,$us
   }else{
     echo 'err';
   }
+  $insert = null;
 }
 ?>

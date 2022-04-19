@@ -420,8 +420,9 @@ body {
 	background-color: rgba(128,128,128,0.6);
 }
 
-.calendar-dates ul li.past_day:hover span {
-	color: #000;
+.calendar-dates ul li.past_day:hover span,
+.calendar-dates ul li.this_day:hover span {
+		color: #000;
 	mix-blend-mode: normal;
 }
 
@@ -1399,112 +1400,3 @@ button.close {
 	}
 }
 
-/*@media only screen and (min-width:1200px) and (max-width:1500px) {
-	.title {
-		width:1200px;
-	}
-	.return-text {
-		width:1200px;
-	}
-	#framer {
-		width:1200px;
-		height:720px;
-	}
-	#container {
-		width:1200px;
-		height:720px;
-	}
-	#calendar_div {
-		width:1200px;
-		height:720px;
-	}
-	.calendar-wrap{
-		width:1198px;
-		height:680px;
-	}
-	.calendar-wrap .cal-nav{
-		width:1182px;
-	}
-	.calendar-days{
-		width:1200px;
-		padding-left:4px;
-	}
-	.calendar-days ul li{
-		width:160px;
-	}
-	.calendar-dates{
-		width:1200px;
-		padding-left:4px;
-	}
-	.calendar-dates ul li{
-		width:156px;
-		height:86px;
-	}
-}
-
-@media only screen and (max-width:1199px) {
-	.title {
-		width:1000px;
-	}
-	.return-text {
-		width:1000px;
-	}
-	#framer {
-		width:1000px;
-		height:600px;
-	}
-	#container {
-		width:1000px;
-		height:600px;
-	}
-	#calendar_div {
-		width:1000px;
-		height:600px;
-	}
-	.calendar-wrap{
-		width:998px;
-		height:560px;
-	}
-	.calendar-wrap .cal-nav{
-		width:982px;
-	}
-	.calendar-days{
-		width:1000px;
-		padding-left:2px;
-	}
-	.calendar-days ul li{
-		width:132px;
-	}
-	.calendar-dates{
-		width:1000px;
-		padding-left:2px;
-	}
-	.calendar-dates ul li{
-		width:128px;
-		height:66px;
-	}
-}*/
-
-/* @media only screen and (min-width:480px) and (max-width:619px) {
-	body{background-size: 336px 100%;}
-	.calendar-wrap{ width:336px;}
-	.calendar-days ul li{ width:38px;font-size:7px;}
-	.calendar-dates ul li{ width:38px;}
-	.calendar-dates ul li{ height:27px;}
-}
-@media only screen and (min-width: 320px) and (max-width: 479px) {
-	.calendar-wrap{ width:219px;}
-	.calendar-days ul li{ width:30px; font-size:11px;}
-	.calendar-dates ul li{ width:30px;}
-	.calendar-dates{ width:217px;}
-	.calendar-dates ul li{ height:50px;}
-}
-
-@media only screen and (min-width: 620px) and (max-width: 1023px) {
-	body{background-size: 530px 100%;}
-	.calendar-wrap{ width:530px;}
-	.calendar-days ul li{ width:65px;font-size:10px;}
-	.calendar-dates ul li{ width:65px;}
-	.calendar-dates{ width:525px;}
-	.calendar-dates ul li{ height:42px;}
-}*/

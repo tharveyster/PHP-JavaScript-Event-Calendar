@@ -4,6 +4,7 @@ $(document).ready(function(){
     const del_id = $(this).attr("id");
     const info = "id=" + del_id;
     $.ajax({
+      async: true,
       type : "POST",
       url : "deleteEvent.php", //URL to the delete php script
       data : info,

@@ -1,5 +1,6 @@
 function getCalendar(target_div, year, month){
   $.ajax({
+    async: true,
     type:'POST',
     url:'includes/functions.php',
     data:'func=getCalendar&year='+year+'&month='+month,
@@ -11,6 +12,7 @@ function getCalendar(target_div, year, month){
 
 function getEvents(date){
   $.ajax({
+    async: true,
     type:'POST',
     url:'includes/functions.php',
     data:'func=getEvents&date='+date,
@@ -55,6 +57,7 @@ $(document).ready(function(){
     const deleteAuth = $('#deleteAuth').val();
     if(title){
       $.ajax({
+        async: true,
         type:'POST',
         url:'includes/functions.php',
         data:'func=addEvent&date='+date+'&title='+title+'&description='+description+'&privacy='+privacy+'&sharedWith='+sharedWith+'&deleteAuth='+deleteAuth,
