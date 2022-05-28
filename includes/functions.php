@@ -152,7 +152,7 @@ function getCalendar($year = '', $month = ''){
       }
       $listItem = '<li data-date="'.$currentDate.'" class="'.$listClasses.'">';
       if($eventNum === 0 && $currentDateRes < $dateRes){
-        $listItem = str_replace('class="date_cell ', 'class="date_cell past_day ', $listItem);
+        $listItem = str_replace('class="date_cell', 'class="date_cell past_day', $listItem);
       }
       if($currentDateRes === $dateRes){
         $listItem = str_replace('class="', 'class="this_day ', $listItem);
@@ -222,41 +222,44 @@ function getCalendar($year = '', $month = ''){
       <script>
         // Background images
         var imageAddress;
-        if (parseInt($('.month_dropdown').val()) === 1) {
-          imageAddress = "<?php echo $month01; ?>";
-        }
-        else if (parseInt($('.month_dropdown').val()) === 2) {
-          imageAddress = "<?php echo $month02; ?>";
-        }
-        else if (parseInt($('.month_dropdown').val()) === 3) {
-          imageAddress = "<?php echo $month03; ?>";
-        }
-        else if (parseInt($('.month_dropdown').val()) === 4) {
-          imageAddress = "<?php echo $month04; ?>";
-        }
-        else if (parseInt($('.month_dropdown').val()) === 5) {
-          imageAddress = "<?php echo $month05; ?>";
-        }
-        else if (parseInt($('.month_dropdown').val()) === 6) {
-          imageAddress = "<?php echo $month06; ?>";
-        }
-        else if (parseInt($('.month_dropdown').val()) === 7) {
-          imageAddress = "<?php echo $month07; ?>";
-        }
-        else if (parseInt($('.month_dropdown').val()) === 8) {
-          imageAddress = "<?php echo $month08; ?>";
-        }
-        else if (parseInt($('.month_dropdown').val()) === 9) {
-          imageAddress = "<?php echo $month09; ?>";
-        }
-        else if (parseInt($('.month_dropdown').val()) === 10) {
-          imageAddress = "<?php echo $month10; ?>";
-        }
-        else if (parseInt($('.month_dropdown').val()) === 11) {
-          imageAddress = "<?php echo $month11; ?>";
-        }
-        else {
-          imageAddress = "<?php echo $month12; ?>";
+        var monthDropdownValue = parseInt($('.month_dropdown').val());
+        switch(monthDropdownValue){
+          case 1:
+            imageAddress = "<?php echo $month01; ?>";
+            break;
+          case 2:
+            imageAddress = "<?php echo $month02; ?>";
+            break;
+          case 3:
+            imageAddress = "<?php echo $month03; ?>";
+            break;
+          case 4:
+            imageAddress = "<?php echo $month04; ?>";
+            break;
+          case 5:
+            imageAddress = "<?php echo $month05; ?>";
+            break;
+          case 6:
+            imageAddress = "<?php echo $month06; ?>";
+            break;
+          case 7:
+            imageAddress = "<?php echo $month07; ?>";
+            break;
+          case 8:
+            imageAddress = "<?php echo $month08; ?>";
+            break;
+          case 9:
+            imageAddress = "<?php echo $month09; ?>";
+            break;
+          case 10:
+            imageAddress = "<?php echo $month10; ?>";
+            break;
+          case 11:
+            imageAddress = "<?php echo $month11; ?>";
+            break;
+          default:
+            imageAddress = "<?php echo $month12; ?>";
+            break;
         }
         document.getElementsByClassName("content-wrap")[0].style.backgroundImage = "url('images/" + imageAddress + "')";
       </script>
