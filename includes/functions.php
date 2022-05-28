@@ -40,7 +40,7 @@ function getCalendar($year = '', $month = ''){
   $totalDaysOfMonth = cal_days_in_month(CAL_GREGORIAN,$dateMonth,$dateYear);
   $totalDaysOfMonthDisplay = ($currentMonthFirstDay === 0)?($totalDaysOfMonth):($totalDaysOfMonth + $currentMonthFirstDay);
   $boxDisplay = ($totalDaysOfMonthDisplay <= 35)?35:42;
-  $expandBlocks = ($boxDisplay === 35)?"expanded":"";
+  $expandBlocks = ($boxDisplay === 35)?" expanded":"";
 ?>
       <div class="calendar-wrap">
         <div class="cal-nav">
@@ -127,37 +127,38 @@ function getCalendar($year = '', $month = ''){
       $result = null;
 
       // Define date cell color
-      if($eventNum === 1 && strtotime($currentDate) === strtotime(date("Y-m-d"))){
-        echo '            <li data-date="'.$currentDate.'" class="this_day has_event date_cell '.$expandBlocks.'">';
-      }elseif($eventNum === 2 && strtotime($currentDate) === strtotime(date("Y-m-d"))){
-        echo '            <li data-date="'.$currentDate.'" class="this_day has_2_multi date_cell '.$expandBlocks.'">';
-      }elseif($eventNum === 3 && strtotime($currentDate) === strtotime(date("Y-m-d"))){
-        echo '            <li data-date="'.$currentDate.'" class="this_day has_3_multi date_cell '.$expandBlocks.'">';
-      }elseif($eventNum === 4 && strtotime($currentDate) === strtotime(date("Y-m-d"))){
-        echo '            <li data-date="'.$currentDate.'" class="this_day has_4_multi date_cell '.$expandBlocks.'">';
-      }elseif($eventNum === 5 && strtotime($currentDate) === strtotime(date("Y-m-d"))){
-        echo '            <li data-date="'.$currentDate.'" class="this_day has_5_multi date_cell '.$expandBlocks.'">';
-      }elseif($eventNum > 5 && strtotime($currentDate) === strtotime(date("Y-m-d"))){
-        echo '            <li data-date="'.$currentDate.'" class="this_day has_multi date_cell '.$expandBlocks.'">';
-      }elseif($eventNum === 0 && strtotime($currentDate) === strtotime(date("Y-m-d"))){
-        echo '            <li data-date="'.$currentDate.'" class="this_day date_cell '.$expandBlocks.'">';
-      }elseif($eventNum === 1){
-        echo '            <li data-date="'.$currentDate.'" class="has_event date_cell '.$expandBlocks.'">';
-      }elseif($eventNum === 2){
-        echo '            <li data-date="'.$currentDate.'" class="has_2_multi date_cell '.$expandBlocks.'">';
-      }elseif($eventNum === 3){
-        echo '            <li data-date="'.$currentDate.'" class="has_3_multi date_cell '.$expandBlocks.'">';
-      }elseif($eventNum === 4){
-        echo '            <li data-date="'.$currentDate.'" class="has_4_multi date_cell '.$expandBlocks.'">';
-      }elseif($eventNum === 5){
-        echo '            <li data-date="'.$currentDate.'" class="has_5_multi date_cell '.$expandBlocks.'">';
-      }elseif($eventNum > 5){
-        echo '            <li data-date="'.$currentDate.'" class="has_multi date_cell '.$expandBlocks.'">';
-      }elseif($eventNum === 0 && (strtotime($currentDate) < strtotime(date("Y-m-d")))){
-        echo '            <li data-date="'.$currentDate.'" class="date_cell past_day '.$expandBlocks.'">';
-      }else{
-        echo '            <li data-date="'.$currentDate.'" class="date_cell '.$expandBlocks.'">';
+      $currentDateRes = strtotime($currentDate);
+      $dateRes = strtotime(date("Y-m-d"));
+      $listClasses = 'date_cell'.$expandBlocks;
+      switch($eventNum) {
+        case 1:
+          $listClasses = 'has_event '.$listClasses;
+          break;
+        case 2:
+          $listClasses = 'has_2_multi '.$listClasses;
+          break;
+        case 3:
+          $listClasses = 'has_3_multi '.$listClasses;
+          break;
+        case 4:
+          $listClasses = 'has_4_multi '.$listClasses;
+          break;
+        case 5:
+          $listClasses = 'has_5_multi '.$listClasses;
+          break;
+        case 6-500:
+          $listClasses = 'has_multi '.$listClasses;
+          break;
       }
+      $listItem = '<li data-date="'.$currentDate.'" class="'.$listClasses.'">';
+      if($eventNum === 0 && $currentDateRes < $dateRes){
+        $listItem = str_replace('class="date_cell ', 'class="date_cell past_day ', $listItem);
+      }
+      if($currentDateRes === $dateRes){
+        $listItem = str_replace('class="', 'class="this_day ', $listItem);
+      }
+
+      echo $listItem;
                 
       // Date cell
       echo '<span>';
@@ -165,7 +166,7 @@ function getCalendar($year = '', $month = ''){
       echo '</span>';
 
       // Hover event popup
-      if($eventNum > 0 || (strtotime($currentDate) >= strtotime(date("Y-m-d")))){
+      if($eventNum > 0 || $currentDateRes >= $dateRes){
         echo '<div id="date_popup_'.$currentDate.'" class="date_popup_wrap none">';
         echo '<div class="date_window">';
         echo '<div class="popup_event">Events ('.$eventNum.')</div>';
@@ -177,7 +178,7 @@ function getCalendar($year = '', $month = ''){
       echo '</li>'."\r\n";
       $dayCount++;
     }else{
-      echo '            <li class="'.$expandBlocks.'">&nbsp;</li>'."\r\n";
+      echo '            <li class="no_date'.$expandBlocks.'">&nbsp;</li>'."\r\n";
     }
   }
   $month01 = 'blank.png';
@@ -210,6 +211,7 @@ function getCalendar($year = '', $month = ''){
     $month11 = $row["november"];
     $month12 = $row["december"];
   }
+  $images = null;
 ?>
           </ul>
         </div>
@@ -410,6 +412,7 @@ function addEvent($date,$title,$description,$privacy,$sharedWith,$deleteAuth,$us
         array_push($deleteIdArray,$id);
       }
     }
+    $query = null;
   }
   $deleteAuth = implode(" , ", $deleteIdArray);
   if(isset($_POST['addEventBtn'])) {
