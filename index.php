@@ -28,7 +28,7 @@ if(isset($_SESSION['username'])) {
   <script src="./js/script.js"></script>
 </head>
 <body<?php echo $timerResets; ?>>
-  <div class="content-wrap">
+  <div id="main-content" class="content-wrap">
   <div id="container">
   <div class="loginMessage">
       <a href="signOut.php?signedOut=true" class="loginMessageLink">SIGN OUT</a>
