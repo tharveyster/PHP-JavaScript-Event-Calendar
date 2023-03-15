@@ -32,16 +32,18 @@ USE `calendar`;
 
 CREATE TABLE `events` (
   `id` int(11) NOT NULL,
-  `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `title` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `date` date NOT NULL,
   `created` datetime NOT NULL DEFAULT current_timestamp(),
   `modified` datetime NOT NULL DEFAULT current_timestamp(),
   `status` tinyint(1) NOT NULL DEFAULT 1 COMMENT '1=Active | 0=Inactive',
-  `user` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
+  `user` varchar(25) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` varchar(250) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `privacy` tinyint(1) NOT NULL DEFAULT 1 COMMENT '1=Private | 0=Public',
-  `sharedWith` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `deleteAuth` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `sharedWith` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `deleteAuth` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `category` varchar(24) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -51,24 +53,24 @@ CREATE TABLE `events` (
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
-  `firstName` varchar(25) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `lastName` varchar(25) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `email` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `username` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
-  `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `jan` varchar(64) COLLATE utf8_unicode_ci DEFAULT 'blank.png',
-  `feb` varchar(64) COLLATE utf8_unicode_ci DEFAULT 'blank.png',
-  `mar` varchar(64) COLLATE utf8_unicode_ci DEFAULT 'blank.png',
-  `apr` varchar(64) COLLATE utf8_unicode_ci DEFAULT 'blank.png',
-  `may` varchar(64) COLLATE utf8_unicode_ci DEFAULT 'blank.png',
-  `jun` varchar(64) COLLATE utf8_unicode_ci DEFAULT 'blank.png',
-  `jul` varchar(64) COLLATE utf8_unicode_ci DEFAULT 'blank.png',
-  `aug` varchar(64) COLLATE utf8_unicode_ci DEFAULT 'blank.png',
-  `sep` varchar(64) COLLATE utf8_unicode_ci DEFAULT 'blank.png',
-  `oct` varchar(64) COLLATE utf8_unicode_ci DEFAULT 'blank.png',
-  `nov` varchar(64) COLLATE utf8_unicode_ci DEFAULT 'blank.png',
-  `dec` varchar(64) COLLATE utf8_unicode_ci DEFAULT 'blank.png'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `firstName` varchar(25) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `lastName` varchar(25) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `username` varchar(25) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `jan` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `feb` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `mar` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `apr` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `may` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `jun` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `jul` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `aug` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `sep` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `oct` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `nov` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `dec` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8mb4_unicode_ci;
 
 
 --

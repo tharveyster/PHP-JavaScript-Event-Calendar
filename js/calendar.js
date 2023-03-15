@@ -220,7 +220,7 @@ $(document).ready(function(){
   showPopups();
   var list = document.querySelectorAll(`[type*="checkbox"]`);
   list.forEach( el => {
-    var checked = JSON.parse(localStorage.getItem(el.id));
+    var checked = JSON.parse(localStorage.getItem("cal-"+el.id));
     document.getElementById(el.id).checked = checked;
   });
   let eventCheck = list[0];
@@ -228,6 +228,8 @@ $(document).ready(function(){
   let events = document.querySelectorAll('.event');
   let backgroundElement = document.querySelector('#main-content');
   let date_cell = document.querySelectorAll('.date_cell');
+  let mask = document.querySelector('#maskCheck');
+  let maskLabel = document.querySelector('#maskCheckLabel');
   if (eventCheck.checked === true) {
     events.forEach(e => e.style.display = "block");
     date_cell.forEach(h => {
@@ -239,9 +241,19 @@ $(document).ready(function(){
       h.classList.replace("has_multi", "multi_event");
     });
     hidePopups();
+    mask.type = 'checkbox';
+    maskLabel.classList.remove('none');
+    mask.checked = JSON.parse(localStorage.getItem("cal-"+maskCheck.id));
+    if (maskCheck.checked === true) {
+      date_cell.forEach(h => {
+        h.classList.add("masked");
+      });
+    }
   }
   if (imageCheck.checked === true) {
     backgroundElement.classList.add("hideImage");
+    mask.type = 'hidden';
+    maskLabel.classList.add('none');
   } else {
     backgroundElement.classList.remove("hideImage");
   }
@@ -347,9 +359,11 @@ hidePopups = function(){
 
 saveEvent = function(){
   let eventCheck = document.querySelector('#eventCheck');
-  localStorage.setItem(eventCheck.id, eventCheck.checked);
+  localStorage.setItem("cal-"+eventCheck.id, eventCheck.checked);
   let events = document.querySelectorAll('.event');
   let date_cell = document.querySelectorAll('.date_cell');
+  let mask = document.querySelector('#maskCheck');
+  let maskLabel = document.querySelector('#maskCheckLabel');
   if (eventCheck.checked === true) {
     events.forEach(e => e.style.display = "block");
     date_cell.forEach(h => {
@@ -361,6 +375,27 @@ saveEvent = function(){
       h.classList.replace("has_multi", "multi_event");
     });
     hidePopups();
+    if (imageCheck.checked === true) {
+      maskCheck.checked = false;
+      mask.type = 'hidden';
+      maskLabel.classList.add('none');
+      date_cell.forEach(h => {
+        h.classList.remove("masked");
+      })
+    } else {
+      mask.type = 'checkbox';
+      maskLabel.classList.remove('none');
+      mask.checked = JSON.parse(localStorage.getItem("cal-"+maskCheck.id));
+      if (maskCheck.checked === true) {
+        date_cell.forEach(h => {
+          h.classList.add("masked");
+        });
+      } else {
+        date_cell.forEach(h => {
+          h.classList.remove("masked");
+        })
+      } 
+    }
   } else {
     events.forEach(e => e.style.display = "none");
     date_cell.forEach(h => {
@@ -372,23 +407,57 @@ saveEvent = function(){
       h.classList.replace("multi_event", "has_multi");
     })
     showPopups();
+    maskCheck.checked = false;
+    mask.type = 'hidden';
+    maskLabel.classList.add('none');
+  } 
+}
+
+saveMask = function(){
+  let maskCheck = document.querySelector('#maskCheck');
+  localStorage.setItem("cal-"+maskCheck.id, maskCheck.checked);
+  let date_cell = document.querySelectorAll('.date_cell');
+  if (maskCheck.checked === true) {
+    date_cell.forEach(h => {
+      h.classList.add("masked");
+    });
+  } else {
+    date_cell.forEach(h => {
+      h.classList.remove("masked");
+    })
   } 
 }
 
 saveImage = function(){
   let imageCheck = document.querySelector('#imageCheck');
-  localStorage.setItem(imageCheck.id, imageCheck.checked);
+  localStorage.setItem("cal-"+imageCheck.id, imageCheck.checked);
   let backgroundElement = document.querySelector('#main-content');
+  let maskCheck = document.querySelector('#maskCheck');
+  let mask = document.querySelector('#maskCheck');
+  let maskLabel = document.querySelector('#maskCheckLabel');
+  let date_cell = document.querySelectorAll('.date_cell');
   if (imageCheck.checked === true) {
     backgroundElement.classList.add("hideImage");
+    maskCheck.checked = false;
+    mask.type = 'hidden';
+    maskLabel.classList.add('none');
+    date_cell.forEach(h => {
+      h.classList.remove("masked");
+    })
   } else {
     backgroundElement.classList.remove("hideImage");
+    if (eventCheck.checked === true) {
+      maskCheck.checked = JSON.parse(localStorage.getItem("cal-"+maskCheck.id));
+      saveMask();
+      mask.type = 'checkbox';
+      maskLabel.classList.remove('none');
+    }
   }
 }
 
 hideCalendar = function(){
   let calCheck = document.querySelector('#calCheck');
-  localStorage.setItem(calCheck.id, calCheck.checked);
+  localStorage.setItem("cal-"+calCheck.id, calCheck.checked);
   let calTitle = document.querySelector('.title');
   let nav = document.querySelector('.cal-nav');
   let calDays = document.querySelector('.calendar-days');

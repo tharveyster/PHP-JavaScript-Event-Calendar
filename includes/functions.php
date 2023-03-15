@@ -1,5 +1,5 @@
 <?php
-/* The basic calendar code came from https://www.codexworld.com/build-event-calendar-using-jquery-ajax-php/php-event-calendar-jquery-ajax-mysql-codexworld/. That code consisted of displaying the calendar, and adding and viewing events. The functionality has been improved to allow cancellation of new events in the "Add event" section before submitting them, setting event privacy to public or private, sharing private events with other users via their usernames, deletion of events by original submitter (and approved users) only, and visible holidays. There's also a new settings section where users can change their name and email address, and add background images to each month. */
+/* The basic calendar code came from https://www.codexworld.com/build-event-calendar-using-jquery-ajax-php/php-event-calendar-jquery-ajax-mysql-codexworld/. That code consisted of displaying the calendar, and adding and viewing events. The functionality has been improved to allow cancellation of new events in the "Add event" section before submitting them, setting event privacy to public or private, sharing private events with other users via their usernames, deletion of events by original submitter (and approved users) only, and visible holidays. There's also a new settings section where users can change their name and email address, and add background images to each month. The ability to modify events (event creator only) has been added, so the date, title, description, privacy, shared with, and delete authority can all be changed. */
 
 $userId = "";
 
@@ -55,6 +55,7 @@ function getCalendar($year = '', $month = ''){
       <div class="calendar-wrap">
       <div class="checkboxSection">
           <input type="checkbox" id="eventCheck" name="eventCheck" class="hideThis" onclick="saveEvent()"><label for="eventCheck" class="hideThis">Show Events</label>
+          <input type="hidden" id="maskCheck" name="maskCheck" class="hideThis" onclick="saveMask()"><label for="maskCheck" id="maskCheckLabel" class="hideThis none">Mask Mode</label>
           <input type="checkbox" id="imageCheck" name="imageCheck" class="hideThis" onclick="saveImage()"><label for="imageCheck" class="hideThis">Hide Image</label>
           <input type="checkbox" id="calCheck" name="calCheck" onclick="hideCalendar()"><label for="calCheck">Hide Calendar</label>
         </div>
@@ -190,8 +191,20 @@ function getCalendar($year = '', $month = ''){
       // Date cell
       echo '<span>';
       echo '<span class="dayNumber" onclick="addEvent(\''.$currentDate.'\');">'.$dayCount.'</span>';
-      if($eventNum >= 6) {
+      if($boxDisplay === 35 && $eventNum >= 6) {
         $events = $con->prepare("SELECT id, title, category FROM events WHERE (date = :cd1 AND status = 1 AND user = :un) OR (date = :cd2 AND status = 1 AND privacy = 0) OR (date = :cd3 AND status = 1 AND sharedWith LIKE :sw) ORDER BY title LIMIT 4");
+      $sharedWith = "% ".$userId." %";
+      $events->execute(
+        array(
+          ":cd1" => $currentDate, 
+          ":cd2" => $currentDate, 
+          ":cd3" => $currentDate, 
+          ":un" => $userId,
+          ":sw" => $sharedWith
+        )
+      );
+    } elseif ($boxDisplay === 42 && $eventNum >= 5) {
+      $events = $con->prepare("SELECT id, title, category FROM events WHERE (date = :cd1 AND status = 1 AND user = :un) OR (date = :cd2 AND status = 1 AND privacy = 0) OR (date = :cd3 AND status = 1 AND sharedWith LIKE :sw) ORDER BY title LIMIT 3");
       $sharedWith = "% ".$userId." %";
       $events->execute(
         array(
@@ -239,8 +252,12 @@ function getCalendar($year = '', $month = ''){
           $eventTitle = $row['title'];
           $eventsHTML .= '<p id="'.$eventId.'" class="'.$catStyle.'" onclick="getEvent(\''.$currentDate.'\', \''.$eventId.'\');">'.$eventTitle.'</p>';
         }
-        if($eventNum > 5) {
+        if($boxDisplay === 35 && $eventNum > 5) {
           $difference = $eventNum - 4;
+          $eventsHTML .= '<p class="category-difference" onclick="getEvents(\''.$currentDate.'\');">+ '.$difference.' more</p>';
+        }
+        if($boxDisplay === 42 && $eventNum > 4) {
+          $difference = $eventNum - 3;
           $eventsHTML .= '<p class="category-difference" onclick="getEvents(\''.$currentDate.'\');">+ '.$difference.' more</p>';
         }
         $eventsHTML .= '</span>';
@@ -432,7 +449,7 @@ function getEvents($date = '', $userId){
       } else if ($user != $userId && strpos($deleteAuth, $authConfirm) !== false) {
         $eventListHTML .= '<td class="eventItem">'.$eventTitle.'</td><td class="eventItem centered">'.$eventDescription.'</td><td class="eventItem centered">'.$creatorName.'</td><td class="eventItem centered">'.$eventPrivacy.'</td><td class="eventItem centered">'.$newSharedGroup.'</td><td class="eventItem centered">'.$category.'</td><td class="eventItem righted"><button class="btn btn-secondary delEventBtn" id="'.$id.'">Delete</button></td>';
       } else {
-        $eventListHTML .= '<td class="eventItem" id="'.$id.'">'.$eventTitle.'</td><td class="eventItem centered">'.$eventDescription.'</td><td class="eventItem centered">'.$creatorName.'</td><td class="eventItem centered">'.$eventPrivacy.'</td><td class="eventItem centered">'.$newSharedGroup.'</td><td class="eventItem centered">'.$category.'</td><td class="eventItem righted"><button class="btn btn-secondary delEventBtn" id="'.$id.'">Delete</button></td>';
+        $eventListHTML .= '<td class="eventItem" id="'.$id.'">'.$eventTitle.'</td><td class="eventItem centered">'.$eventDescription.'</td><td class="eventItem centered">'.$creatorName.'</td><td class="eventItem centered">'.$eventPrivacy.'</td><td class="eventItem centered">'.$newSharedGroup.'</td><td class="eventItem centered">'.$category.'</td><td class="eventItem righted"><button class="btn btn-secondary modEventBtn" id="'.$id.'" onclick="modEvent('.$id.')">Modify</button><button class="btn btn-secondary delEventBtn" id="'.$id.'">Delete</button></td>';
       }
       $eventListHTML .= '</tr>';
     }
