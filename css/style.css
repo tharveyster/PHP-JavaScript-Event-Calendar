@@ -34,6 +34,7 @@ body {
 	background-color: rgba(255,255,255,0.5);
   padding: 0 5px;
   border-radius: 5px;
+	color: rgba(0, 0, 0, 0.3);
 }
 
 	.checkboxSection {
@@ -320,13 +321,13 @@ body {
 	border:1px solid #444444;
 	background:none;
 	box-shadow:none;
-	padding: 3px 3px 6.25% 3px;
+	padding: 0 0 6.25% 0;
 	position:relative;
 	margin: 1px;
 }
 
 .calendar-dates ul li .event {
-	font-size: 12px;
+	font-size: 14px;
 }
 
 .calendar-dates ul li span {
@@ -455,7 +456,7 @@ body {
 
 .calendar-dates ul li.this_day {
 	border: 4px ridge #888888;
-	padding: 0 0 calc(6.25% - 3px) 0;
+	padding: 0 0 6.25% 0;
 }
 
 .calendar-dates ul li.past_day {
@@ -480,7 +481,7 @@ body {
 }
 
 .calendar-dates ul li.expanded {
-	padding: 3px 3px calc(8.012% - 3px) 3px;
+	padding: 0 0 8.012% 0;
 }
 
 .calendar-dates ul li.expanded .event {
@@ -496,6 +497,41 @@ body {
 	padding: 0 0 calc(8.012% - 6px) 0;
 }
 
+.one_event.masked {
+	background-color: rgba(0, 0, 0, 0.78) !important;
+}
+
+.two_event.masked {
+	background-color: rgba(0, 0, 0, 0.82) !important;
+}
+
+.three_event.masked {
+	background-color: rgba(0, 0, 0, 0.86) !important;
+}
+
+.four_event.masked {
+	background-color: rgba(0, 0, 0, 0.90) !important;
+}
+
+.five_event.masked {
+	background-color: rgba(0, 0, 0, 0.94) !important;
+}
+
+.multi_event.masked {
+	background-color: rgba(0, 0, 0, 0.98) !important;
+}
+
+.one_event.masked span:hover,
+.two_event.masked span:hover,
+.three_event.masked span:hover,
+.four_event.masked span:hover,
+.five_event.masked span:hover,
+.multi_event.masked span:hover,
+.masked:hover .holiday {
+	color: #ccc;
+	background-color: #000;
+}
+
 .category-life,
 .category-house,
 .category-work,
@@ -503,10 +539,10 @@ body {
 .category-medical,
 .category-misc,
 .category-difference {
-	height: 24px;
+	height: 22px;
 	border-radius: 5px;
 	text-align: left;
-	padding: 4px 0 4px 10px;
+	padding: 3px 0 4px 10px;
 	width: 95%;
 	overflow: hidden;
 	cursor: pointer;
@@ -1074,7 +1110,7 @@ button.close {
 	}
 
 	.calendar-dates ul li.expanded {
-		padding: 3px 3px calc(8.147% - 3px) 3px;
+		padding: 0 0 8.147% 0;
 	}
 	
 	.calendar-dates ul li.this_day.expanded,
@@ -1117,7 +1153,7 @@ button.close {
 	}
 
 	.calendar-dates ul li.expanded {
-		padding: 3px 3px calc(8.194% - 3px) 3px;
+		padding: 0 0 8.194% 0;
 	}
 	
 	.calendar-dates ul li.this_day.expanded,
@@ -1158,7 +1194,7 @@ button.close {
 	}
 
 	.calendar-dates ul li.expanded {
-		padding: 3px 3px calc(8.277% - 3px) 3px;
+		padding: 0 0 8.277% 0;
 	}
 	
 	.calendar-dates ul li.this_day.expanded,
@@ -1239,7 +1275,7 @@ button.close {
 	}
 
 	.calendar-dates ul li.expanded {
-		padding: 3px 3px calc(8.525% - 3px) 3px;
+		padding: 0 0 8.525% 0;
 	}
 	
 	.calendar-dates ul li.this_day.expanded,
@@ -1341,7 +1377,7 @@ button.close {
 	}
 	
 	.calendar-dates ul li.expanded {
-		padding: 3px 3px calc(8.529% - 3px) 3px;
+		padding: 0 0 8.529% 0;
 	}
 	
 	.calendar-dates ul li.this_day.expanded,
@@ -1429,7 +1465,7 @@ button.close {
 	}
 
 	.calendar-dates ul li.expanded {
-		padding: 3px 3px calc(8.71% - 3px) 3px;
+		padding: 0 0 8.71% 0;
 	}
 	
 	.calendar-dates ul li.this_day.expanded,
@@ -1541,7 +1577,7 @@ button.close {
 	}
 
 	.calendar-dates ul li.expanded {
-		padding: 3px 3px calc(8.77% - 3px) 3px;
+		padding: 0 0 8.77% 0;
 	}
 	
 	.calendar-dates ul li.this_day.expanded,
@@ -1659,7 +1695,7 @@ button.close {
 	}
 
 	.calendar-dates ul li.expanded {
-		padding: 3px 3px calc(9.21% - 3px) 3px;
+		padding: 0 0 9.21% 0;
 	}
 	
 	.calendar-dates ul li.this_day.expanded,
