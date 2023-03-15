@@ -70,6 +70,7 @@ CREATE TABLE `users` (
   `dec` varchar(64) COLLATE utf8_unicode_ci DEFAULT 'blank.png'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+
 --
 -- Indexes for dumped tables
 --
