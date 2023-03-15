@@ -6,7 +6,7 @@
 This code is for an event calendar. It was created using HTML, CSS, JavaScript, jQuery, Bootstrap, PHP, and MySQL.
 
 ## Demo Deployment
-A demo of this app has been deployed to Heroku. Any images uploaded as backgrounds for the months will not remain for long periods of time because the Heroku filesystem is ephemeral - that means that any changes to the filesystem whilst the dyno is running only last until that dyno is shut down or restarted. Each dyno boots with a clean copy of the filesystem from the most recent deploy, and never lasts more than 24 hours. However, any background images you upload will be available during your testing session so that you can see how it works. I may eventually consider an S3 image hosting solution in the future so that the images are always available, but my priority at this time is to get a working demo up and running for short-term testing. The application can be found at https://php-javascript-event-calendar.herokuapp.com. (This was functional until the most recent update. The app works locally, but not longer works on Heroku. Researching...)
+A demo of this app has been deployed to Heroku. Any images uploaded as backgrounds for the months will not remain for long periods of time because the Heroku filesystem is ephemeral - that means that any changes to the filesystem whilst the dyno is running only last until that dyno is shut down or restarted. Each dyno boots with a clean copy of the filesystem from the most recent deploy, and never lasts more than 24 hours. However, any background images you upload will be available during your testing session so that you can see how it works. I may eventually consider an S3 image hosting solution in the future so that the images are always available, but my priority at this time is to get a working demo up and running for short-term testing. The application can be found at https://php-javascript-event-calendar.herokuapp.com.
 
 ## Functionality
 It displays the current month, and has arrows to move to the previous or following months, along with dropdowns that let you select a month and year to display. It also has a "Today" button that returns you to the current month.
@@ -26,6 +26,14 @@ When signed in, there's a sign out link in the upper left corner. This will sign
 There's a 20 minute session timer that will log out users after 20 minutes of inactivity.
 
 The days with events have a different background color. Days with 1 event are yellow, 2 events are orange, 3 events are red, 4 events are purple, and 5 events are blue, and 6 or more events are dark gray. The current day is outlined.
+
+The ability to modify events (event creator only) has been added, so the date, title, description, privacy, shared with, and delete authority can all be changed.
+
+There's also been some checkboxes added to the top right corner.
+- View Events: Changes the view to list the events on each day. The events can be clicked to get more information, modify them, or delete them.
+- Mask Mode: If you have a background image set this will set a dark semi-opaque background on cells with events. Only works if View Events is clicked. If all events for that date are deleted or moved to another date the mask is removed.
+- Hide Image: If there's a background image it is hidden to give an uncluttered view of the calendar.
+- Hide Calendar: This removes the calendar to get an unobstructed view of the background image.
 
 ## Requirements
 Since this calendar is PHP based, it will need to be hosted on a web server with PHP installed in order to function properly. It works on PHP version 7.4, and has not been tested with any other versions.
