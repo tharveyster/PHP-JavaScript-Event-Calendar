@@ -56,18 +56,18 @@ CREATE TABLE `users` (
   `email` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL,
   `username` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
   `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `january` varchar(64) COLLATE utf8_unicode_ci DEFAULT 'blank.png',
-  `february` varchar(64) COLLATE utf8_unicode_ci DEFAULT 'blank.png',
-  `march` varchar(64) COLLATE utf8_unicode_ci DEFAULT 'blank.png',
-  `april` varchar(64) COLLATE utf8_unicode_ci DEFAULT 'blank.png',
+  `jan` varchar(64) COLLATE utf8_unicode_ci DEFAULT 'blank.png',
+  `feb` varchar(64) COLLATE utf8_unicode_ci DEFAULT 'blank.png',
+  `mar` varchar(64) COLLATE utf8_unicode_ci DEFAULT 'blank.png',
+  `apr` varchar(64) COLLATE utf8_unicode_ci DEFAULT 'blank.png',
   `may` varchar(64) COLLATE utf8_unicode_ci DEFAULT 'blank.png',
-  `june` varchar(64) COLLATE utf8_unicode_ci DEFAULT 'blank.png',
-  `july` varchar(64) COLLATE utf8_unicode_ci DEFAULT 'blank.png',
-  `august` varchar(64) COLLATE utf8_unicode_ci DEFAULT 'blank.png',
-  `september` varchar(64) COLLATE utf8_unicode_ci DEFAULT 'blank.png',
-  `october` varchar(64) COLLATE utf8_unicode_ci DEFAULT 'blank.png',
-  `november` varchar(64) COLLATE utf8_unicode_ci DEFAULT 'blank.png',
-  `december` varchar(64) COLLATE utf8_unicode_ci DEFAULT 'blank.png'
+  `jun` varchar(64) COLLATE utf8_unicode_ci DEFAULT 'blank.png',
+  `jul` varchar(64) COLLATE utf8_unicode_ci DEFAULT 'blank.png',
+  `aug` varchar(64) COLLATE utf8_unicode_ci DEFAULT 'blank.png',
+  `sep` varchar(64) COLLATE utf8_unicode_ci DEFAULT 'blank.png',
+  `oct` varchar(64) COLLATE utf8_unicode_ci DEFAULT 'blank.png',
+  `nov` varchar(64) COLLATE utf8_unicode_ci DEFAULT 'blank.png',
+  `dec` varchar(64) COLLATE utf8_unicode_ci DEFAULT 'blank.png'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
