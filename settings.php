@@ -141,29 +141,29 @@ if(isset($_FILES["image"]["name"])) {
 	$maxFileSize = 1024*1024*4;
 	$calMonthName = $_POST['calMonth'];
 	$calMonth = "";
-	if($calMonthName === "january") {
+	if($calMonthName === "jan") {
 		$calMonth = "01";
-	}elseif($calMonthName === "february") {
+	}elseif($calMonthName === "feb") {
 		$calMonth = "02";
-	}elseif($calMonthName === "march") {
+	}elseif($calMonthName === "mar") {
 		$calMonth = "03";
-	}elseif($calMonthName === "april") {
+	}elseif($calMonthName === "apr") {
 		$calMonth = "04";
 	}elseif($calMonthName === "may") {
 		$calMonth = "05";
-	}elseif($calMonthName === "june") {
+	}elseif($calMonthName === "jun") {
 		$calMonth = "06";
-	}elseif($calMonthName === "july") {
+	}elseif($calMonthName === "jul") {
 		$calMonth = "07";
-	}elseif($calMonthName === "august") {
+	}elseif($calMonthName === "aug") {
 		$calMonth = "08";
-	}elseif($calMonthName === "september") {
+	}elseif($calMonthName === "sep") {
 		$calMonth = "09";
-	}elseif($calMonthName === "october") {
+	}elseif($calMonthName === "oct") {
 		$calMonth = "10";
-	}elseif($calMonthName === "november") {
+	}elseif($calMonthName === "nov") {
 		$calMonth = "11";
-	}elseif($calMonthName === "december") {
+	}elseif($calMonthName === "dec") {
 		$calMonth = "12";
 	}
 	$temporaryPath = "temp/" . uniqid() . ".png"; // This was changed for deployment to Heroku. It should be ../../images/ for a server.
@@ -287,18 +287,18 @@ if(isset($_FILES["image"]["name"])) {
 					        <div class="form-group">
 								<select class="form-control" name="calMonth" required>
 									<option value="" selected disabled>Select a month</option>
-									<option value="january">January</option>
-									<option value="february">February</option>
-									<option value="march">March</option>
-									<option value="april">April</option>
+									<option value="jan">January</option>
+									<option value="feb">February</option>
+									<option value="mar">March</option>
+									<option value="apr">April</option>
 									<option value="may">May</option>
-									<option value="june">June</option>
-									<option value="july">July</option>
-									<option value="august">August</option>
-									<option value="september">September</option>
-									<option value="october">October</option>
-									<option value="november">November</option>
-									<option value="december">December</option>
+									<option value="jun">June</option>
+									<option value="jul">July</option>
+									<option value="aug">August</option>
+									<option value="sep">September</option>
+									<option value="oct">October</option>
+									<option value="nov">November</option>
+									<option value="dec">December</option>
 								</select>
 								<input type="file" name="image" accept="image/png, image/gif, image/jpeg" required>
         						(.jpg, .jpeg, .gif, or .png files only, 4MB maximum file size)
