@@ -65,8 +65,37 @@ function addEvent(date){
   $('#eventTitle').select();
 }
 
-function delEvent(id){
-  $('#eventId').val(id);
+function deleteEvent(id){
+  $("#createdModal").modal("show");
+  $("#modalText").empty();
+  $("#modalText").append("Are you sure you want to delete this event?");
+  $("#modalText").append("<br /><br />");
+  $("#modalText").append('<button id="confirmDelete" class="btn btn-secondary add_btn">Yes</button>');
+  $("#modalText").append('<button id="cancelDelete" class="btn btn-secondary cancel_btn">No</button>');
+  var confirmDelete = document.getElementById("confirmDelete");
+  var cancelDelete = document.getElementById("cancelDelete");
+  confirmDelete.onclick = function(){
+    $.ajax({
+      async: true,
+      type : "POST",
+      url : "includes/functions.php", 
+      data : 'func=deleteEvent&id='+id,
+      success : function() {
+        const curMonth = $(".month_dropdown").val();
+        const curYear = $(".year_dropdown").val();
+        $("#createdModal").modal("show");
+        $("#modalText").empty();
+        $("#modalText").append("Event deleted successfully!");
+        getCalendar("calendar_div",curYear,curMonth);
+        setTimeout(function(){
+          $("#createdModal").modal("hide")
+        }, 2000);
+      }
+    });
+  }
+  cancelDelete.onclick = function(){
+    $("#createdModal").modal("hide");
+  }
 }
 
 $(document).ready(function(){
@@ -80,6 +109,8 @@ $(document).ready(function(){
     document.getElementById("sharedWith").value = "";
     document.getElementById("deleteAuth").value = "";
     document.getElementById("category").value = "";
+    document.getElementById("titleError").innerText = "";
+    document.getElementById("categoryError").innerText = "";
   })
 })
 
@@ -93,6 +124,7 @@ $(document).ready(function(){
     document.getElementById("sharedWith").value = "";
     document.getElementById("deleteAuth").value = "";
     document.getElementById("category").value = "";
+    document.getElementById("titleError").innerText = "";
   })
 })
 
@@ -198,15 +230,15 @@ $(document).ready(function(){
             $('#sharedWith').val('');
             $('#deleteAuth').val('');
             $('#category').val('');
-            $('#updatedModal').modal('show');
+            $('#createdModal').modal('show');
             $('#modalText').empty();
             $('#modalText').append('Event updated successfully!');
             getCalendar('calendar_div',dateSplit[0],dateSplit[1]);
             setTimeout(function(){
-              $("#updatedModal").modal("hide")
+              $("#createdModal").modal("hide")
             }, 2000);
           }else{
-            $('#updatedModal').modal('show');
+            $('#createdModal').modal('show');
             $('#modalText').empty();
             $('#modalText').append('Some problem occurred, please try again.');
           }
@@ -217,38 +249,27 @@ $(document).ready(function(){
 });
 
 $(document).ready(function(){
-  showPopups();
   var list = document.querySelectorAll(`[type*="checkbox"]`);
   list.forEach( el => {
     var checked = JSON.parse(localStorage.getItem("cal-"+el.id));
     document.getElementById(el.id).checked = checked;
   });
-  let eventCheck = list[0];
+  let maskCheck = list[0];
   let imageCheck = list[1];
-  let events = document.querySelectorAll('.event');
+  let event = document.querySelectorAll('.event');
+  let events = document.querySelectorAll('.events');
   let backgroundElement = document.querySelector('#main-content');
   let date_cell = document.querySelectorAll('.date_cell');
   let mask = document.querySelector('#maskCheck');
   let maskLabel = document.querySelector('#maskCheckLabel');
-  if (eventCheck.checked === true) {
-    events.forEach(e => e.style.display = "block");
+  if (maskCheck.checked === true) {
     date_cell.forEach(h => {
-      h.classList.replace("has_event", "one_event");
-      h.classList.replace("has_2_multi", "two_event");
-      h.classList.replace("has_3_multi", "three_event");
-      h.classList.replace("has_4_multi", "four_event");
-      h.classList.replace("has_5_multi", "five_event");
-      h.classList.replace("has_multi", "multi_event");
+      h.classList.add("masked");
     });
-    hidePopups();
-    mask.type = 'checkbox';
-    maskLabel.classList.remove('none');
-    mask.checked = JSON.parse(localStorage.getItem("cal-"+maskCheck.id));
-    if (maskCheck.checked === true) {
-      date_cell.forEach(h => {
-        h.classList.add("masked");
-      });
-    }
+  } else {
+    date_cell.forEach(h => {
+      h.classList.remove("masked");
+    })
   }
   if (imageCheck.checked === true) {
     backgroundElement.classList.add("hideImage");
@@ -256,6 +277,8 @@ $(document).ready(function(){
     maskLabel.classList.add('none');
   } else {
     backgroundElement.classList.remove("hideImage");
+    mask.type = 'checkbox';
+    maskLabel.classList.remove('none');
   }
   let calTitle = document.querySelector('.title');
   let nav = document.querySelector('.cal-nav');
@@ -338,81 +361,6 @@ $(document).ready(function(){
   }
 });
 
-showPopups = function(){
-  $('.date_cell').mouseenter(function(){
-    date = $(this).attr('data-date');
-    $(".date_popup_wrap").hide();
-    $("#date_popup_"+date).show();
-  });
-  $('.date_cell').mouseleave(function(){
-    $(".date_popup_wrap").hide();
-  });
-}
-
-hidePopups = function(){
-  $('.date_cell').mouseenter(function(){
-    date = $(this).attr('data-date');
-    $(".date_popup_wrap").hide();
-    $("#date_popup_"+date).hide();
-  });
-}
-
-saveEvent = function(){
-  let eventCheck = document.querySelector('#eventCheck');
-  localStorage.setItem("cal-"+eventCheck.id, eventCheck.checked);
-  let events = document.querySelectorAll('.event');
-  let date_cell = document.querySelectorAll('.date_cell');
-  let mask = document.querySelector('#maskCheck');
-  let maskLabel = document.querySelector('#maskCheckLabel');
-  if (eventCheck.checked === true) {
-    events.forEach(e => e.style.display = "block");
-    date_cell.forEach(h => {
-      h.classList.replace("has_event", "one_event");
-      h.classList.replace("has_2_multi", "two_event");
-      h.classList.replace("has_3_multi", "three_event");
-      h.classList.replace("has_4_multi", "four_event");
-      h.classList.replace("has_5_multi", "five_event");
-      h.classList.replace("has_multi", "multi_event");
-    });
-    hidePopups();
-    if (imageCheck.checked === true) {
-      maskCheck.checked = false;
-      mask.type = 'hidden';
-      maskLabel.classList.add('none');
-      date_cell.forEach(h => {
-        h.classList.remove("masked");
-      })
-    } else {
-      mask.type = 'checkbox';
-      maskLabel.classList.remove('none');
-      mask.checked = JSON.parse(localStorage.getItem("cal-"+maskCheck.id));
-      if (maskCheck.checked === true) {
-        date_cell.forEach(h => {
-          h.classList.add("masked");
-        });
-      } else {
-        date_cell.forEach(h => {
-          h.classList.remove("masked");
-        })
-      } 
-    }
-  } else {
-    events.forEach(e => e.style.display = "none");
-    date_cell.forEach(h => {
-      h.classList.replace("one_event", "has_event");
-      h.classList.replace("two_event", "has_2_multi");
-      h.classList.replace("three_event", "has_3_multi");
-      h.classList.replace("four_event", "has_4_multi");
-      h.classList.replace("five_event", "has_5_multi");
-      h.classList.replace("multi_event", "has_multi");
-    })
-    showPopups();
-    maskCheck.checked = false;
-    mask.type = 'hidden';
-    maskLabel.classList.add('none');
-  } 
-}
-
 saveMask = function(){
   let maskCheck = document.querySelector('#maskCheck');
   localStorage.setItem("cal-"+maskCheck.id, maskCheck.checked);
@@ -432,13 +380,11 @@ saveImage = function(){
   let imageCheck = document.querySelector('#imageCheck');
   localStorage.setItem("cal-"+imageCheck.id, imageCheck.checked);
   let backgroundElement = document.querySelector('#main-content');
-  let maskCheck = document.querySelector('#maskCheck');
   let mask = document.querySelector('#maskCheck');
   let maskLabel = document.querySelector('#maskCheckLabel');
   let date_cell = document.querySelectorAll('.date_cell');
   if (imageCheck.checked === true) {
     backgroundElement.classList.add("hideImage");
-    maskCheck.checked = false;
     mask.type = 'hidden';
     maskLabel.classList.add('none');
     date_cell.forEach(h => {
@@ -446,12 +392,8 @@ saveImage = function(){
     })
   } else {
     backgroundElement.classList.remove("hideImage");
-    if (eventCheck.checked === true) {
-      maskCheck.checked = JSON.parse(localStorage.getItem("cal-"+maskCheck.id));
-      saveMask();
-      mask.type = 'checkbox';
-      maskLabel.classList.remove('none');
-    }
+    mask.type = 'checkbox';
+    maskLabel.classList.remove('none');
   }
 }
 

@@ -34,8 +34,8 @@ if(isset($_POST['func']) && !empty($_POST['func'])){
     case 'updateEvent':
       updateEvent($_POST['date'],$_POST['title'],$_POST['description'],$_POST['privacy'],$_POST['sharedWith'],$_POST['deleteAuth'],$_POST['category'],$_POST['eventId']);
       break;
-    case 'delEvent':
-      delEvent($_POST['id']);
+    case 'deleteEvent':
+      deleteEvent($_POST['id']);
       break;
     default:
       break;
@@ -54,7 +54,6 @@ function getCalendar($year = '', $month = ''){
 ?>
       <div class="calendar-wrap">
       <div class="checkboxSection">
-          <input type="checkbox" id="eventCheck" name="eventCheck" class="hideThis" onclick="saveEvent()"><label for="eventCheck" class="hideThis">Show Events</label>
           <input type="hidden" id="maskCheck" name="maskCheck" class="hideThis" onclick="saveMask()"><label for="maskCheck" id="maskCheckLabel" class="hideThis none">Mask Mode</label>
           <input type="checkbox" id="imageCheck" name="imageCheck" class="hideThis" onclick="saveImage()"><label for="imageCheck" class="hideThis">Hide Image</label>
           <input type="checkbox" id="calCheck" name="calCheck" onclick="hideCalendar()"><label for="calCheck">Hide Calendar</label>
@@ -119,18 +118,18 @@ function getCalendar($year = '', $month = ''){
           <!--<input type="button" id="cancelAddEventBtn" value="Cancel"/>-->
         </div>
         <div class="calendar-days">
-          <ul>
-            <li><span>SUNDAY</span></li>
-            <li><span>MONDAY</span></li>
-            <li><span>TUESDAY</span></li>
-            <li><span>WEDNESDAY</span></li>
-            <li><span>THURSDAY</span></li>
-            <li><span>FRIDAY</span></li>
-            <li><span>SATURDAY</span></li>
+          <ul class="calendar-day-list">
+            <li class="calendar-day"><span>SUNDAY</span></li>
+            <li class="calendar-day"><span>MONDAY</span></li>
+            <li class="calendar-day"><span>TUESDAY</span></li>
+            <li class="calendar-day"><span>WEDNESDAY</span></li>
+            <li class="calendar-day"><span>THURSDAY</span></li>
+            <li class="calendar-day"><span>FRIDAY</span></li>
+            <li class="calendar-day"><span>SATURDAY</span></li>
           </ul>
         </div>
-        <div class="calendar-dates">
-          <ul>
+        <div id="calendar-dates" class="calendar-dates">
+          <ul id="calendar-list" class="calendar-list">
 <?php
   $dayCount = 1;
   $eventNum = 0;
@@ -174,25 +173,26 @@ function getCalendar($year = '', $month = ''){
       }
       $eventClass = "";
       if ($eventNum === 1) {
-        $eventClass = 'has_event ';
+        $eventClass = 'one_event ';
       } elseif ($eventNum === 2) {
-        $eventClass = 'has_2_multi ';
+        $eventClass = 'two_event ';
       } elseif ($eventNum === 3) {
-        $eventClass = 'has_3_multi ';
+        $eventClass = 'three_event ';
       } elseif ($eventNum === 4) {
-        $eventClass = 'has_4_multi ';
+        $eventClass = 'four_event ';
       } elseif ($eventNum === 5) {
-        $eventClass = 'has_5_multi ';
+        $eventClass = 'five_event ';
       } elseif ($eventNum > 5) {
-        $eventClass = 'has_multi ';
+        $eventClass = 'multi_event ';
       }
-      echo '            <li data-date="'.$currentDate.'" class="'.$thisDay.$eventClass.'date_cell'.$pastDay.$expandBlocks.'">';
+      echo '            <li data-date="'.$currentDate.'" class="calendar-list-item '.$thisDay.$eventClass.'date_cell'.$pastDay.$expandBlocks.'">';
                 
       // Date cell
-      echo '<span>';
-      echo '<span class="dayNumber" onclick="addEvent(\''.$currentDate.'\');">'.$dayCount.'</span>';
+      echo '<span class="dayBlock">';
+      echo '<span class="eventView" onclick="getEvents(\''.$currentDate.'\')">'.$dayCount.'</span>';
+      echo '<span class="dayNumber" onclick="addEvent(\''.$currentDate.'\');"></span>';
       if($boxDisplay === 35 && $eventNum >= 6) {
-        $events = $con->prepare("SELECT id, title, category FROM events WHERE (date = :cd1 AND status = 1 AND user = :un) OR (date = :cd2 AND status = 1 AND privacy = 0) OR (date = :cd3 AND status = 1 AND sharedWith LIKE :sw) ORDER BY title LIMIT 4");
+        $events = $con->prepare("SELECT id, title, category FROM events WHERE (date = :cd1 AND status = 1 AND user = :un) OR (date = :cd2 AND status = 1 AND privacy = 0) OR (date = :cd3 AND status = 1 AND sharedWith LIKE :sw) ORDER BY FIELD(category, 'Finance', 'Work', 'Medical', 'Miscellaneous', 'Life', 'House'), title LIMIT 4");
       $sharedWith = "% ".$userId." %";
       $events->execute(
         array(
@@ -204,7 +204,7 @@ function getCalendar($year = '', $month = ''){
         )
       );
     } elseif ($boxDisplay === 42 && $eventNum >= 5) {
-      $events = $con->prepare("SELECT id, title, category FROM events WHERE (date = :cd1 AND status = 1 AND user = :un) OR (date = :cd2 AND status = 1 AND privacy = 0) OR (date = :cd3 AND status = 1 AND sharedWith LIKE :sw) ORDER BY title LIMIT 3");
+      $events = $con->prepare("SELECT id, title, category FROM events WHERE (date = :cd1 AND status = 1 AND user = :un) OR (date = :cd2 AND status = 1 AND privacy = 0) OR (date = :cd3 AND status = 1 AND sharedWith LIKE :sw) ORDER BY FIELD(category, 'Finance', 'Work', 'Medical', 'Miscellaneous', 'Life', 'House'), title LIMIT 3");
       $sharedWith = "% ".$userId." %";
       $events->execute(
         array(
@@ -216,7 +216,7 @@ function getCalendar($year = '', $month = ''){
         )
       );
     } else {
-      $events = $con->prepare("SELECT id, title, category FROM events WHERE (date = :cd1 AND status = 1 AND user = :un) OR (date = :cd2 AND status = 1 AND privacy = 0) OR (date = :cd3 AND status = 1 AND sharedWith LIKE :sw) ORDER BY title");
+      $events = $con->prepare("SELECT id, title, category FROM events WHERE (date = :cd1 AND status = 1 AND user = :un) OR (date = :cd2 AND status = 1 AND privacy = 0) OR (date = :cd3 AND status = 1 AND sharedWith LIKE :sw) ORDER BY FIELD(category, 'Finance', 'Work', 'Medical', 'Miscellaneous', 'Life', 'House'), title");
       $sharedWith = "% ".$userId." %";
       $events->execute(
         array(
@@ -230,7 +230,7 @@ function getCalendar($year = '', $month = ''){
     }
     $eventsHTML = '';
       if($events->rowCount() > 0){
-        $eventsHTML .= '<span class="event" style="display:none">';
+        $eventsHTML .= '<span class="event">';
         while($row = $events->fetch()) {
           $eventId = $row['id'];
           $category = $row['category'];
@@ -250,7 +250,7 @@ function getCalendar($year = '', $month = ''){
             $catStyle = '';
           }
           $eventTitle = $row['title'];
-          $eventsHTML .= '<p id="'.$eventId.'" class="'.$catStyle.'" onclick="getEvent(\''.$currentDate.'\', \''.$eventId.'\');">'.$eventTitle.'</p>';
+          $eventsHTML .= '<p id="'.$eventId.'" class="events '.$catStyle.'" onclick="getEvent(\''.$currentDate.'\', \''.$eventId.'\');">'.$eventTitle.'</p>';
         }
         if($boxDisplay === 35 && $eventNum > 5) {
           $difference = $eventNum - 4;
@@ -278,7 +278,7 @@ function getCalendar($year = '', $month = ''){
       echo '</li>'."\r\n";
       $dayCount++;
     }else{
-      echo '            <li class="no_date'.$expandBlocks.'">&nbsp;</li>'."\r\n";
+      echo '            <li class="calendar-list-item no_date'.$expandBlocks.'">&nbsp;</li>'."\r\n";
     }
   }
   $month01 = $month02 = $month03 = $month04 = $month05 = $month06 = $month07 = $month08 = $month09 = $month10 = $month11 = $month12 = "";
@@ -373,7 +373,7 @@ function getEvents($date = '', $userId){
   $date = $date?$date:date("Y-m-d");
 
   // Fetch events based on the specific date
-  $result = $con->prepare("SELECT * FROM events WHERE (date = :date1 AND status = 1 AND user = :un) OR (date = :date2 AND status = 1 AND privacy = 0) OR (date = :date3 AND status = 1 AND sharedWith LIKE :sw) ORDER BY title");
+  $result = $con->prepare("SELECT * FROM events WHERE (date = :date1 AND status = 1 AND user = :un) OR (date = :date2 AND status = 1 AND privacy = 0) OR (date = :date3 AND status = 1 AND sharedWith LIKE :sw) ORDER BY FIELD(category, 'Finance', 'Work', 'Medical', 'Miscellaneous', 'Life', 'House'), title");
   $sharedWith = "% ".$userId." %";
   $result->execute(
     array(
@@ -387,11 +387,17 @@ function getEvents($date = '', $userId){
   if($result->rowCount() > 0){
     $eventListHTML = '<h2>Events on '.date("l, F d, Y",strtotime($date)).'</h2>';
     $eventListHTML .= '<table class="eventList">';
-    $eventListHTML .= '<tr>';
+    $eventListHTML .= '<tr class="eventRow">';
     $eventListHTML .= '<th class="eventItem">Title</th>';
-    $eventListHTML .= '<th class="eventItem">Description</th><th class="eventItem">Creator</th><th class="eventItem">Privacy</th><th class="eventItem">Shared With</th><th class="eventItem">Category</th><th class="eventItem"></th>';
+    $eventListHTML .= '<th class="eventItem">Description</th>';
+    $eventListHTML .= '<th class="eventItem">Creator</th>';
+    $eventListHTML .= '<th class="eventItem">Privacy</th>';
+    $eventListHTML .= '<th class="eventItem">Shared With</th>';
+    $eventListHTML .= '<th class="eventItem">Category</th>';
+    $eventListHTML .= '<th class="eventItem"></th>';
+    $eventListHTML .= '</tr>';
     while($row = $result->fetch()) {
-      $eventListHTML .= '<tr>';
+      $eventListHTML .= '<tr class="eventRow">';
       $id = $row['id'];
       $user = $row['user'];
       $eventTitle = $row['title'];
@@ -445,16 +451,34 @@ function getEvents($date = '', $userId){
       }
       $authConfirm = ' '.$userId.' ';
       if ($user != $userId && strpos($deleteAuth, $authConfirm) === false) {
-        $eventListHTML .= '<td class="eventItem">'.$eventTitle.'</td><td class="eventItem centered">'.$eventDescription.'</td><td class="eventItem centered">'.$creatorName.'</td><td class="eventItem centered">'.$eventPrivacy.'</td><td class="eventItem centered"></td><td class="eventItem centered">'.$category.'</td>><td class="eventItem centered"></td>';
+        $eventListHTML .= '<td class="eventItem">'.$eventTitle.'</td>';
+        $eventListHTML .= '<td class="eventItem centered">'.$eventDescription.'</td>';
+        $eventListHTML .= '<td class="eventItem centered">'.$creatorName.'</td>';
+        $eventListHTML .= '<td class="eventItem centered">'.$eventPrivacy.'</td>';
+        $eventListHTML .= '<td class="eventItem"></td>';
+        $eventListHTML .= '<td class="eventItem centered">'.$category.'</td>';
+        $eventListHTML .= '<td class="eventItem"></td>';
       } else if ($user != $userId && strpos($deleteAuth, $authConfirm) !== false) {
-        $eventListHTML .= '<td class="eventItem">'.$eventTitle.'</td><td class="eventItem centered">'.$eventDescription.'</td><td class="eventItem centered">'.$creatorName.'</td><td class="eventItem centered">'.$eventPrivacy.'</td><td class="eventItem centered">'.$newSharedGroup.'</td><td class="eventItem centered">'.$category.'</td><td class="eventItem righted"><button class="btn btn-secondary delEventBtn" id="'.$id.'">Delete</button></td>';
+        $eventListHTML .= '<td class="eventItem">'.$eventTitle.'</td>';
+        $eventListHTML .= '<td class="eventItem centered">'.$eventDescription.'</td>';
+        $eventListHTML .= '<td class="eventItem centered">'.$creatorName.'</td>';
+        $eventListHTML .= '<td class="eventItem centered">'.$eventPrivacy.'</td>';
+        $eventListHTML .= '<td class="eventItem"></td>';
+        $eventListHTML .= '<td class="eventItem centered">'.$category.'</td>';
+        $eventListHTML .= '<td class="eventItem righted"><button class="btn btn-secondary delEventBtn" id="'.$id.'" onclick="deleteEvent('.$id.')">Delete</button></td>';
       } else {
-        $eventListHTML .= '<td class="eventItem" id="'.$id.'">'.$eventTitle.'</td><td class="eventItem centered">'.$eventDescription.'</td><td class="eventItem centered">'.$creatorName.'</td><td class="eventItem centered">'.$eventPrivacy.'</td><td class="eventItem centered">'.$newSharedGroup.'</td><td class="eventItem centered">'.$category.'</td><td class="eventItem righted"><button class="btn btn-secondary modEventBtn" id="'.$id.'" onclick="modEvent('.$id.')">Modify</button><button class="btn btn-secondary delEventBtn" id="'.$id.'">Delete</button></td>';
+        $eventListHTML .= '<td class="eventItem" id="'.$id.'">'.$eventTitle.'</td>';
+        $eventListHTML .= '<td class="eventItem centered">'.$eventDescription.'</td>';
+        $eventListHTML .= '<td class="eventItem centered">'.$creatorName.'</td>';
+        $eventListHTML .= '<td class="eventItem centered">'.$eventPrivacy.'</td>';
+        $eventListHTML .= '<td class="eventItem centered">'.$newSharedGroup.'</td>';
+        $eventListHTML .= '<td class="eventItem centered">'.$category.'</td>';
+        $eventListHTML .= '<td class="eventItem righted"><button class="btn btn-secondary modEventBtn" id="'.$id.'" onclick="modEvent('.$id.')">Modify</button><button class="btn btn-secondary delEventBtn" id="'.$id.'" onclick="deleteEvent('.$id.')">Delete</button></td>';
       }
       $eventListHTML .= '</tr>';
     }
     $eventListHTML .= '</table>';
-    $eventListHTML .= '<script src="../js/delete.js"></script>';
+    $eventListHTML .= '<script src="./js/calendar.js"></script>';
   }
   echo $eventListHTML;
   $result = null;
@@ -476,11 +500,17 @@ function getEvent($date = '', $eventId, $userId) {
   if($oneEvent->rowCount() > 0){
     $eventHTML = '<h2>Event '.$eventId.' on '.date("l, F d, Y",strtotime($date)).'</h2>';
     $eventHTML .= '<table class="eventList">';
-    $eventHTML .= '<tr>';
+    $eventHTML .= '<tr class="eventRow">';
     $eventHTML .= '<th class="eventItem">Title</th>';
-    $eventHTML .= '<th class="eventItem">Description</th><th class="eventItem">Creator</th><th class="eventItem">Privacy</th><th class="eventItem">Shared With</th><th class="eventItem">Category</th><th class="eventItem"></th>';
+    $eventHTML .= '<th class="eventItem">Description</th>';
+    $eventHTML .= '<th class="eventItem">Creator</th>';
+    $eventHTML .= '<th class="eventItem">Privacy</th>';
+    $eventHTML .= '<th class="eventItem">Shared With</th>';
+    $eventHTML .= '<th class="eventItem">Category</th>';
+    $eventHTML .= '<th class="eventItem"></th>';
+    $eventHTML .= '</tr>';
     while($row = $oneEvent->fetch()) {
-      $eventHTML .= '<tr>';
+      $eventHTML .= '<tr class="eventRow">';
       $id = $row['id'];
       $user = $row['user'];
       $eventTitle = $row['title'];
@@ -534,16 +564,34 @@ function getEvent($date = '', $eventId, $userId) {
       }
       $authConfirm = ' '.$userId.' ';
       if ($user != $userId && strpos($deleteAuth, $authConfirm) === false) {
-        $eventHTML .= '<td class="eventItem">'.$eventTitle.'</td><td class="eventItem centered">'.$eventDescription.'</td><td class="eventItem centered">'.$creatorName.'</td><td  class="eventItem centered">'.$eventPrivacy.'</td><td class="eventItem centered"></td><td class="eventItem centered">'.$category.'</td><td class="eventItem centered"></td>';
+        $eventHTML .= '<td class="eventItem">'.$eventTitle.'</td>';
+        $eventHTML .= '<td class="eventItem centered">'.$eventDescription.'</td>';
+        $eventHTML .= '<td class="eventItem centered">'.$creatorName.'</td>';
+        $eventHTML .= '<td class="eventItem centered">'.$eventPrivacy.'</td>';
+        $eventHTML .= '<td class="eventItem"></td>';
+        $eventHTML .= '<td class="eventItem centered">'.$category.'</td>';
+        $eventHTML .= '<td class="eventItem"></td>';
       } else if ($user != $userId && strpos($deleteAuth, $authConfirm) !== false) {
-        $eventHTML .= '<td class="eventItem">'.$eventTitle.'</td><td class="eventItem centered">'.$eventDescription.'</td><td class="eventItem centered">'.$creatorName.'</td><td  class="eventItem centered">'.$eventPrivacy.'</td><td class="eventItem centered">'.$newSharedGroup.'</td><td class="eventItem centered">'.$category.'</td><td class="eventItem righted"><button class="btn btn-secondary delEventBtn" id="'.$id.'">Delete</button></td>';
+        $eventHTML .= '<td class="eventItem">'.$eventTitle.'</td>';
+        $eventHTML .= '<td class="eventItem centered">'.$eventDescription.'</td>';
+        $eventHTML .= '<td class="eventItem centered">'.$creatorName.'</td>';
+        $eventHTML .= '<td class="eventItem centered">'.$eventPrivacy.'</td>';
+        $eventHTML .= '<td class="eventItem"></td>';
+        $eventHTML .= '<td class="eventItem centered">'.$category.'</td>';
+        $eventHTML .= '<td class="eventItem righted"><button class="btn btn-secondary delEventBtn" id="'.$id.'" onclick="deleteEvent('.$id.')">Delete</button></td>';
       } else {
-        $eventHTML .= '<td class="eventItem" id="'.$id.'">'.$eventTitle.'</td><td class="eventItem centered">'.$eventDescription.'</td><td class="eventItem centered">'.$creatorName.'</td><td class="eventItem centered">'.$eventPrivacy.'</td><td class="eventItem centered">'.$newSharedGroup.'</td><td class="eventItem centered">'.$category.'</td><td class="eventItem righted"><button class="btn btn-secondary modEventBtn" id="'.$id.'" onclick="modEvent('.$id.')">Modify</button><button class="btn btn-secondary delEventBtn" id="'.$id.'">Delete</button></td>';
+        $eventHTML .= '<td class="eventItem" id="'.$id.'">'.$eventTitle.'</td>';
+        $eventHTML .= '<td class="eventItem centered">'.$eventDescription.'</td>';
+        $eventHTML .= '<td class="eventItem centered">'.$creatorName.'</td>';
+        $eventHTML .= '<td class="eventItem centered">'.$eventPrivacy.'</td>';
+        $eventHTML .= '<td class="eventItem centered">'.$newSharedGroup.'</td>';
+        $eventHTML .= '<td class="eventItem centered">'.$category.'</td>';
+        $eventHTML .= '<td class="eventItem righted"><button class="btn btn-secondary modEventBtn" id="'.$id.'" onclick="modEvent('.$id.')">Modify</button><button class="btn btn-secondary delEventBtn" id="'.$id.'" onclick="deleteEvent('.$id.')">Delete</button></td>';
       }
       $eventHTML .= '</tr>';
     }
     $eventHTML .= '</table>';
-    $eventHTML .= '<script src="../js/delete.js"></script>';
+    $eventHTML .= '<script src="./js/calendar.js"></script>';
   }
   echo $eventHTML;
   $oneEvent = null;
@@ -831,5 +879,16 @@ function updateEvent($date,$title,$description,$privacy,$sharedWith,$deleteAuth,
     echo 'err';
   }
   $update = null;
+}
+
+/*
+ * Delete event
+ */
+function deleteEvent($id){
+  include 'dbConfig.php';
+
+  $query = $con->prepare("DELETE FROM events WHERE id = :id");
+  $query->bindParam(':id', $id);
+  $query->execute();
 }
 ?>
